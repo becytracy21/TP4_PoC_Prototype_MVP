@@ -1,54 +1,104 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+
     let elapsed: number | string = "";
     let handicap: number | string = "";
     let result: number | null = null;
     let message = "";
 
-async function sendData() {
-    console.log("Le bouton fonctionne !");
-    result = null;
-    message = "";
+    type Calc = {
+        elapsed: number;
+        handicap: number;
+        corrected: number;
+        message?: string;
+        time: string;
+    };
 
-    try {
-        const response = await fetch("http://localhost:8000/api/calculate/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                elapsed: Number(elapsed),
-                handicap: Number(handicap)
-            })
-        });
+    let history: Calc[] = [];
 
-        console.log("Réponse brute :", response);
-
-        const data = await response.json().catch(() => null);
-
-        if (response.ok && data) {
-            // Supporte plusieurs formats possibles renvoyés par l'API
-            const corrected = data.corrected ?? data.result ?? data.corrected_time ?? data.correctedTime ?? null;
-            if (corrected !== null) {
-                result = Number(corrected);
-            } else if (typeof data === 'number') {
-                result = data;
+    onMount(() => {
+        const raw = localStorage.getItem('calcul_history_v1');
+        if (raw) {
+            try {
+                history = JSON.parse(raw) as Calc[];
+            } catch (e) {
+                console.error('Impossible de parser l\'historique', e);
+                history = [];
             }
-            message = data.message ?? data.detail ?? "";
-        } else if (data) {
-            message = data.message ?? data.detail ?? `Erreur: ${response.status}`;
-        } else {
-            message = `Erreur: ${response.status}`;
         }
-    } catch (err) {
-        console.error(err);
-        message = 'Erreur réseau ou inattendue';
-    }
-}
+    });
 
+    function saveHistory() {
+        try {
+            localStorage.setItem('calcul_history_v1', JSON.stringify(history));
+        } catch (e) {
+            console.error('Impossible de sauvegarder l\'historique', e);
+        }
+    }
+
+    async function sendData() {
+        console.log("Le bouton fonctionne !");
+        result = null;
+        message = "";
+
+        try {
+            const response = await fetch("http://localhost:8000/api/calculate/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    elapsed: Number(elapsed),
+                    handicap: Number(handicap)
+                })
+            });
+
+            console.log("Réponse brute :", response);
+
+            const data = await response.json().catch(() => null);
+
+            if (response.ok && data) {
+                // Supporte plusieurs formats possibles renvoyés par l'API
+                const corrected = data.corrected ?? data.result ?? data.corrected_time ?? data.correctedTime ?? null;
+                if (corrected !== null) {
+                    result = Number(corrected);
+                } else if (typeof data === 'number') {
+                    result = data;
+                }
+                message = data.message ?? data.detail ?? "";
+
+                // ajouter à l'historique si on a un résultat
+                if (result !== null) {
+                    const entry: Calc = {
+                        elapsed: Number(elapsed),
+                        handicap: Number(handicap),
+                        corrected: Number(result),
+                        message,
+                        time: new Date().toLocaleString()
+                    };
+                    history = [entry, ...history];
+                    saveHistory();
+                }
+            } else if (data) {
+                message = data.message ?? data.detail ?? `Erreur: ${response.status}`;
+            } else {
+                message = `Erreur: ${response.status}`;
+            }
+        } catch (err) {
+            console.error(err);
+            message = 'Erreur réseau ou inattendue';
+        }
+    }
+
+    function clearHistory() {
+        history = [];
+        saveHistory();
+    }
 
 </script>
 
 <style>
 :global(html, body, #app) {
     height: 100%;
+    overflow: hidden; /* Empêche le scroll de la page entière */
 }
 
 :global(#app) {
@@ -205,6 +255,93 @@ button:hover { transform: translateY(-2px); box-shadow: 0 18px 48px rgba(59,130,
     color: inherit;
 }
 
+/* Nouveau: liste d'historique et cards individuelles */
+.history-list {
+    margin-top: 32px;
+    width: 100%;
+    --history-card-h: 104px;
+    --history-gap: 10px;
+}
+.history-scroll {
+    max-height: calc(var(--history-card-h) * 2 + var(--history-gap));
+    overflow-y: auto;
+    margin-top: 16px;
+    border-top: 1px solid rgba(11,36,64,0.1);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--history-gap);
+}
+.history-card {
+    background: #ffffff;
+    height: var(--history-card-h);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(11,36,64,0.03);
+    box-shadow: 0 5px 14px rgba(11,36,64,0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+}
+.history-card .left {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* empêche débordement */
+}
+.history-result {
+    background: #fbfdff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(11,36,64,0.02);
+    box-shadow: none;
+    font-size: 1rem; /* un peu plus grand */
+    line-height: 1.05; /* compacte les lignes */
+    font-weight: 700;
+    color: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: normal; /* autorise le retour à la ligne */
+    word-break: break-word; /* coupe si nécessaire */
+    overflow: hidden; /* coupe l'excès */
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* autorise jusqu'à 3 lignes visibles */
+    -webkit-box-orient: vertical;
+}
+.history-result .sub {
+    margin-top: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1;
+}
+.history-result .msg {
+    margin-top: 4px;
+    color: rgba(11,36,64,0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1;
+}
+.history-card .meta {
+    opacity: 0.75;
+    font-style: italic;
+    font-size: 0.82rem; /* légèrement plus lisible */
+    margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+    .history-list { --history-card-h: 90px; }
+    .history-card { height: var(--history-card-h); }
+    .history-result { -webkit-line-clamp: 3; }
+}
+
 /* Ajustements responsives pour petits écrans */
 @media (max-width: 720px) {
     :global(body) { font-size: 16px; }
@@ -250,4 +387,35 @@ button:hover { transform: translateY(-2px); box-shadow: 0 18px 48px rgba(59,130,
             {message}
         </div>
     {/if}
+
+    <!-- Historique des calculs (cards) -->
+    <div class="history-list">
+        <h2 style="font-size: 1.8rem; text-align: center; margin:0;">Historique des calculs</h2>
+        <div class="history-scroll">
+            {#each history as entry, i (entry.time)}
+                <div class="history-card">
+                    <div class="left">
+                        <!-- Titre supprimé : pas de "Calcul X" affiché -->
+
+                        <!-- Card compacte pour l'historique -->
+                        <div class="history-result">
+                            {entry.corrected} s
+                            <div class="sub">{entry.elapsed} s + {entry.handicap} s</div>
+                            {#if entry.message}
+                                <div class="msg">{entry.message}</div>
+                            {/if}
+                        </div>
+                    </div>
+
+                    <div class="meta">{entry.time}</div>
+                </div>
+            {/each}
+        </div>
+
+        <div style="text-align: center; margin-top: 12px;">
+            <button on:click={clearHistory} style="font-size: 0.9rem; padding: 10px 20px; background: rgba(11,36,64,0.05); color: #0b2440; border: none; border-radius: 10px; cursor: pointer;">
+                Effacer l'historique
+            </button>
+        </div>
+    </div>
 </div>
