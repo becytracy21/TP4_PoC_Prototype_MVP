@@ -1,9 +1,14 @@
+import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from pymongo import MongoClient
 
 # Connexion MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+uri = os.getenv("MONGODB_URI")
+if not uri:
+    raise RuntimeError("MONGODB_URI environment variable is not set")
+
+client = MongoClient(os.environ["MONGODB_URI"])
 db = client["yrr_poc"]
 
 @api_view(["POST"])
