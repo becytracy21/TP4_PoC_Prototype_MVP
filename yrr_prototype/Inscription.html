@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inscription — YRR Prototype</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container-main">
+    <div class="card">
+      <div class="brand">
+        <h2>YRR - Prototype</h2>
+        <p>Création de compte (simulation).</p>
+        <p class="small">Prototype non fonctionnel — HTML/CSS seulement.</p>
+      </div>
+      <div class="form-wrap">
+        <h1 style="margin-top:0">Inscription</h1>
+        <p class="lead">Créez un compte en quelques secondes.</p>
+        <form action="Accueil.html" method="get">
+          <label for="regName">Nom complet</label>
+          <input id="regName" type="text" name="name" required placeholder="Votre nom" />
+
+          <label for="regEmail">Email</label>
+          <input id="regEmail" type="email" name="email" required placeholder="exemple@domaine.com" />
+
+          <div class="row">
+            <div class="col">
+              <label for="regPassword">Mot de passe</label>
+              <input id="regPassword" type="password" name="password" required minlength="6" placeholder="Mot de passe (min 6)" />
+            </div>
+            <div class="col">
+              <label for="regPassword2">Confirmer mot de passe</label>
+              <input id="regPassword2" type="password" name="password2" required minlength="6" placeholder="Confirmer" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <div class="small"></div>
+            <button class="btn" type="submit">Créer le compte</button>
+          </div>
+
+          <div style="margin-top:12px;font-size:14px">
+            <span class="small">Déjà inscrit ?</span>
+            <a class="toggle" href="Connexion.html" style="cursor:pointer">Se connecter</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profil — YRR Prototype</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>YRR — Prototype</h1>
+    <nav>
+      <a href="Accueil.html">Accueil</a>
+      <a href="Connexion.html">Se déconnecter</a>
+    </nav>
+  </header>
+
+  <div class="container-main">
+    <div class="hero">
+      <h2 class="hero-title">Mon profil</h2>
+      <p class="hero-subtitle">Informations utilisateur (données simulées)</p>
+      <div class="title-underline" aria-hidden="true"></div>
+    </div>
+
+    <section class="panel">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <div style="flex:1;min-width:240px">
+          <h3>Informations</h3>
+          <p class="muted">Les données affichées sont simulées pour le prototype.</p>
+          <div style="margin-top:12px">
+            <label class="small">Nom complet</label>
+            <input type="text" value="Jean Dupont" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef8;background:#fbfdff;margin-top:6px" />
+          </div>
+          <div style="margin-top:12px">
+            <label class="small">Email</label>
+            <input type="email" value="jean.dupont@example.com" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef8;background:#fbfdff;margin-top:6px" />
+          </div>
+        </div>
+        <div style="min-width:220px;display:flex;flex-direction:column;gap:8px">
+          <a class="button-ghost" href="Accueil.html">Retour</a>
+          <a class="button-ghost" href="#">Modifier (simulé)</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="muted" style="margin-top:18px">Prototype non fonctionnel — interface de démonstration.</footer>
+</body>
+</html>
