@@ -76,6 +76,11 @@ header nav a:hover {
   color: var(--green)
 }
 
+/* Lien actif dans la navbar */
+header nav a.active {
+  font-weight: 800;
+}
+
 /* Container cards (used on many pages) */
 .panel,
 .card,
