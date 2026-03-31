@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bateaux</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="Accueil.html">YRR - Protoype</a>
+      <nav aria-label="Navigation principale">
+        <ul class="main-nav">
+          <li><a href="Boat.html" class="active">Boat</a></li>
+          <li><a href="Entry.html">Entry</a></li>
+          <li><a href="Race.html">Race</a></li>
+          <li><a href="Resultat.html">Resultat</a></li>
+          <li><a href="Series.html">Serie</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="header-actions">
+        </div>
+
+        <div class="header-actions" style="margin-left:8px">
+          <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
+          <a href="Profil.html"><div class="username">John Doe</div></a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <h1>Liste des bateaux</h1>
+
+    <div class="add-boat-wrap">
+      <details id="addBoat" class="add-details">
+        <summary class="add-summary">+ Ajouter un bateau</summary>
+        <form id="addBoatForm" class="add-form" onsubmit="return false;">
+          <div class="row">
+            <label for="boatName">Nom du bateau</label>
+            <input id="boatName" type="text" required />
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="boatType">H/cap type</label>
+            <select id="boatType">
+              <option value="PY">PY</option>
+              <option value="TMF">TMF</option>
+            </select>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="boatValue">H/cap value</label>
+            <input id="boatValue" type="text" placeholder="e.g. 1.234"/>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="addBoatBtn">Ajouter</button>
+            <button class="btn btn-outline" type="button" onclick="document.getElementById('addBoat').removeAttribute('open')">Annuler</button>
+          </div>
+        </form>
+      </details>
+    </div>
+
+    <table class="boat-table" aria-label="Tableau des bateaux" id="boatTable">
+      <thead>
+        <tr>
+          <th>Nom du bateau</th>
+          <th>H/cap type</th>
+          <th>H/cap value</th>
+          <th class="action-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sea Breeze</td>
+          <td><span class="badge badge--py">PY</span></td>
+          <td>1.234</td>
+          <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+          <td>Wind Rider</td>
+          <td><span class="badge badge--tmf">TMF</span></td>
+          <td>0.987</td>
+          <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+          <td>Blue Horizon</td>
+          <td><span class="badge badge--py">PY</span></td>
+          <td>1.102</td>
+          <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // JS minimal pour ajouter une ligne au tableau et gérer suppression
+    (function(){
+      const form = document.getElementById('addBoatForm');
+      const addBtn = document.getElementById('addBoatBtn');
+      const table = document.getElementById('boatTable').querySelector('tbody');
+
+      function attachDeleteHandlers(tbody){
+        tbody.querySelectorAll('.btn-delete').forEach(btn=>{
+          btn.removeEventListener('click', onDelete);
+          btn.addEventListener('click', onDelete);
+        });
+      }
+
+      function onDelete(e){
+        const tr = e.currentTarget.closest('tr');
+        if(!confirm('Supprimer ce bateau ?')) return;
+        tr.parentNode.removeChild(tr);
+      }
+
+      addBtn.addEventListener('click', ()=>{
+        const name = document.getElementById('boatName').value.trim();
+        const type = document.getElementById('boatType').value;
+        const value = document.getElementById('boatValue').value.trim();
+        if(!name) return alert('Nom requis');
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td'); tdName.textContent = name;
+        const tdType = document.createElement('td');
+        const span = document.createElement('span');
+        span.className = 'badge ' + (type === 'PY' ? 'badge--py' : 'badge--tmf');
+        span.textContent = type;
+        tdType.appendChild(span);
+        const tdValue = document.createElement('td'); tdValue.textContent = value || '-';
+        const tdActions = document.createElement('td'); tdActions.className='action-cell';
+        const del = document.createElement('button'); del.className='btn-delete'; del.textContent='Supprimer';
+        tdActions.appendChild(del);
+        tr.appendChild(tdName); tr.appendChild(tdType); tr.appendChild(tdValue); tr.appendChild(tdActions);
+        table.appendChild(tr);
+        // reset
+        form.reset();
+        document.getElementById('addBoat').removeAttribute('open');
+        attachDeleteHandlers(table);
+      });
+
+      // attach to existing rows
+      attachDeleteHandlers(table);
+    })();
+  </script>
+</body>
+</html>

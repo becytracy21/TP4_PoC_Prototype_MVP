@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Courses</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="Accueil.html">YRR - Protoype</a>
+      <nav aria-label="Navigation principale">
+        <ul class="main-nav">
+          <li><a href="Boat.html">Boat</a></li>
+          <li><a href="Entry.html">Entry</a></li>
+          <li><a href="Race.html" class="active">Race</a></li>
+          <li><a href="Resultat.html">Resultat</a></li>
+          <li><a href="Series.html">Serie</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+      </div>
+
+        <!-- Profil affiché quand l'utilisateur est connecté -->
+        <!-- Remplacer ou masquer selon l'état de session -->
+        <div class="header-actions" style="margin-left:8px">
+            <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
+            <a href="Profil.html"><div class="username">John Doe</div></a>   
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <h1>Courses <select id="seriesSelector" class="title-select"><option value="none">Courses hors série</option><option value="seriesA">Série A</option><option value="seriesB">Série B</option></select></h1>
+
+    <table class="boat-table" id="raceTable" aria-label="Tableau des courses">
+      <thead>
+        <tr>
+          <th>OD/H</th>
+          <th>Classe de course</th>
+          <th>Date</th>
+          <th>Heure de départ</th>
+          <th>Nom de la course</th>
+          <th>Parcours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Exemples hors série -->
+        <tr data-series="none">
+          <td><input class="cell-input small" data-field="od" value="Monotype"></td>
+          <td><input class="cell-input small" data-field="class" value="FM"></td>
+          <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
+          <td><input class="cell-input small" data-field="time" type="time" value="10:30"></td>
+          <td><input class="cell-input" data-field="name" value="Regate Matinale"></td>
+          <td><input class="cell-input small" data-field="course" value="Parcours A"></td>
+        </tr>
+        <tr data-series="none">
+          <td><input class="cell-input small" data-field="od" value="Handicap"></td>
+          <td><input class="cell-input small" data-field="class" value="Open"></td>
+          <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
+          <td><input class="cell-input small" data-field="time" type="time" value="14:00"></td>
+          <td><input class="cell-input" data-field="name" value="Course Après-midi"></td>
+          <td><input class="cell-input small" data-field="course" value="Parcours B"></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+
+  <script>
+    // Simplified logic to switch between 'hors série' and 'selected series'
+    (function(){
+      const selector = document.getElementById('seriesSelector');
+      const table = document.getElementById('raceTable');
+
+      // example series definition (would come from Series page in real app)
+      const seriesDefinitions = {
+        seriesA: {od:'Monotype', class:'Laser', races: [ {date:'2026-04-12'},{date:'2026-04-13'},{date:''} ]},
+        seriesB: {od:'Handicap', class:'IC', races: [ {date:''},{date:''} ]}
+      };
+
+      function renderForSeries(key){
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
+        if(key === 'none'){
+          // render examples (kept simple)
+          tbody.innerHTML = `
+            <tr data-series="none">
+              <td><input class="cell-input small" data-field="od" value="Monotype"></td>
+              <td><input class="cell-input small" data-field="class" value="FM"></td>
+              <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
+              <td><input class="cell-input small" data-field="time" type="time" value="10:30"></td>
+              <td><input class="cell-input" data-field="name" value="Regate Matinale"></td>
+              <td><input class="cell-input small" data-field="course" value="Parcours A"></td>
+            </tr>
+            <tr data-series="none">
+              <td><input class="cell-input small" data-field="od" value="Handicap"></td>
+              <td><input class="cell-input small" data-field="class" value="Open"></td>
+              <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
+              <td><input class="cell-input small" data-field="time" type="time" value="14:00"></td>
+              <td><input class="cell-input" data-field="name" value="Course Après-midi"></td>
+              <td><input class="cell-input small" data-field="course" value="Parcours B"></td>
+            </tr>
+          `;
+        } else {
+          const def = seriesDefinitions[key];
+          def.races.forEach((r,i)=>{
+            const tr = document.createElement('tr');
+            tr.dataset.series = key;
+            // OD and class inherited, not editable
+            tr.innerHTML = `
+              <td>${def.od}</td>
+              <td>${def.class}</td>
+              <td><input class="cell-input" data-field="date" type="date" value="${r.date||''}"></td>
+              <td><input class="cell-input small" data-field="time" type="time" value=""></td>
+              <td><input class="cell-input" data-field="name" value="Course ${i+1}" readonly></td>
+              <td><input class="cell-input small" data-field="course" value=""></td>
+            `;
+            tbody.appendChild(tr);
+          });
+          // ensure chronological order - rows already in order of def.races
+        }
+      }
+
+      selector.addEventListener('change', ()=>{
+        const key = selector.value;
+        renderForSeries(key);
+      });
+
+      // initial
+      renderForSeries('none');
+
+      // When a time is set in a series, propagate to following races if empty
+      document.addEventListener('input', (e)=>{
+        if(e.target && e.target.dataset.field === 'time'){
+          const tr = e.target.closest('tr');
+          if(tr && tr.dataset.series && tr.dataset.series !== 'none'){
+            // propagate to subsequent rows with same series if they have empty time
+            const tbody = tr.parentElement;
+            const rows = Array.from(tbody.querySelectorAll(`tr[data-series="${tr.dataset.series}"]`));
+            const idx = rows.indexOf(tr);
+            const val = e.target.value;
+            for(let i=idx+1;i<rows.length;i++){
+              const input = rows[i].querySelector('input[data-field="time"]');
+              if(input && !input.value) input.value = val;
+            }
+          }
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
