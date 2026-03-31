@@ -1,0 +1,787 @@
+ordinat
+
+ 
+Table des matières
+15.1 Plan d’élucidation	2
+15.2 Notes d’élucidation	2
+15.3 Document des exigences	6
+15.3.1 Description du domaine du problème	6
+15.3.1.1 Introduction	6
+15.3.1.2 Cadre du problème	6
+15.3.1.3 Bateaux	6
+15.3.1.4 Classes	6
+15.3.1.5 Handicaps	8
+15.3.1.6 Courses	8
+15.3.1.7 Calcul du résultat d’une course	9
+15.3.1.8 Séries de courses	9
+15.3.1.9 Calcul du résultat d’une série	11
+15.3.1.10 Modèle de données	11
+15.3.1.11 Dictionnaire de données	11
+15.3.2 Exigences	15
+15.3.2.1 Saisie et sortie des données	15
+15.3.2.2 Performance	16
+15.3.2.3 Plateforme	18
+15.4 Spécification	18
+15.4.1 Interface utilisateur	18
+15.4.1.1 Lancement et fenêtre principale	18
+15.4.1.2 Fenêtre de localisation des données	19
+15.4.1.3 Navigation entre les options	21
+15.4.1.4 Classes	22
+Figure 15.7 – Fenêtre « Classes »	23
+15.4.1.5 Bateaux	25
+15.4.1.6 Séries	27
+15.4.1.7 Résultats des séries	29
+15.4.1.8 Course	31
+15.4.1.9 Inscriptions (Entry)	33
+
+ 
+Table des Figures
+Figure 15. 1	8
+Figure 15. 2	10
+Figure 15. 3	13
+Figure 15. 4	22
+Figure 15. 5	23
+Figure 15. 6	24
+Figure 15. 7	25
+Figure 15. 8	30
+Figure 15. 9	32
+Figure 15. 10	36
+ 
+
+Les résultats des courses de yachts (YRR) – étude de cas
+
+15.1 Plan d’élucidation
+
+Entretien avec le contact principal, secrétaire à la voile du club de voile de Dartchurch, Dave Rowntree. À tenir chez eux le 06/06/25.
+D’après une conversation téléphonique, nous savons qu’ils cherchent un système informatique ‘bon marché’ (!) basé sur PC pour calculer les résultats des courses de yachts.
+Établir le problème de base.
+Établir le rôle de DR – quelqu’un d’autre est-il impliqué ?
+Examiner les aspects financiers.
+Comment (en résumé !) cela fonctionne-t-il actuellement ?
+Quels sont les problèmes actuels ?
+Qu’espèrent‑ils accomplir ?
+
+15.2 Notes d’élucidation
+
+Notes pour un seul d’une série d’entretiens (imaginaires). Une tentative est faite pour simuler la nature désorganisée de telles notes, mais avec un compromis pour la compréhension.
+Entretien avec David Rowntree, secrétaire à la voile, club de voile de Dartchurch (DSC), 6 juin.
+Scénario de base – Ils ont PC inutilisé, pensent pouvoir l’utiliser pour accéder à l’application web. Actuellement tout est fait à la main.
+DR très expérimenté dans le processus (a souvent calculé lui‑même les résultats, etc.). Probablement aussi compétent que n’importe qui ici, mais un peu limité techniquement, si besoin.
+Réticent à parler d’argent – veux vraiment savoir “combien cela coûterait ? » Indiqué qu’après la séance d’aujourd’hui nous fournirions des devis pour un système de base et pour un système “tout inclus”. 
+Système actuel
+Les navigateurs inscrivent leurs bateaux sur la feuille de course avant le départ (au moins une heure à l’avance).
+L’OOD (Officer of the Day – officier du jour) emporte la feuille de course sur le bateau du comité afin de donner le départ de la course (ou des courses — une feuille par course, et il y a souvent plusieurs départs successifs).
+Certains race officers (nom officiel pour désigner l’OOD) acceptent des inscriptions au moment du départ (ce qui n’est pas réellement autorisé, mais laissé à leur discrétion).
+À la fin de la course, le RO (race officer) inscrit les temps d’arrivée des bateaux sur la feuille de course.
+(Il n’y a pas de temps de départ par bateau — tous partent en même temps.)
+Les informations inscrites sur la feuille sont :
+•	le nom du bateau ;
+•	le numéro de voile ;
+•	la classe ;
+•	le nom du barreur (la personne qui pilote le bateau).
+La plupart de ces informations sont optionnelles — en pratique, seuls le numéro de voile et la classe sont réellement nécessaires.
+De retour au club, le RO calcule les résultats et les reporte sur la feuille de résultats (voir la copie jointe).
+(Il peut déléguer cette tâche aux capitaines de classe – Class Captains (CCs).)
+Le calcul est simple pour les courses monotypes (one-design), mais fastidieux pour les courses à handicap (quelles sont-elles exactement ?).
+Certaines courses concernent un seul type de bateau, d’autres plusieurs types.
+Pour les courses à handicap, les temps d’arrivée sont ajustés selon les handicaps.
+Pour les courses monotypes, on se contente d’indiquer l’ordre d’arrivée.
+(Donc, dans ce cas, les temps exacts d’arrivée ne sont pas réellement nécessaires — seules les positions comptent.)
+Le handicap est un multiplicateur appliqué au temps écoulé
+(ET = temps d’arrivée − temps de départ).
+Les valeurs de handicap proviennent des listes de la RYA (Royal Yachting Association)
+(copie affichée sur le tableau d’avis des courses).
+Le RO peut consulter cette liste, mais la connaît généralement déjà.
+Exemple :
+Départ à 12 h 00, arrivée à 13 h 14 min 22 s (à la seconde près).
+Temps écoulé = 1 h 14 min 22 s.
+Conversion en secondes : 4 462 s.
+Le temps corrigé est alors calculé comme suit :
+temps corrigé = temps écoulé × 1000 / handicap.
+(Il existe une autre méthode similaire — on s’en préoccupera plus tard.)
+Les résultats sont reportés sur la feuille de résultats et affichés sur le tableau d’avis des courses.
+Cela peut se faire immédiatement après la course (plus ou moins), ou parfois une semaine plus tard
+(si le RO est peu pressé).
+Réduire ces délais est considéré comme un avantage potentiel du nouveau système.
+Certains bateaux peuvent ne pas terminer une course :
+•	DNF (Did Not Finish – n’a pas terminé) ;
+•	RTD (Retired – abandonné).
+(Quelle est la différence exacte ? Ce n’est pas un point critique pour le moment.)
+Volumes :
+•	environ 200 bateaux au club ;
+•	chaque classe organise 2 ou 3 courses par semaine ;
+•	environ 10 bateaux par course (maximum ~30) ;
+•	7 classes de course, mais certaines sont dites « ouvertes »
+(équivalent des classes à handicap).
+Différentes classes de bateaux peuvent participer à des courses à handicap.
+Donc :
+•	certaines courses concernent une seule classe de bateaux (courses monotypes) ;
+•	d’autres concernent plusieurs classes (courses à handicap).
+Il existe en réalité environ 20 classes de bateaux, mais seulement 7 classes de course.
+Le club est intéressé par un système capable :
+•	d’imprimer des formulaires d’inscription aux courses avec les détails de la course;
+•	de permettre aux RO de saisir les résultats dans le système ;
+•	d’imprimer automatiquement les feuilles de résultats.
+(Il existe certaines particularités concernant la feuille de résultats…)
+ 
+ 
+Figure 15. 1
+•	« Recall no. » est simplement un autre nom pour le numéro de voile.
+•	La colonne « PY » est utilisée pour les handicaps PY et TMF.
+•	Le temps corrigé est exprimé en secondes (et non en heures, minutes et secondes).
+•	La colonne « overall » n’est pas utilisée.
+Sinon, tout est correct.
+Il existe également des séries de courses, mais le temps a manqué pour les aborder —
+suivi prévu la semaine prochaine, jeudi à 10 h, au même endroit.
+________________________________________
+15.3 Document des exigences
+15.3.1 Description du domaine du problème
+15.3.1.1 Introduction
+Le programme YRR est requis pour assister au calcul des résultats des courses de voile.
+Toutes les données concernant les bateaux, les courses, etc., sont saisies par l’utilisateur du système, et le système produit des feuilles de résultats pour les courses individuelles ainsi que pour les séries de courses.
+15.3.1.2 Cadre du problème
+Il s’agit d’un système d’information simple, illustré à la figure 15.2.
+15.3.1.3 Bateaux
+Chaque bateau possède :
+•	un nom de bateau ;
+•	un nom de classe de bateau ;
+•	un numéro de voile ;
+•	un barreur (c.-à-d. la personne qui le pilote habituellement).
+15.3.1.4 Classes
+Dans le contexte des courses de yachts, le terme « classe » est utilisé de manière assez large.
+Il existe en réalité deux significations distinctes :
+ 
+ 
+Figure 15. 2
+•	Une classe de bateau est un type de bateau
+(tous les bateaux d’une même classe sont, dans des limites définies, identiques).
+Chaque classe de bateau possède :
+o	un nom de classe de bateau ;
+o	un type de handicap ;
+o	une valeur de handicap.
+•	Une classe de course indique les types de bateaux pouvant participer à une course.
+Les courses sont soit monotypes (one-design), soit à handicap.
+o	En course monotype, tous les bateaux concurrents appartiennent à la même classe de bateau, et le nom de la classe de course correspond à cette classe de bateau.
+o	En course à handicap, différentes classes de bateaux peuvent participer, et le nom de la classe de course ne correspond à aucune classe de bateau particulière.
+•	Chaque classe de course possède :
+o	un type de classe de course (monotype ou handicap) ;
+o	un nom de classe de course ;
+•	et, uniquement pour les classes de course à handicap :
+o	un type de handicap ;
+o	un handicap minimum ;
+o	un handicap maximum.
+________________________________________
+15.3.1.5 Handicaps
+Les handicaps sont utilisés pour ajuster les temps de course
+(voir la section 15.3.1.7).
+Il existe deux systèmes de handicap (ou types de handicaps) : PY et TMF.
+Pour chaque type, un bateau donné peut posséder une valeur de handicap.
+•	Les valeurs de handicap PY sont des entiers à quatre chiffres, et le temps corrigé est défini comme suit :
+temps corrigé = temps écoulé × 1000 / valeur du handicap PY
+•	Les valeurs de handicap TMF sont des décimaux à trois chiffres
+(par exemple : 0,977), et le temps corrigé est défini comme suit :
+temps corrigé = temps écoulé × valeur du handicap TMF
+Dans les deux cas, le temps corrigé est arrondi à la seconde la plus proche
+(0,5 est arrondi à l’entier supérieur).
+________________________________________
+15.3.1.6 Courses
+Dans les courses monotypes, les bateaux concourent « à armes égales » :
+ils partent tous au même moment, et l’ordre d’arrivée détermine le résultat.
+Dans les courses à handicap, des bateaux de différentes classes peuvent concourir.
+Ils partent également tous au même moment, mais leurs temps d’arrivée sont ajustés à l’aide des handicaps afin de déterminer le classement.
+Chaque course possède :
+•	un nom de classe de course ;
+•	une date de course ;
+•	une heure de départ.
+Une course peut également avoir :
+•	un nom de course ;
+•	un parcours.
+ 
+15.3.1.7 Calcul du résultat d’une course
+Pour chaque course à laquelle il participe, un bateau obtient un résultat, qui peut être :
+•	DNS (Did Not Start) : n’a pas pris le départ ;
+•	OCS (On Course Side) : du mauvais côté de la ligne au moment du départ ;
+•	DNF (Did Not Finish) : n’a pas terminé la course ;
+•	RTD (Retired) : abandonné après le départ ;
+•	DSQ (Disqualified) : disqualifié ;
+ou bien le bateau termine la course.
+Pour les courses monotypes, chaque bateau ayant terminé reçoit une position d’arrivée
+(1er, 2e, 3e, etc.).
+Pour les courses à handicap, chaque bateau ayant terminé possède un temps d’arrivée.
+Pour chaque bateau, un temps écoulé, exprimé en secondes, est calculé comme la différence entre :
+•	l’heure de départ de la course (identique pour tous les bateaux) ;
+•	et l’heure d’arrivée du bateau.
+Les temps écoulés sont ensuite ajustés à l’aide des handicaps des bateaux
+(voir la section « handicaps » ci-dessus) afin d’obtenir les temps corrigés.
+Ces temps corrigés servent ensuite à déterminer le classement, le temps le plus faible correspondant à la 1re place, etc.
+Lorsque plusieurs temps corrigés sont identiques, les bateaux sont ex æquo, comme illustré dans le tableau 15.1.
+________________________________________
+15.3.1.8 Séries de courses
+Une course peut faire partie d’une série, une série étant constituée de deux courses ou plus appartenant à la même classe de course.
+Pour chaque série, un nombre de courses à comptabiliser est défini.
+Ce nombre correspond généralement à environ les deux tiers du nombre total de courses de la série
+(mais il est en réalité saisi par l’utilisateur).
+ 
+Chaque série possède :
+•	un nom de série ;
+•	un nom de classe de course ;
+•	un nombre total de courses ;
+•	un nombre de courses à comptabiliser.
+
+ 
+
+ 
+Figure 15. 3
+ 
+15.3.1.9 Calcul du résultat d’une série
+Pour calculer le résultat d’une série, des points sont attribués aux bateaux pour chaque course de la série.
+Chaque bateau ayant terminé une course reçoit un nombre de points correspondant à sa position d’arrivée :
+•	le 1er bateau reçoit 1 point ;
+•	le 2e reçoit 2 points, etc.
+Les bateaux inscrits, mais n’ayant pas terminé une course
+(DNS, OCS, etc.) reçoivent un nombre de points égal à un point de plus que le nombre de bateaux ayant un résultat (autre que DNS) dans la série.
+Pour chaque bateau, les meilleurs résultats correspondant au nombre de courses à comptabiliser sont retenus.
+Par exemple, si 7 courses sur 10 sont comptabilisées, seuls les 7 meilleurs résultats d’un bateau sont additionnés, et les autres sont ignorés.
+Les bateaux sont ensuite classés par ordre croissant de points :
+•	le bateau ayant le total de points le plus faible remporte la série ;
+•	les suivants sont classés dans l’ordre.
+En cas d’égalité, le bateau ayant le plus grand nombre de premières places est favorisé.
+Si l’égalité persiste, on compare le nombre de deuxièmes places, et ainsi de suite.
+________________________________________
+15.3.1.10 Modèle de données
+Le modèle de données est présenté à la figure 15.3.
+________________________________________
+15.3.1.11 Dictionnaire de données
+•	boat (bateau)
+::= nom-du-bateau, nom-de-classe-de-bateau, numéro-de-voile, nom-du-barreur
+o	boat-name (nom-du-bateau)
+::= chaîne alphanumérique (25 caractères)
+o	boat-class-name (nom-de-classe-de-bateau)
+::= chaîne alphanumérique (10 caractères)
+o	sail-number (numéro-de-voile)
+::= chiffre(s)
+o	helm-name (nom-du-barreur)
+::= chaîne alphanumérique (25 caractères)
+•	boat-class (classe-de-bateau)
+::= nom-de-classe-de-bateau, type-de-handicap, valeur-de-handicap
+o	handicap-type (type-de-handicap)
+::= « PY » | « TMF »
+o	handicap-value (valeur-de-handicap)
+::= nombre entier à 4 chiffres
+•	race-class (classe-de-course)
+::= type-de-classe-de-course, nom-de-classe-de-course,
+[type-de-handicap, handicap-minimum, handicap-maximum]
+o	race-class-type (type de classe de course)
+::= « monotype » | « handicap »
+o	race-class-name (nom de classe de course)
+::= nom-de-classe-de-bateau | chaîne alphanumérique (25 caractères)
+o	minimum-handicap (handicap minimum)
+::= valeur de handicap
+o	maximum-handicap (handicap maximum)
+::= valeur de handicap
+________________________________________
+•	race (course)
+::= nom-de-classe-de-course, date-de-course, heure-de-départ,
+[nom-de-course, parcours]
+o	race-date (date de course)
+::= jour, « / », mois, « / », année
+o	start-time (heure de départ)
+::= heure, « : », minute
+o	race-name (nom de course)
+::= chaîne alphanumérique (25 caractères)
+o	course (parcours)
+::= chaîne alphanumérique (25 caractères)
+________________________________________
+•	race-entry (inscription à une course)
+::= nom-de-classe-de-bateau, numéro-de-voile, nom-de-classe-de-course,
+date-de-course, heure-de-course, [résultat]
+o	result (résultat)
+::= « DNS » | « OCS » | « DNF » | « RTD » | « DSQ » |
+position-de-course | temps-d’arrivée
+o	race-position (position de course)
+::= chiffre(s)
+o	finish-time (heure d’arrivée)
+::= heure, « : », minute, « : », seconde
+o	elapsed-time (temps écoulé)
+::= chiffre(s) (en secondes)
+o	corrected-time (temps corrigé)
+::= chiffre(s) (en secondes)
+________________________________________
+•	race-outcome (résultat de course)
+::= course, [nom-du-bateau, numéro-de-voile,
+valeur-de-handicap, temps-d’arrivée, temps-écoulé, position]
+(les valeurs de handicap et les temps ne sont indiqués que pour les courses à handicap)
+________________________________________
+•	series (série)
+::= nom-de-série, nom-de-classe-de-course,
+nombre-de-courses, nombre-de-courses-à-comptabiliser
+o	series-name (nom de série)
+::= chaîne alphanumérique (25 caractères)
+o	number-of-races (nombre de courses)
+::= chiffre(s)
+o	number-of-races-to-count (nombre de courses à comptabiliser)
+::= chiffre(s)
+________________________________________
+•	series-entry (inscription à une série)
+::= nom-de-classe-de-bateau, numéro-de-voile, nom-de-série
+o	boat-class-list (liste des classes de bateaux)
+::= {classe-de-bateau}
+o	boat-list (liste des bateaux)
+::= {bateau}
+o	series-list (liste des séries)
+::= {série}
+________________________________________
+•	series-outcome (résultat de série)
+::= série, [numéro-de-course, date-de-course,
+(nom-du-bateau, numéro-de-voile, points),
+total-de-points, position-dans-la-série]
+o	total-points (total de points)
+::= chiffre(s)
+(total des points après élimination des moins bons résultats de la série)
+o	series-position (position dans la série)
+::= chiffre(s)
+________________________________________
+Contraintes de format
+•	jour ::= « 01 » … « 31 »
+•	mois ::= « 01 » … « 12 »
+•	année ::= « 1900 » … « 2999 »
+•	heure ::= « 00 » … « 23 »
+•	minute ::= « 00 » … « 59 »
+•	seconde ::= « 00 » … « 59 »
+•	alphanumérique ::= « a » … « z » | « A » … « Z » | « 0 » … « 9 » | « - » | « _ » | espace
+ 
+15.3.2 Exigences
+15.3.2.1 Saisie et sortie des données
+R1
+Sous réserve des contraintes détaillées ci-dessous, l’utilisateur peut saisir, modifier et supprimer les informations relatives aux :
+•	classes de bateaux,
+•	bateaux,
+•	courses,
+•	séries,
+•	inscriptions à une course,
+•	inscriptions à une série.
+R2
+Un bateau ne peut pas être saisi dans le système à moins d’avoir :
+•	une classe de bateau ;
+•	un numéro de voile.
+R3
+Un bateau ne peut être inscrit à une course (ou série) monotype que si sa classe de bateau correspond à la classe de course.
+R4
+Un bateau ne peut être inscrit à une course (ou série) à handicap que si :
+•	son type de handicap correspond à celui de la course ;
+•	sa valeur de handicap se situe dans l’intervalle inclusif défini par le handicap minimum et le handicap maximum.
+R5
+Un bateau inscrit à une série est automatiquement inscrit à toutes les courses de cette série.
+R6
+Si les informations d’un bateau sont modifiées, cela n’affecte pas automatiquement le résultat des courses pour lesquelles un résultat a déjà été saisi.
+Toutefois, l’utilisateur peut choisir de recalculer les résultats de la course (ou de la série).
+R7
+Les résultats des courses et des séries doivent être disponibles dès que les données pertinentes sont saisies.
+Pour les séries incomplètes, le résultat est affiché sans appliquer l’élimination des moins bons résultats.
+R8
+Sur commande de l’utilisateur, le système produit les rapports suivants
+(contenu tel que défini dans le dictionnaire de données) :
+•	R8.1 Liste des classes de bateaux ;
+•	R8.2 Liste des bateaux ;
+•	R8.3 Liste des séries ;
+•	R8.4 Détails d’une série ;
+•	R8.5 Résultats d’une série ;
+•	R8.6 Résultats d’une course.
+R9
+Tous les rapports sont affichés à l’écran et peuvent également être imprimés à la demande de l’utilisateur.
+________________________________________
+15.3.2.2 Performance
+Rapidité
+R10
+Le système doit :
+•	répondre à toute saisie utilisateur en moins d’une seconde ;
+•	et, sous réserve de la vitesse de l’imprimante, produire un rapport de résultats de série
+(pour une série de 10 courses et 50 bateaux inscrits) en moins de cinq secondes.
+ 
+Capacité
+R11
+Le système doit être en mesure de gérer au minimum les capacités suivantes :
+•	R11.1 99 classes de bateaux ;
+•	R11.2 999 bateaux ;
+•	R11.3 999 courses ;
+•	R11.4 999 séries.
+________________________________________
+Fiabilité
+R12
+Il ne s’agit pas d’un système critique, mais il doit être disponible au moins 20 heures par semaine et, sous réserve de pratiques normales de sauvegarde, ne doit entraîner aucune perte de données.
+________________________________________
+Utilisabilité
+R13
+Afin de réduire l’effort de l’utilisateur, le système doit, dans la mesure du possible, proposer par défaut les valeurs les plus probables lors de la saisie des données.
+Par exemple :
+•	lors de la saisie des informations d’un bateau, il est probable que celui-ci appartienne à la même classe que le dernier bateau saisi ;
+•	lors de l’ajout de courses à une série, il est probable que toutes les courses de la série aient la même heure de départ.
+R14
+Toutes les données doivent être validées dès que possible après la saisie, et l’utilisateur doit être informé de toute erreur détectée.
+R15
+Une interface de type WIMP (Windows, Icons, Menus, Pointer — fenêtres, icônes, menus, pointeur) est requise.
+________________________________________
+15.3.2.3 Plateforme
+R16
+Le système doit fonctionner sur le web.
+________________________________________
+15.4 Spécification
+Note : Afin d’économiser de l’espace, les détails du document (historique des changements, etc.) ont été omis, et les exigences ainsi que le dictionnaire de données n’ont pas été recopiés à partir du document des exigences.
+Le système YRR est destiné à assister le calcul des résultats des courses de voile.
+Toutes les données nécessaires concernant les bateaux, les inscriptions aux courses, etc., sont saisies par l’utilisateur et, sur demande, divers rapports concernant les inscriptions, les résultats, etc., sont produits.
+Le système est une application Web.
+Une description du domaine du problème ainsi qu’une liste détaillée des exigences figurent dans le document des exigences YRR.
+15.4.1 Interface utilisateur
+Interface Web graphique accessible via un navigateur, basée sur des formulaires, tableaux et pages Web.
+Le fonctionnement détaillé est décrit à partir de la fenêtre « classes » ;
+les autres fenêtres d’options (bateaux, courses, etc.) fonctionnent de manière similaire.
+________________________________________
+15.4.1.1 Lancement et fenêtre principale
+Au lancement, Après la fenêtre de login, l’utilisateur se voit présenter la fenêtre principale de YRR
+(voir la figure 15.4).
+En règle générale, la fenêtre principale est recouverte par des fenêtres d’options
+(voir la figure correspondante), positionnées à l’endroit indiqué par la ligne pointillée.
+________________________________________
+15.4.1.2 Fenêtre de localisation des données
+Au démarrage, YRR vérifie l’existence d’un dépôt de données existant.
+Si aucun dépôt n’est trouvé, la fenêtre de localisation des données est affichée au-dessus de la fenêtre principale, comme illustré à la figure 15.5.
+ 
+Figure 15. 4
+ 
+
+ 
+Figure 15. 5
+Dialogue
+1.	Si désiré, l’utilisateur peux faire un export des données en format Json sur son PC
+(c.-à-d. C:\YRR).
+L’utilisateur choisit alors :
+o	Annuler → quitter le programme
+ou
+o	OK
+2.	Si l’emplacement des données est valide :
+o	Exportation des données.
+3.	Sinon :
+o	message affiché :
+« Emplacement de données invalide, veuillez saisir à nouveau. »
+o	retour à l’étape 1.
+ 
+15.4.1.3 Navigation entre les options
+L’utilisateur peut sélectionner l’option souhaitée en cliquant sur les boutons situés au bas de la fenêtre principale.
+Cette action entraîne l’affichage de la fenêtre d’option correspondante, qui se superpose à la fenêtre principale (et est centrée sur celle-ci), tout en recouvrant les autres fenêtres visibles.
+Les fenêtres d’options ont une taille fixe et une position fixe (par rapport à la fenêtre principale), de sorte que les boutons d’options de la fenêtre principale restent toujours visibles.
+Les cinq fenêtres d’options sont :
+•	classes ;
+•	bateaux ;
+•	courses ;
+•	séries ;
+•	inscriptions.
+L’utilisateur peut passer à tout moment d’une fenêtre d’option à une autre.
+Il existe également une fenêtre des résultats (voir la figure 15.6), mais celle-ci n’est accessible que via la fenêtre des séries
+(voir la section 15.4.1.7).
+ 
+Figure 15. 6
+ 
+ 
+Figure 15. 7
+En règle générale, les fenêtres d’options se superposent simplement les unes aux autres, la dernière option sélectionnée apparaissant au premier plan.
+L’utilisateur peut toutefois fermer une fenêtre en cliquant sur le bouton de fermeture situé dans le coin supérieur droit.
+Si, au cours de l’utilisation de l’application, une fenêtre est fermée puis rouverte, elle conserve la même apparence, sauf si des modifications effectuées dans une autre fenêtre ont affecté son contenu.
+En particulier :
+•	Si une série est supprimée, toutes les courses appartenant à cette série sont également supprimées.
+•	Si la fenêtre des courses affiche une série donnée, un changement de série sélectionnée dans la fenêtre des séries est immédiatement reflété dans la fenêtre des courses
+(et de manière analogue dans la fenêtre des résultats).
+________________________________________
+15.4.1.4 Classes
+Cette option permet à l’utilisateur de modifier les informations relatives aux classes de bateaux.
+________________________________________
+Figure 15.7 – Fenêtre « Classes »
+•	Le dessin est à l’échelle (avec une tolérance acceptable de ±10 %).
+•	Six lignes de classes sont toujours affichées ; les lignes inutilisées sont grisées.
+•	La dernière ligne est laissée vide (grisée) afin de permettre l’ajout de nouvelles classes (voir ci-dessous).
+•	Si plus de cinq classes sont saisies, la barre de défilement (à droite) devient active.
+•	La largeur des colonnes peut être ajustée en sélectionnant et en faisant glisser les séparateurs de colonnes.
+•	Une largeur minimale d’une colonne est d’un caractère.
+•	Les entrées peuvent être triées selon n’importe quelle colonne.
+La colonne de tri est sélectionnée en cliquant sur son en-tête (par exemple : nom de la classe).
+•	La boîte de message n’est visible que lorsqu’un message est affiché.
+Modification des classes
+La saisie d’un champ est invalide si elle ne respecte pas la définition du type
+(fournie dans le dictionnaire de données) ou, dans le cas du nom de la classe, si celui-ci n’est pas unique.
+La modification d’un champ (c’est-à-dire d’une colonne d’une ligne) se termine par :
+•	l’appui sur la touche Entrée (Return ou Enter), ce qui déplace également le curseur d’une ligne vers le bas ;
+•	l’appui sur la touche Tabulation ou Maj+Tab, ce qui déplace le curseur vers le champ suivant ou précédent ;
+•	un clic permettant de déplacer le curseur hors du champ.
+Toute tentative de valider une donnée invalide ou une entrée complète (ligne) invalide entraîne l’affichage d’un message d’erreur, et le curseur reste bloqué dans le champ concerné.
+
+ 
+Messages d’erreur possibles lors de la modification des classes
+•	Aucune autre classe ne peut être ajoutée (maximum : 99).
+•	Le nom de la classe doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Le nom de la classe doit être unique.
+•	Le type de handicap doit être PY ou TMF.
+•	La valeur de handicap doit être composée de trois ou quatre chiffres
+(aucun point décimal requis).
+•	Cette classe ne peut pas être supprimée, car elle est actuellement utilisée.
+Les messages restent affichés jusqu’à ce qu’une saisie valide soit effectuée, qu’un autre message les remplace ou que « Annuler » soit sélectionné.
+________________________________________
+Bouton « Annuler »
+Le bouton Annuler peut être utilisé pour annuler les modifications de l’entrée en cours.
+•	S’il s’agit d’une nouvelle entrée, aucune entrée n’est ajoutée.
+•	S’il s’agit de la modification d’une entrée existante, les valeurs précédentes sont restaurées.
+________________________________________
+Ajout d’une classe
+Pour ajouter une classe :
+•	la dernière ligne vide (grisée) est écrasée ;
+•	une fois la saisie terminée, une nouvelle ligne vide (grisée) est automatiquement créée.
+L’utilisateur peut :
+•	soit déplacer le curseur vers cette dernière ligne ;
+•	soit cliquer sur le bouton « Ajouter », ce qui fait automatiquement défiler l’affichage jusqu’à la dernière ligne et place le curseur dans le premier champ.
+________________________________________
+Suppression d’une classe
+Pour supprimer une classe, l’utilisateur doit sélectionner toute la ligne :
+•	soit en cliquant et en faisant glisser ;
+•	soit en cliquant juste à gauche du nom de la classe.
+Il peut ensuite cliquer sur le bouton « Supprimer »
+(ou utiliser le raccourci Ctrl+X).
+________________________________________
+Modification impactant des données existantes
+Si le type de handicap ou la valeur de handicap d’une classe est modifié et que un ou plusieurs bateaux sont associés à cette classe, dont certains possèdent une ou plusieurs inscriptions à des courses, alors une fenêtre contextuelle (pop-up) s’affiche.
+ 
+L’utilisateur peut, de façon optionnelle, remplacer la date par défaut (la date du jour), puis cliquer sur la case « now » (maintenant) ou « backdate » (date antérieure).
+Toutes les courses ayant lieu à partir de la date choisie verront alors leurs résultats recalculés en fonction du nouveau handicap.
+Pour imprimer la liste des classes, l’utilisateur clique sur le bouton « Print » (Imprimer).
+Le rapport comporte l’en-tête suivant :
+Classes de bateaux  <date>
+(où <date> correspond à la date système courante).
+Sous cet en-tête, les titres de colonnes sont imprimés et, si le rapport s’étend sur plusieurs pages, ils sont répétés en haut de chaque page suivante, suivis de la liste des classes telles qu’affichées à l’écran.
+________________________________________
+15.4.1.5 Bateaux
+Cette option permet à l’utilisateur de modifier les informations relatives aux bateaux.
+________________________________________
+Fenêtre « Bateaux »
+La fenêtre Bateaux est similaire à la fenêtre Classes (voir ci-dessus), mais elle est plus large
+(environ sept pouces).
+Elle est intitulée « Bateaux » et affiche des colonnes (champs) sous les en-têtes suivants :
+•	Nom du bateau
+•	Classe
+•	Numéro de voile
+•	Barreur
+________________________________________
+Modification des bateaux
+La modification d’une entrée de bateau est similaire à celle d’une classe.
+Les champs nom du bateau et barreur sont optionnels et peuvent être laissés vides.
+La différence la plus importante concerne la saisie du champ « classe ».
+Lorsque ce champ est sélectionné, un menu déroulant défilable apparaît, listant cinq noms de classes enregistrées, par ordre alphabétique, et centré sur le nom de la classe de l’entrée précédente dans la liste des bateaux.
+Un exemple est présenté à la figure 15.8.
+S’il n’existe aucune entrée précédente (c’est-à-dire s’il s’agit du premier bateau de la liste), les cinq premières classes sont affichées
+(complétées par des espaces si nécessaire).
+L’utilisateur peut faire défiler la liste vers le haut ou vers le bas et sélectionner la classe souhaitée en cliquant dessus.
+Si la classe de bateau requise n’est pas encore enregistrée, l’utilisateur doit sélectionner l’option Classes (depuis la fenêtre principale) afin d’ajouter la classe de bateau avant de poursuivre la saisie du bateau.
+(Alternativement, il doit annuler la saisie du bateau.)
+ 
+Figure 15. 8
+Messages d’erreur possibles lors de la modification des bateaux
+•	Le nom du bateau doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Le numéro de voile doit être composé uniquement de chiffres
+(maximum 6 chiffres).
+•	Le numéro de voile doit être unique à l’intérieur de la classe.
+•	Le nom du barreur doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Ce bateau ne peut pas être supprimé, car il est inscrit à une ou plusieurs courses.
+________________________________________
+15.4.1.6
+Séries
+Cette option permet à l’utilisateur de modifier les informations relatives aux séries de courses.
+________________________________________
+Fenêtre « Séries »
+La fenêtre Séries est similaire à la fenêtre Classes (voir ci-dessus), mais porte le titre « Séries ».
+Elle affiche des colonnes (champs) sous les en-têtes suivants :
+•	Nom de la série
+•	OD/H (monotype ou handicap)
+•	Classe
+•	#Courses
+•	#Courses à comptabiliser
+La fenêtre comporte également un bouton « Results » (Résultats), situé au bas de la fenêtre.
+Ce bouton permet de consulter (et imprimer), mais pas de modifier, les résultats de la série actuellement sélectionnée
+(voir la section 15.4.1.7).
+________________________________________
+Modification des séries
+La modification d’une entrée de série est similaire à celle d’une classe, avec certaines exceptions.
+•	La colonne OD/H accepte les valeurs « OD » (ou « od ») ou « H » (ou « h ») et indique si la série est monotype ou à handicap.
+•	Si la série est monotype, la sélection de la classe de course fonctionne exactement de la même manière que la sélection de la classe de bateau pour un bateau
+(voir p. 351).
+•	Si la série est à handicap, l’utilisateur saisit simplement le nom de la classe de course choisie.
+•	La colonne #Courses à comptabiliser indique le nombre de courses prises en compte pour le classement de la série.
+Cette valeur doit être inférieure ou égale au nombre total de courses (#Courses).
+o	Si #Courses a été saisi en premier, la valeur par défaut de #Courses à comptabiliser est fixée à environ deux tiers (arrondi à l’entier le plus proche) de #Courses,
+mais peut être modifiée si nécessaire.
+________________________________________
+Messages d’erreur possibles lors de la modification des séries
+•	Le nom de la série doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Le nom de la série doit être unique.
+•	La valeur OD/H doit être OD ou H.
+•	Le nom de la classe de course doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Le nombre de courses doit être compris entre 2 et 99.
+•	Le nombre de courses à comptabiliser ne peut pas dépasser le nombre total de courses.
+•	Avertissement : si cette série est supprimée, tous les détails des courses associées seront perdus.
+________________________________________
+15.4.1.7 Résultats des séries
+Cette option permet aux utilisateurs de consulter et d’imprimer les résultats des séries.
+ 
+Figure 15. 9
+Fenêtre « Résultats des séries »
+Cette fenêtre (figure 15.9) affiche des colonnes sous les en-têtes suivants :
+•	Nom du bateau
+•	Classe de bateau
+•	Numéro de voile
+•	Barreur
+•	{Points}
+•	Total
+•	Classement général
+Il y a autant de colonnes « Points » qu’il y a de courses dans la série.
+Ces colonnes sont intitulées « 1 », « 2 », etc. et affichent les points attribués pour chaque course.
+Le bouton « Discards » permet à l’utilisateur de basculer entre :
+•	l’affichage des résultats avec élimination des moins bons résultats
+(c.-à-d. seuls les meilleurs points — les plus faibles — sont totalisés pour le nombre de courses à comptabiliser) ;
+•	l’affichage sans élimination
+(c.-à-d. toutes les courses sont prises en compte dans le total).
+La barre de titre affiche la série actuellement sélectionnée ainsi que l’état de l’application des éliminations (activées ou non).
+Cette fenêtre dispose à la fois d’une barre de défilement horizontale et verticale.
+________________________________________
+Modification des résultats de séries
+Les colonnes peuvent être redimensionnées et les entrées triées, comme décrit pour la fenêtre des classes.
+Cependant, il n’est pas possible de modifier les valeurs affichées dans cette fenêtre.
+Les boutons « Next » (Suivant) et « Previous » (Précédent) permettent de parcourir les courses de la série
+(dans l’ordre actuellement défini par le tri dans la fenêtre des séries).
+L’utilisateur peut sélectionner une course dans cette fenêtre :
+•	soit en la surlignant par glisser-déposer ;
+•	soit en cliquant à gauche de la ligne correspondante.
+Si l’option « Entry » est ensuite sélectionnée (depuis la fenêtre principale), cela permet de modifier les inscriptions de la course sélectionnée
+(voir p. 355).
+Le bouton « Print » permet d’imprimer les résultats tels qu’affichés à l’écran
+(à l’exception du fait que toutes les inscriptions sont imprimées, même si toutes ne sont pas visibles).
+________________________________________
+15.4.1.8 Course
+Cette option permet à l’utilisateur de définir et modifier les informations relatives aux courses.
+Fenêtre « Courses »
+La fenêtre Courses est similaire à la fenêtre Classes (voir ci-dessus), mais elle est plus large
+(environ sept pouces).
+Elle porte le titre « Courses » et affiche des colonnes (champs) sous les en-têtes suivants :
+•	OD/H (monotype ou handicap)
+•	Classe de course
+•	Date de la course
+•	Heure de départ
+•	Nom de la course
+•	Parcours
+________________________________________
+Sélection des courses à afficher
+L’utilisateur peut choisir d’afficher :
+•	toutes les courses qui n’appartiennent à aucune série ;
+•	les courses de la série actuellement sélectionnée
+(telle que sélectionnée dans la fenêtre des séries — par défaut, la première course selon l’ordre de tri courant).
+La sélection s’effectue à l’aide d’un menu déroulant qui apparaît dans la barre de titre de la fenêtre Courses.
+ 
+Si l’utilisateur choisit « selected series » (série sélectionnée), le nom de la série correspondante est alors affiché dans la barre de titre
+(sinon, l’intitulé « courses hors série » est affiché).
+________________________________________
+Modification des courses
+La modification d’une entrée de course est similaire à la modification d’une classe, avec certaines exceptions.
+•	Les champs date et parcours sont optionnels et peuvent être laissés vides.
+________________________________________
+Lorsque les courses d’une série sélectionnée sont affichées :
+•	Toutes les courses héritent automatiquement de leur type (OD ou H) et de leur classe à partir de la série à laquelle elles appartiennent
+(ces champs ne peuvent être modifiés que dans la fenêtre des séries).
+•	Le nombre de courses affichées correspond toujours au nombre de courses définies pour la série.
+•	Les courses sont toujours listées par ordre chronologique
+(si aucune date n’est saisie, l’ordre n’a pas d’importance).
+•	La colonne nom de la course affiche par défaut le numéro de la course dans la série ; ce champ n’est pas modifiable.
+o	La première course (en haut de la liste) est la course nº 1 ;
+o	les suivantes sont numérotées consécutivement.
+•	Une fois que l’heure de départ d’une course est saisie, toutes les courses suivantes dans la liste héritent par défaut de cette heure
+(mais celle-ci peut être modifiée manuellement).
+________________________________________
+Lorsque des courses hors série sont affichées :
+•	La classe de course doit être saisie pour chaque course, de la même manière que pour une série
+(voir p. 352).
+________________________________________
+Messages d’erreur possibles lors de la modification des courses
+•	Le nom de la course doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Le nom de la course doit être unique.
+ 
+Figure 15. 10
+•	La valeur OD/H doit être OD ou H.
+•	Le nom de la classe de course doit contenir uniquement des lettres, chiffres, « - » ou « _ »
+(maximum 25 caractères).
+•	Avertissement : si cette course est supprimée, tous les détails de la course seront perdus.
+________________________________________
+15.4.1.9 Inscriptions (Entry)
+Cette option permet à l’utilisateur :
+•	d’inscrire des bateaux à des courses ;
+•	de saisir les résultats des courses.
+Elle est également utilisée pour inscrire des bateaux à des séries de courses, car :
+•	si la course sélectionnée fait partie d’une série, une inscription unique est appliquée à toutes les courses de la série.
+________________________________________
+ 
+Fenêtre « Inscriptions »
+La fenêtre Inscriptions (figure 15.10) affiche des colonnes (champs) sous les en-têtes suivants :
+•	Nom du bateau
+•	Classe de bateau
+•	Numéro de voile
+•	Barreur
+•	Résultat
+•	Position
+•	Points
+Cette fenêtre affiche les inscriptions pour la course actuellement sélectionnée.
+Par défaut :
+•	s’il s’agit d’une course appartenant à une série, la première course de la série sélectionnée est affichée ;
+•	s’il s’agit de courses hors série, la première course hors série est affichée
+(voir p. 352).
+Pour une course hors série, la barre de titre affiche le nom de la course.
+Pour une course faisant partie d’une série, elle affiche le nom de la série et le numéro de la course
+(comme dans l’exemple ci-dessus).
+Les boutons « Next » (Suivant) et « Previous » (Précédent) permettent de parcourir les courses :
+•	de la série actuellement sélectionnée ;
+•	ou les courses hors série.
+________________________________________
+Modification des inscriptions
+La modification d’une inscription à une course est similaire à la modification d’une classe, avec certaines exceptions.
+•	Si la course est monotype (one-design), toutes les inscriptions utilisent par défaut le nom de la classe correspondante
+(ce champ ne peut pas être modifié).
+•	Les bateaux peuvent être inscrits :
+o	par nom de bateau ;
+o	par nom du barreur ;
+o	ou par classe de bateau et numéro de voile.
+•	Si le nom du bateau ne permet pas d’identifier sans ambiguïté un bateau admissible à la course
+(les noms de bateaux non uniques sont autorisés), une liste déroulante des numéros de voile correspondant aux entrées possibles est affichée, et l’utilisateur doit effectuer une sélection appropriée.
+•	La saisie par nom du barreur fonctionne de la même manière.
+•	Lors de la saisie du champ résultat, le système complète automatiquement toute saisie alphabétique
+(DNS, OCS, etc.) dès qu’elle est reconnue.
+•	Pour une course monotype, le résultat doit être :
+o	soit une entrée alphabétique (comme ci-dessus) ;
+o	soit une position comprise entre 1 et 999.
+•	Pour une course à handicap, le résultat doit être :
+o	soit une entrée alphabétique ;
+o	soit un temps d’arrivée au format HH:MM:SS.
+Remarque : un temps d’arrivée antérieur à l’heure de départ de la course est interprété comme se rapportant au jour suivant.
+•	Si les entrées sont triées par résultat ou par position, les valeurs numériques
+(les plus petites en haut) apparaissent en premier, suivies des entrées alphabétiques
+(classées par ordre alphabétique).
+•	Les colonnes Position et Points ne peuvent pas être modifiées ;
+elles sont calculées automatiquement par le programme.
+
+ 
+Messages d’erreur possibles lors de la modification des inscriptions
+•	La classe de bateau et le numéro de voile saisis ne sont pas reconnus.
+•	Le résultat doit être une position valide (entre 1 et 999).
+•	Le résultat doit être un temps valide au format HH:MM:SS.
+•	Confirmation requise : ce temps d’arrivée est supérieur ou inférieur de plus de 100 % à la moyenne.
+ 
+
+ 
+Références
+Bray, I. K. (2002). An Introduction to Requirements Engineering. Harlow: Addison-Wesley.
