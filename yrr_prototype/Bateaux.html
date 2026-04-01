@@ -9,24 +9,27 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html" class="active">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html" class="active">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Gestion des bateaux</h2>
       <p class="hero-subtitle">Liste des bateaux inscrits (prototype, données simulées)</p>
       <div class="title-underline" aria-hidden="true"></div>
@@ -34,40 +37,119 @@
 
     <section class="panel">
       <h3>Liste des bateaux</h3>
-      <table style="width:100%;margin-bottom:18px">
-        <thead>
-          <tr>
-            <th>Nom du bateau</th>
-            <th>Classe</th>
-            <th>Numéro de voile</th>
-            <th>Barreur</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sea Spirit</td>
-            <td>Laser</td>
-            <td>12345</td>
-            <td>Jean Dupont</td>
-            <td><a class="button-ghost" href="#">Modifier</a></td>
-          </tr>
-          <tr>
-            <td>Blue Wave</td>
-            <td>Optimist</td>
-            <td>54321</td>
-            <td>Marie Martin</td>
-            <td><a class="button-ghost" href="#">Modifier</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- tableau interactif importé de Protoype 2.0 /Boat.html -->
+      <div class="add-boat-wrap" style="margin-bottom:18px">
+        <details id="addBoat" class="add-details">
+          <summary class="add-summary">+ Ajouter un bateau</summary>
+          <form id="addBoatForm" class="add-form" onsubmit="return false;">
+            <div class="row">
+              <label for="boatName">Nom du bateau</label>
+              <input id="boatName" type="text" required />
+            </div>
+            <div class="row" style="margin-top:8px">
+              <label for="boatType">H/cap type</label>
+              <select id="boatType">
+                <option value="PY">PY</option>
+                <option value="TMF">TMF</option>
+              </select>
+            </div>
+            <div class="row" style="margin-top:8px">
+              <label for="boatValue">H/cap value</label>
+              <input id="boatValue" type="text" placeholder="e.g. 1.234"/>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" id="addBoatBtn">Ajouter</button>
+              <button class="btn btn-outline" type="button" onclick="document.getElementById('addBoat').removeAttribute('open')">Annuler</button>
+            </div>
+          </form>
+        </details>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="boat-table" aria-label="Tableau des bateaux" id="boatTable">
+          <thead>
+            <tr>
+              <th>Nom du bateau</th>
+              <th>H/cap type</th>
+              <th>H/cap value</th>
+              <th class="action-cell"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sea Breeze</td>
+              <td><span class="badge badge--py">PY</span></td>
+              <td>1.234</td>
+              <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+            </tr>
+            <tr>
+              <td>Wind Rider</td>
+              <td><span class="badge badge--tmf">TMF</span></td>
+              <td>0.987</td>
+              <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+            </tr>
+            <tr>
+              <td>Blue Horizon</td>
+              <td><span class="badge badge--py">PY</span></td>
+              <td>1.102</td>
+              <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="actions-row mt-2">
-        <a class="btn" href="#">Ajouter un bateau (simulé)</a>
         <a class="button-ghost" href="Accueil.html">Retour</a>
       </div>
     </section>
   </div>
 
   <footer class="muted" style="margin-top:18px">Prototype non fonctionnel — interface de démonstration.</footer>
+
+  <script>
+    // logique d'ajout/suppression de bateaux (issue de Protoype 2.0)
+    (function(){
+      const form = document.getElementById('addBoatForm');
+      const addBtn = document.getElementById('addBoatBtn');
+      const table = document.getElementById('boatTable').querySelector('tbody');
+
+      function attachDeleteHandlers(tbody){
+        tbody.querySelectorAll('.btn-delete').forEach(btn=>{
+          btn.removeEventListener('click', onDelete);
+          btn.addEventListener('click', onDelete);
+        });
+      }
+
+      function onDelete(e){
+        const tr = e.currentTarget.closest('tr');
+        if(!confirm('Supprimer ce bateau ?')) return;
+        tr.parentNode.removeChild(tr);
+      }
+
+      addBtn.addEventListener('click', ()=>{
+        const name = document.getElementById('boatName').value.trim();
+        const type = document.getElementById('boatType').value;
+        const value = document.getElementById('boatValue').value.trim();
+        if(!name) return alert('Nom requis');
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td'); tdName.textContent = name;
+        const tdType = document.createElement('td');
+        const span = document.createElement('span');
+        span.className = 'badge ' + (type === 'PY' ? 'badge--py' : 'badge--tmf');
+        span.textContent = type;
+        tdType.appendChild(span);
+        const tdValue = document.createElement('td'); tdValue.textContent = value || '-';
+        const tdActions = document.createElement('td'); tdActions.className='action-cell';
+        const del = document.createElement('button'); del.className='btn-delete'; del.textContent='Supprimer';
+        tdActions.appendChild(del);
+        tr.appendChild(tdName); tr.appendChild(tdType); tr.appendChild(tdValue); tr.appendChild(tdActions);
+        table.appendChild(tr);
+        form.reset();
+        document.getElementById('addBoat').removeAttribute('open');
+        attachDeleteHandlers(table);
+      });
+
+      attachDeleteHandlers(table);
+    })();
+  </script>
 </body>
 </html>

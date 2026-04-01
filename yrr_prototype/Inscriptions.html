@@ -9,61 +9,103 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html" class="active">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Inscriptions à une course</h2>
       <p class="hero-subtitle">Liste des bateaux inscrits à la prochaine course (prototype, données simulées)</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
     <section class="panel">
-      <h3>Inscriptions</h3>
-      <table style="width:100%;margin-bottom:18px">
-        <thead>
-          <tr>
-            <th>Bateau</th>
-            <th>Classe</th>
-            <th>Numéro de voile</th>
-            <th>Barreur</th>
-            <th>Statut</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sea Spirit</td>
-            <td>Laser</td>
-            <td>12345</td>
-            <td>Jean Dupont</td>
-            <td>Inscrit</td>
-          </tr>
-          <tr>
-            <td>Blue Wave</td>
-            <td>Optimist</td>
-            <td>54321</td>
-            <td>Marie Martin</td>
-            <td>Inscrit</td>
-          </tr>
-        </tbody>
-      </table>
+      <h3>Inscriptions à la course — Série 4 printemps (3)</h3>
+      <div class="table-wrapper">
+        <table class="table-standard" aria-label="Inscriptions à la course">
+          <thead>
+            <tr>
+              <th>Nom du bateau</th>
+              <th>Classe de bateau</th>
+              <th>Numéro de voile</th>
+              <th>Barreur</th>
+              <th>Temps d'arrivée</th>
+              <th class="text-center">Position</th>
+              <th class="text-center">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Whisky</td>
+              <td>Laser</td>
+              <td>100231</td>
+              <td>Fred</td>
+              <td>14:10:22</td>
+              <td class="text-center">3</td>
+              <td class="text-center">3</td>
+            </tr>
+            <tr>
+              <td>Fuzzy Duck</td>
+              <td>Laser</td>
+              <td>132248</td>
+              <td>Graham</td>
+              <td>14:09:46</td>
+              <td class="text-center">1</td>
+              <td class="text-center">1</td>
+            </tr>
+            <tr>
+              <td>Shy Talk</td>
+              <td>Solo</td>
+              <td>4321</td>
+              <td>Jim</td>
+              <td>14:14:11</td>
+              <td class="text-center">2</td>
+              <td class="text-center">2</td>
+            </tr>
+            <tr>
+              <td>Matilda</td>
+              <td>Solo</td>
+              <td>3755</td>
+              <td>John</td>
+              <td>14:15:57</td>
+              <td class="text-center">4</td>
+              <td class="text-center">4</td>
+            </tr>
+            <tr>
+              <td>Wet One</td>
+              <td>Laser</td>
+              <td>121899</td>
+              <td>Tony</td>
+              <td>RTD</td>
+              <td class="text-center">-</td>
+              <td class="text-center">RTD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="actions-row mt-2">
-        <a class="btn" href="#">Ajouter une inscription (simulé)</a>
-        <a class="button-ghost" href="Accueil.html">Retour</a>
+        <a class="btn" href="#">Ajouter</a>
+        <a class="btn" href="#">Supprimer</a>
+        <a class="btn" href="#">Imprimer</a>
+        <a class="button-ghost" href="#">Précédent</a>
+        <a class="button-ghost" href="#">Suivant</a>
+        <a class="button-ghost" href="Accueil.html">Annuler / Retour</a>
       </div>
     </section>
   </div>

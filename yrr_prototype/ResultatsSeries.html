@@ -9,56 +9,115 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html" class="active">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html" class="active">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Résultats des séries</h2>
       <p class="hero-subtitle">Affichage des résultats cumulés d'une série (prototype, données simulées)</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
     <section class="panel">
-      <h3>Résultats — Printemps 2026</h3>
-      <table style="width:100%;margin-bottom:18px">
-        <thead>
-          <tr>
-            <th>Position</th>
-            <th>Bateau</th>
-            <th>Classe</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Sea Spirit</td>
-            <td>Laser</td>
-            <td>7</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Blue Wave</td>
-            <td>Optimist</td>
-            <td>12</td>
-          </tr>
-        </tbody>
-      </table>
-      <a class="button-ghost" href="Series.html">Retour aux séries</a>
+      <h3>Résultats de série — Classe 4 printemps (sans déductions)</h3>
+      <div class="table-wrapper">
+        <table class="table-standard" aria-label="Résultats de série">
+          <thead>
+            <tr>
+              <th>Bateau</th>
+              <th>Classe</th>
+              <th>Numéro de voile</th>
+              <th>Barreur</th>
+              <th class="text-center">Course 1</th>
+              <th class="text-center">Course 2</th>
+              <th class="text-center">Course 3</th>
+              <th class="text-center">Course 4</th>
+              <th class="text-center">Course 5</th>
+              <th class="text-right">Total</th>
+              <th class="text-center">Classement général</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Whisky</td>
+              <td>Laser</td>
+              <td>100231</td>
+              <td>Fred</td>
+              <td class="text-center">4</td>
+              <td class="text-center">14</td>
+              <td class="text-center">8</td>
+              <td class="text-center">2</td>
+              <td class="text-center">3</td>
+              <td class="text-right">31</td>
+              <td class="text-center">2</td>
+            </tr>
+            <tr>
+              <td>Fuzzy Duck</td>
+              <td>Laser</td>
+              <td>132248</td>
+              <td>Graham</td>
+              <td class="text-center">3</td>
+              <td class="text-center">5</td>
+              <td class="text-center">14</td>
+              <td class="text-center">1</td>
+              <td class="text-center">11</td>
+              <td class="text-right">34</td>
+              <td class="text-center">3</td>
+            </tr>
+            <tr>
+              <td>Shy Talk</td>
+              <td>Solo</td>
+              <td>4321</td>
+              <td>Jim</td>
+              <td class="text-center">14</td>
+              <td class="text-center">2</td>
+              <td class="text-center">14</td>
+              <td class="text-center">5</td>
+              <td class="text-center">4</td>
+              <td class="text-right">39</td>
+              <td class="text-center">4</td>
+            </tr>
+            <tr>
+              <td>Matilda</td>
+              <td>Solo</td>
+              <td>3755</td>
+              <td>John</td>
+              <td class="text-center">14</td>
+              <td class="text-center">10</td>
+              <td class="text-center">8</td>
+              <td class="text-center">9</td>
+              <td class="text-center">6</td>
+              <td class="text-right">47</td>
+              <td class="text-center">5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="actions-row mt-2">
+        <span class="muted">Déductions : aucune (simulation)</span>
+        <span style="flex:1"></span>
+        <a class="btn" href="#">Imprimer</a>
+        <a class="button-ghost" href="#">Précédent</a>
+        <a class="button-ghost" href="#">Suivant</a>
+        <a class="button-ghost" href="Series.html">Retour aux séries</a>
+      </div>
     </section>
   </div>
 

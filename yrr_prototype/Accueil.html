@@ -1,53 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Accueil — YRR Prototype</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+
+<body class="home-page">
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html" class="active">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html" class="active">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+          <a href="Inscriptions.html">Inscriptions</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Bienvenue (utilisateur simulé)</h2>
       <p class="hero-subtitle">Vous êtes arrivé sur la page d'accueil du prototype après connexion simulée.</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
     <section class="panel">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:left">
         <div>
           <h3>Résumé</h3>
-          <p class="muted">Ce prototype montre la navigation basique : authentification (HTML/CSS), redirection vers l'accueil et pages d'exemple. Les fonctionnalités sont simulées et non connectées à un backend.</p>
+          <p class="muted">Ce prototype montre la navigation basique : authentification (HTML/CSS), redirection vers
+            l'accueil et pages d'exemple. Les fonctionnalités sont simulées et non connectées à un backend.</p>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a class="button-ghost" href="Profil.html">Mon profil</a>
-          <a class="button-ghost" href="CalculBateau.html">Calculateur</a>
+        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
           <a class="button-ghost" href="Classes.html">Classes</a>
           <a class="button-ghost" href="Bateaux.html">Bateaux</a>
           <a class="button-ghost" href="Series.html">Séries</a>
-          <a class="button-ghost" href="ResultatsSeries.html">Résultats séries</a>
           <a class="button-ghost" href="Course.html">Course</a>
-          <a class="button-ghost" href="Inscriptions.html">Inscriptions</a>
-          <a class="button-ghost" href="LocalisationDonnees.html">Localisation des données</a>
+        </div>
+        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+          <a class="btn button-simulate" href="LocalisationDonnees.html">Simuler "aucune donnée" et localiser les données</a>
         </div>
       </div>
     </section>
@@ -55,4 +60,5 @@
 
   <footer class="muted" style="margin-top:18px">Prototype non fonctionnel — interface de démonstration.</footer>
 </body>
+
 </html>

@@ -9,35 +9,46 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html" class="active">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Localisation des données</h2>
       <p class="hero-subtitle">Sélection du dossier ou fichier de données (prototype, non fonctionnel)</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
     <section class="panel">
-      <h3>Choix de la source de données</h3>
-      <p class="muted">Dans une version réelle, cette page permettrait de choisir où sont stockées les données (fichier, base, etc.).</p>
+      <h3>Localisation des données</h3>
+      <p class="muted">
+        Normalement, cette fenêtre s'affiche automatiquement au démarrage si aucun dépôt de données YRR n'est trouvé.
+        Dans ce prototype, vous pouvez y accéder via le bouton « Simuler "aucune donnée" » de la page d'accueil.
+      </p>
+      <p>Veuillez indiquer où vous souhaitez que les informations de course soient stockées :</p>
+      <div class="row" style="margin-top:8px;max-width:320px">
+        <label for="dataLocation">Emplacement</label>
+        <input id="dataLocation" type="text" value="CANYRR" />
+      </div>
       <div class="actions-row mt-2">
-        <a class="btn" href="#">Sélectionner un dossier (simulé)</a>
-        <a class="button-ghost" href="Accueil.html" style="margin-left:8px">Retour</a>
+        <a class="btn" href="#">OK (simulé)</a>
+        <a class="button-ghost" href="Accueil.html" style="margin-left:8px">Annuler / Retour</a>
       </div>
     </section>
   </div>

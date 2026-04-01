@@ -9,65 +9,93 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html" class="active">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html" class="active">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Gestion des classes</h2>
       <p class="hero-subtitle">Liste des classes de bateaux et gestion (prototype, données simulées)</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
     <section class="panel">
-      <h3>Liste des classes</h3>
-      <table style="width:100%;margin-bottom:18px">
-        <thead>
-          <tr>
-            <th>Nom de la classe</th>
-            <th>Type de handicap</th>
-            <th>Valeur de handicap</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Laser</td>
-            <td>PY</td>
-            <td>1087</td>
-            <td><a class="button-ghost" href="#">Modifier</a></td>
-          </tr>
-          <tr>
-            <td>Optimist</td>
-            <td>PY</td>
-            <td>1642</td>
-            <td><a class="button-ghost" href="#">Modifier</a></td>
-          </tr>
-          <tr>
-            <td>420</td>
-            <td>PY</td>
-            <td>1100</td>
-            <td><a class="button-ghost" href="#">Modifier</a></td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="actions-row mt-2">
-        <a class="btn" href="#">Ajouter une classe (simulé)</a>
-        <a class="button-ghost" href="Accueil.html">Retour</a>
+      <h3>Classes de bateaux</h3>
+      <div class="table-wrapper">
+        <table class="table-standard" aria-label="Classes de bateaux">
+          <thead>
+            <tr>
+              <th>Nom de la classe</th>
+              <th>Type de handicap</th>
+              <th class="text-center">Valeur de handicap</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Albacore</td>
+              <td>PY</td>
+              <td class="text-center">1068</td>
+            </tr>
+            <tr>
+              <td>Laser</td>
+              <td>PY</td>
+              <td class="text-center">1078</td>
+            </tr>
+            <tr>
+              <td>Solo</td>
+              <td>PY</td>
+              <td class="text-center">1155</td>
+            </tr>
+            <tr>
+              <td>TS-240</td>
+              <td>TMF</td>
+              <td class="text-center">998</td>
+            </tr>
+            <tr>
+              <td>Wanderer</td>
+              <td>PY</td>
+              <td class="text-center">1155</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="actions-row mt-2">
+        <a class="btn" href="#">Ajouter</a>
+        <a class="btn" href="#">Supprimer</a>
+        <a class="btn" href="#">Imprimer</a>
+        <a class="button-ghost" href="Accueil.html">Annuler / Retour</a>
+      </div>
+
+      <details class="mt-2">
+        <summary>Modifier le handicap d'une classe (simulation)</summary>
+        <div class="panel" style="margin-top:8px">
+          <p>Souhaitez-vous que ce changement de handicap :</p>
+          <ul style="margin-left:18px">
+            <li>prenne effet immédiatement</li>
+            <li>soit appliqué rétroactivement à une date donnée</li>
+          </ul>
+          <div class="row" style="margin-top:8px">
+            <label for="backdate">Date d'effet rétroactif</label>
+            <input id="backdate" type="date" />
+          </div>
+        </div>
+      </details>
     </section>
   </div>
 

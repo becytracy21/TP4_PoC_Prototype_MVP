@@ -9,24 +9,27 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html" class="active">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html" class="active">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Profil.html" class="nav-user-link">
+        <div class="avatar" title="Profil">JD</div>
+        <div class="username">John Doe</div>
+      </a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
-      <div class="decor decor-left" aria-hidden="true"></div>
-      <div class="decor decor-right" aria-hidden="true"></div>
       <h2 class="hero-title">Gestion des séries</h2>
       <p class="hero-subtitle">Liste des séries de courses (prototype, données simulées)</p>
       <div class="title-underline" aria-hidden="true"></div>
@@ -34,27 +37,39 @@
 
     <section class="panel">
       <h3>Liste des séries</h3>
-      <table style="width:100%;margin-bottom:18px">
-        <thead>
-          <tr>
-            <th>Nom de la série</th>
-            <th>Nombre de courses</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Printemps 2026</td>
-            <td>5</td>
-            <td><a class="button-ghost" href="#">Voir</a></td>
-          </tr>
-          <tr>
-            <td>Championnat Club</td>
-            <td>8</td>
-            <td><a class="button-ghost" href="#">Voir</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="table-standard" aria-label="Liste des séries">
+          <thead>
+            <tr>
+              <th>Nom de la série</th>
+              <th class="text-center">Nombre de courses</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Série A</td>
+              <td class="text-center">3</td>
+              <td>
+                <div class="table-actions">
+                  <span class="muted">Utilisée par la page "Course"</span>
+                  <a class="btn-small" href="ResultatsSeries.html">Résultats</a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Série B</td>
+              <td class="text-center">2</td>
+              <td>
+                <div class="table-actions">
+                  <span class="muted">Utilisée par la page "Course"</span>
+                  <a class="btn-small" href="ResultatsSeries.html">Résultats</a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="actions-row mt-2">
         <a class="btn" href="#">Ajouter une série (simulé)</a>
         <a class="button-ghost" href="Accueil.html">Retour</a>

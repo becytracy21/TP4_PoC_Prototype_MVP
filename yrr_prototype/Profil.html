@@ -9,24 +9,27 @@
 <body>
   <header>
     <h1>YRR — Prototype</h1>
-    <nav>
-      <a href="Accueil.html">Accueil</a>
-      <a href="Profil.html" class="active">Mon profil</a>
-      <a href="Classes.html">Classes</a>
-      <a href="Bateaux.html">Bateaux</a>
-      <a href="Series.html">Séries</a>
-      <a href="ResultatsSeries.html">Résultats séries</a>
-      <a href="Course.html">Course</a>
-      <a href="Inscriptions.html">Inscriptions</a>
-      <a href="LocalisationDonnees.html">Localisation des données</a>
-      <a href="Connexion.html">Se déconnecter</a>
-    </nav>
+    <div class="header-center">
+      <nav class="main-nav-bar">
+        <div class="nav-left">
+          <a href="Accueil.html">Accueil</a>
+          <a href="Classes.html">Classes</a>
+          <a href="Bateaux.html">Bateaux</a>
+          <a href="Series.html">Séries</a>
+          <a href="Course.html">Course</a>
+        </div>
+      </nav>
+    </div>
+    <div class="nav-user">
+      <a href="Connexion.html" class="btn btn-logout">Se déconnecter</a>
+    </div>
   </header>
 
   <div class="container-main">
     <div class="hero">
+      <!-- decor supprimes -->
       <h2 class="hero-title">Mon profil</h2>
-      <p class="hero-subtitle">Informations utilisateur (données simulées)</p>
+      <p class="hero-subtitle">Informations de l'utilisateur simulé.</p>
       <div class="title-underline" aria-hidden="true"></div>
     </div>
 
