@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Connexion</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .login-wrap{max-width:420px;margin:40px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
+    .socials{display:flex;gap:8px;margin-top:12px}
+    .btn-social{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:8px;border:1px solid transparent;color:#fff}
+    .btn-instagram{background:#E1306C}
+    .btn-facebook{background:#1877F2}
+    .btn-indeed{background:#2164A8}
+    .btn-linkedin{background:#0A66C2}
+    .field{display:flex;flex-direction:column;margin-top:10px}
+    .field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
+    .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
+    .login-header{text-align:center;margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo">YRR - Protoype</a>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <div class="login-wrap">
+      <div class="login-header">
+        <h2>Connexion</h2>
+        <p class="small-muted">Se connecter avec votre compte ou utilisez un réseau social.</p>
+      </div>
+
+      <div>
+        <label class="field"><span>Adresse e‑mail</span><input id="email" type="email" placeholder="vous@exemple.com" /></label>
+        <label class="field"><span>Mot de passe</span><input id="password" type="password" placeholder="••••••••" /></label>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <button id="loginBtn" class="btn btn-primary" type="button">Se connecter</button>
+          <button class="btn btn-outline" type="button" onclick="window.location.href='Inscription.html'">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Maquette non fonctionnelle : redirige vers Accueil.html
+    document.getElementById('loginBtn').addEventListener('click', function(){
+      // simple redirection vers la page d'accueil
+      window.location.href = 'Accueil.html';
+    });
+    // boutons sociaux inactifs : empêcher navigation
+    document.querySelectorAll('.btn-social').forEach(b=>b.addEventListener('click', function(e){
+      e.preventDefault(); alert('Connexion sociale non implémentée dans cette maquette.');
+    }));
+  </script>
+</body>
+</html>

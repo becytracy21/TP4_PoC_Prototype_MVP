@@ -10,8 +10,8 @@ html,body{height:100%}
 body{
   margin:0;
   font-family:Segoe UI, Roboto, Arial, sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  background: #f4f6f9;
+  color: #222;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
@@ -195,9 +195,11 @@ body{
   gap:12px;
   align-items:center;
   margin:12px 0;
+  flex-wrap:wrap; /* ajouté : permet au bouton d'aller à la ligne si besoin */
 }
 .controls label{color:var(--muted);font-weight:600}
 .controls select{padding:6px;border-radius:6px;border:1px solid #e6e9ef}
+.controls button{flex-shrink:0} /* éviter que le bouton soit compressé */
 
 .toggle{
   display:inline-flex;
@@ -217,3 +219,46 @@ body{
 .cell-input{padding:6px 8px;border-radius:6px;border:1px solid #e6e9ef;background:#fff;width:100%;box-sizing:border-box}
 .cell-input.small{max-width:120px}
 .title-select{margin-left:8px;padding:6px;border-radius:6px;border:1px solid #e6e9ef}
+
+/* Styles pour la gestion des classes */
+.classes-wrap{background:#fff;padding:12px;border-radius:8px;border:1px solid #eef0f3}
+.classes-actions{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.message-box{padding:8px 12px;border-radius:8px;background:#fff3cd;border:1px solid #ffe08a;color:#7a5800;min-width:200px}
+.classes-table-wrap{overflow:auto;border-radius:6px;border:1px solid #eef0f3}
+.classes-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.classes-table thead th{background:#f7fafc;color:var(--muted);font-weight:700;padding:8px 10px;position:relative}
+.classes-table tbody td{padding:8px 10px;border-top:1px solid #eef0f3;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.classes-table td[contenteditable]{background:#fff}
+.row--empty td{color:var(--muted);background:#fafafa}
+.col-handle{width:36px;padding:0 8px;text-align:center}
+.col-handle input[type="checkbox"]{transform:scale(1.1)}
+/* resizer handle */
+.th-resizer{position:absolute;right:0;top:0;width:8px;height:100%;cursor:col-resize}
+/* Limite minimale d'une colonne (~8px) */
+.classes-table th,.classes-table td{min-width:8px}
+/* Limite d'affichage: 6 lignes visibles (approx) - hauteur calculée ~ 6 * row height (40px) */
+.classes-table-wrap[data-scroll="true"]{max-height:240px;overflow-y:auto}
+.classes-table-wrap[data-scroll="false"]{max-height:none}
+/* indicateur de tri */
+.classes-table thead th.sorted::after{content:' ▾';font-weight:700}
+/* petits écrans */
+@media (max-width:640px){
+  .classes-table thead th{font-size:0.9rem}
+  .classes-table tbody td{font-size:0.9rem}
+}
+
+/* Style léger pour les cartes et conteneurs afin de mieux ressortir sur le fond gris */
+.card, .site-header .container, main.container {
+  background: transparent;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+}
+
+/* Assurer un peu d'ombre discrète */
+.shadow-sm {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}

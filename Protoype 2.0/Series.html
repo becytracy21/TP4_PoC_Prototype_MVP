@@ -12,10 +12,11 @@
       <a class="logo" href="Accueil.html">YRR - Protoype</a>
       <nav aria-label="Navigation principale">
         <ul class="main-nav">
+          <li><a href="Accueil.html">Home</a></li>
           <li><a href="Boat.html">Boat</a></li>
+          <li><a href="Classe.html">Classes</a></li>
           <li><a href="Entry.html">Entry</a></li>
           <li><a href="Race.html">Race</a></li>
-          <li><a href="Resultat.html">Resultat</a></li>
           <li><a href="Series.html" class="active">Serie</a></li>
         </ul>
       </nav>
@@ -28,6 +29,7 @@
         <div class="header-actions" style="margin-left:8px">
             <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
             <a href="Profil.html"><div class="username">John Doe</div></a>   
+            <button id="logoutBtn" class="btn btn-outline-secondary btn-sm" type="button" style="margin-left:10px">Se déconnecter</button>
         </div>
       </div>
 
@@ -47,6 +49,7 @@
       </select>
 
       <button id="toggleDiscards" class="toggle active">Eliminations activées</button>
+      <button id="series-result" class="toggle" type="button">Resultat</button>
     </div>
 
     <table class="boat-table" id="seriesTable" aria-label="Tableau de la série">
@@ -157,8 +160,22 @@
         recalc();
       });
 
+      // bouton Resultat - navigation
+      const seriesResultBtn = document.getElementById('series-result');
+      if(seriesResultBtn){ seriesResultBtn.addEventListener('click', ()=>{ window.location.href = 'Resultat.html'; }); }
+
       select.addEventListener('change', recalc);
       recalc();
+    })();
+
+    (function(){
+      var btn = document.getElementById('logoutBtn');
+      if(!btn) return;
+      btn.addEventListener('click', function(){
+        if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+        try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
+        window.location.href = 'Connexion.html';
+      });
     })();
   </script>
 </body>

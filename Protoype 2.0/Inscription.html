@@ -3,40 +3,59 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Accueil</title>
+  <title>Inscription</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .signup-wrap{max-width:520px;margin:36px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
+    .socials{display:flex;gap:8px;margin-top:12px}
+    .btn-social{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:8px;border:1px solid transparent;color:#fff}
+    .btn-instagram{background:#E1306C}
+    .btn-facebook{background:#1877F2}
+    .btn-indeed{background:#2164A8}
+    .btn-linkedin{background:#0A66C2}
+    .field{display:flex;flex-direction:column;margin-top:10px}
+    .field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
+    .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
+    .signup-header{text-align:center;margin-bottom:8px}
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container">
       <a class="logo" href="Accueil.html">YRR - Protoype</a>
-      <nav aria-label="Navigation principale">
-        <ul class="main-nav">
-          <li><a href="Boat.html">Boat</a></li>
-          <li><a href="Entry.html">Entry</a></li>
-          <li><a href="Race.html">Race</a></li>
-          <li><a href="Resultat.html">Resultat</a></li>
-          <li><a href="Series.html">Serie</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-      </div>
-
-        <!-- Profil affiché quand l'utilisateur est connecté -->
-        <!-- Remplacer ou masquer selon l'état de session -->
-        <div class="header-actions" style="margin-left:8px">
-            <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
-            <a href="Profil.html"><div class="username">John Doe</div></a>   
-        </div>
-      </div>
-
     </div>
   </header>
 
   <main class="container" role="main">
-    <h1>Bienvenue</h1>
-    <p>Utilisez le menu en haut pour naviguer entre les pages Boat, Entry, Race, Resultat et Serie.</p>
+    <div class="signup-wrap">
+      <div class="signup-header">
+        <h2>Créer un compte</h2>
+        <p class="small-muted">Remplissez le formulaire ci‑dessous ou utilisez un réseau social.</p>
+      </div>
+
+      <div>
+        <label class="field"><span>Nom complet</span><input id="fullName" type="text" placeholder="Prénom Nom" /></label>
+        <label class="field"><span>Nom d'utilisateur</span><input id="username" type="text" placeholder="nom_utilisateur" /></label>
+        <label class="field"><span>Adresse e‑mail</span><input id="email" type="email" placeholder="vous@exemple.com" /></label>
+        <label class="field"><span>Mot de passe</span><input id="password" type="password" placeholder="••••••••" /></label>
+        <label class="field"><span>Confirmer le mot de passe</span><input id="passwordConfirm" type="password" placeholder="Confirmer" /></label>
+
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <button id="signupBtn" class="btn btn-primary" type="button">S'inscrire</button>
+          <button class="btn btn-outline" type="button" onclick="window.location.href='Connexion.html'">Annuler</button>
+        </div>
+      </div>
+    </div>
   </main>
+
+  <script>
+    // Maquette non fonctionnelle : redirige vers Accueil.html
+    document.getElementById('signupBtn').addEventListener('click', function(){
+      window.location.href = 'Accueil.html';
+    });
+    document.querySelectorAll('.btn-social').forEach(b=>b.addEventListener('click', function(e){
+      e.preventDefault(); alert('Inscription sociale non implémentée dans cette maquette.');
+    }));
+  </script>
 </body>
 </html>
