@@ -23,11 +23,18 @@
 
       <div class="nav-actions">
       </div>
-      <!-- header actions : avatar, nom et bouton se déconnecter -->
-      <div class="header-actions" style="margin-left:8px">
-            <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
-            <a href="Profil.html"><div class="username">John Doe</div></a>
-            <button id="logoutBtn" class="btn btn-outline-secondary btn-sm" type="button" style="margin-left:8px">Se déconnecter</button>
+      <!-- header actions : avatar, nom et menu profil -->
+      <div class="header-actions profile-menu" style="margin-left:8px;">
+            <div class="profile-menu-inner" style="display:inline-block;">
+              <button id="profileToggle" class="profile-toggle" aria-haspopup="true" aria-expanded="false" title="Profil">
+                <div class="avatar">JD</div>
+                <div class="username">John Doe</div>
+              </button>
+              <div id="profileDropdown" class="profile-dropdown" role="menu" aria-label="Menu profil" hidden>
+                <a class="menu-item" href="Profil.html" role="menuitem">Mon Profil</a>
+                <button id="logoutMenuBtn" class="menu-item" type="button" role="menuitem">Se déconnecter</button>
+              </div>
+            </div>
       </div>
     </div>
   </header>
@@ -38,19 +45,6 @@
   </main>
 
   <!-- Ajout d'un petit script pour confirmer la déconnexion et nettoyer une clé de session locale -->
-  <script>
-(function(){
-  var btn = document.getElementById('logoutBtn');
-  if(!btn) return;
-  btn.addEventListener('click', function(e){
-    if(!confirm('Voulez-vous vous déconnecter ?')){
-      e.preventDefault();
-      return;
-    }
-    try{ localStorage.removeItem('yrr_user'); }catch(err){}
-    // Le lien possède déjà l'attribut href vers Connexion.html, la navigation se fera naturellement
-  });
-})();
-</script>
+  <script src="js/accueil.js"></script>
 </body>
 </html>

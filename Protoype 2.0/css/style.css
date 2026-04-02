@@ -262,3 +262,27 @@ body{
 .shadow-sm {
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
+
+/* Styles pour le menu profil */
+.profile-toggle { background:none; border:0; padding:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:inherit; }
+.profile-toggle:focus { outline:2px solid rgba(0,123,255,0.25); border-radius:4px; }
+.profile-toggle .avatar { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#333; color:#fff; font-weight:600; }
+.profile-toggle .username { font-size:0.95rem; }
+.profile-menu { position:relative; display:inline-block; }
+.profile-dropdown { position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #ddd; box-shadow:0 6px 18px rgba(0,0,0,0.08); min-width:160px; border-radius:6px; z-index:1000; }
+.profile-dropdown[hidden] { display:none; }
+.profile-dropdown .menu-item { display:block; width:100%; padding:8px 12px; text-align:left; background:none; border:0; color:#222; text-decoration:none; cursor:pointer; }
+.profile-dropdown .menu-item:hover, .profile-dropdown .menu-item:focus { background:#f5f7fa; }
+
+/* Styles pour la page Connexion (déplacés depuis Connexion.html) */
+.login-wrap{max-width:420px;margin:40px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
+.socials{display:flex;gap:8px;margin-top:12px}
+.btn-social{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:8px;border:1px solid transparent;color:#fff}
+.btn-instagram{background:#E1306C}
+.btn-facebook{background:#1877F2}
+.btn-indeed{background:#2164A8}
+.btn-linkedin{background:#0A66C2}
+.field{display:flex;flex-direction:column;margin-top:10px}
+.field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
+.small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
+.login-header{text-align:center;margin-bottom:8px}

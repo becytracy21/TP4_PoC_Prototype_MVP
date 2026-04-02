@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Accueil</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Styles pour le menu profil */
+    .profile-toggle { background:none; border:0; padding:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:inherit; }
+    .profile-toggle:focus { outline:2px solid rgba(0,123,255,0.25); border-radius:4px; }
+    .profile-toggle .avatar { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#333; color:#fff; font-weight:600; }
+    .profile-toggle .username { font-size:0.95rem; }
+    .profile-menu { position:relative; display:inline-block; }
+    .profile-dropdown { position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #ddd; box-shadow:0 6px 18px rgba(0,0,0,0.08); min-width:160px; border-radius:6px; z-index:1000; }
+    .profile-dropdown[hidden] { display:none; }
+    .profile-dropdown .menu-item { display:block; width:100%; padding:8px 12px; text-align:left; background:none; border:0; color:#222; text-decoration:none; cursor:pointer; }
+    .profile-dropdown .menu-item:hover, .profile-dropdown .menu-item:focus { background:#f5f7fa; }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -24,12 +36,18 @@
       <div class="nav-actions">
       </div>
 
-        <!-- Profil affiché quand l'utilisateur est connecté -->
-        <!-- Remplacer ou masquer selon l'état de session -->
-        <div class="header-actions" style="margin-left:8px">
-            <a href="Profil.html"><div class="avatar" title="Profil">JD</div></a>
-            <a href="Profil.html"><div class="username">John Doe</div></a>
-            <button id="logoutBtn" class="btn btn-outline-secondary btn-sm" type="button" style="margin-left:10px">Se déconnecter</button>
+        <!-- Profil affiché quand l'utilisateur est connecté (menu déroulant) -->
+        <div class="header-actions profile-menu" style="margin-left:8px;">
+            <div class="profile-menu-inner" style="display:inline-block;">
+              <button id="profileToggle" class="profile-toggle" aria-haspopup="true" aria-expanded="false" title="Profil">
+                <div class="avatar">JD</div>
+                <div class="username">John Doe</div>
+              </button>
+              <div id="profileDropdown" class="profile-dropdown" role="menu" aria-label="Menu profil" hidden>
+                <a class="menu-item" href="Profil.html" role="menuitem">Mon Profil</a>
+                <button id="logoutMenuBtn" class="menu-item" type="button" role="menuitem">Se déconnecter</button>
+              </div>
+            </div>
         </div>
       </div>
 
@@ -42,6 +60,30 @@
   </main>
 
   <script>
+    // Menu profil: ouverture/fermeture et action déconnexion
+    (function(){
+      const toggle = document.getElementById('profileToggle');
+      const dropdown = document.getElementById('profileDropdown');
+      if(!toggle || !dropdown) return;
+
+      function openDropdown(){ dropdown.hidden = false; toggle.setAttribute('aria-expanded','true'); }
+      function closeDropdown(){ dropdown.hidden = true; toggle.setAttribute('aria-expanded','false'); }
+
+      toggle.addEventListener('click', function(e){ e.stopPropagation(); if(dropdown.hidden) openDropdown(); else closeDropdown(); });
+
+      const logoutMenuBtn = document.getElementById('logoutMenuBtn');
+      if(logoutMenuBtn){
+        logoutMenuBtn.addEventListener('click', function(){
+          if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+          try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
+          window.location.href = 'Connexion.html';
+        });
+      }
+
+      document.addEventListener('click', function(e){ if(!dropdown.hidden && !toggle.contains(e.target) && !dropdown.contains(e.target)) closeDropdown(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDropdown(); });
+    })();
+
     (function(){
       var btn = document.getElementById('logoutBtn');
       if(!btn) return;
