@@ -6,21 +6,7 @@
   <title>Profil</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    /* Style inspiré du snippet Bootdey */
-    body { background:#f4f6f9; }
-    .card { border-radius:6px; }
-    .profile-user-box { padding: 20px; }
-    .avatar-xl { width:120px; height:120px; object-fit:cover; border-radius:6px; border:1px solid #e6e6e6; }
-    /* Avatar sous forme de div avec initiales (JD) */
-    .avatar { width:120px; height:120px; border-radius:6px; background:#007bff; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:28px; border:1px solid #e6e6e6; background-size:cover; background-position:center; margin:0 auto; text-align:center; overflow:hidden; }
-    #profileNames { text-align:center; }
-    .btn-block { display:inline-block }
-    .muted { color:#6c757d }
-    .profile-form label { font-weight:600; }
-    .message-box { margin-left:12px; }
-    @media (max-width:767px){ .profile-user-box { text-align:center } }
-  </style>
+  <!-- inline profile styles removed and consolidated into css/style.css -->
 </head>
 <body>
   <header class="site-header">
@@ -101,122 +87,8 @@
     </div>
   </main>
 
-  <script>
-  // Déconnexion : confirmation et nettoyage clé locale
-  (function(){
-    var btn = document.getElementById('logoutBtn');
-    if(!btn) return;
-    btn.addEventListener('click', function(){
-      if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-      try{ localStorage.removeItem('yrr_profile_v1'); localStorage.removeItem('yrr_session_v1'); }catch(e){}
-      window.location.href = 'Connexion.html';
-    });
-  })();
-
-  // Réplique fonctionnelle du snippet : gestion du profil en local
-  (function(){
-    const KEY = 'yrr_profile_v1';
-    const inputFile = document.getElementById('avatarInput');
-    const preview = document.getElementById('avatarPreview'); // now a div
-    const removeBtn = document.getElementById('removeAvatar');
-    const saveBtn = document.getElementById('saveProfile');
-    const cancelBtn = document.getElementById('cancelProfile');
-    const msgEl = document.getElementById('profileMsg');
-
-    const fields = {
-      fullName: document.getElementById('fullName'),
-      username: document.getElementById('username'),
-      email: document.getElementById('email'),
-      phone: document.getElementById('phone')
-    };
-
-    let currentAvatarData = null;
-
-    function showMsg(text, success=true){
-      if(!msgEl) return; msgEl.textContent = text;
-      msgEl.style.color = success ? '#28a745' : '#d9534f';
-      setTimeout(()=>{ msgEl.textContent = ''; }, 3000);
-    }
-
-    function readFileAsDataURL(file){
-      return new Promise((res,rej)=>{
-        const r = new FileReader();
-        r.onload = ()=> res(r.result);
-        r.onerror = ()=> rej(new Error('Lecture impossible'));
-        r.readAsDataURL(file);
-      });
-    }
-
-    function loadProfile(){
-      try{
-        const raw = localStorage.getItem(KEY);
-        if(!raw) return;
-        const obj = JSON.parse(raw);
-        if(obj.avatar){
-          preview.style.backgroundImage = `url(${obj.avatar})`; preview.textContent = '';
-          currentAvatarData = obj.avatar;
-        }
-        if(obj.fullName) fields.fullName.value = obj.fullName;
-        if(obj.username) fields.username.value = obj.username;
-        if(obj.email) fields.email.value = obj.email;
-        if(obj.phone) fields.phone.value = obj.phone;
-        // update displayed names under avatar
-        document.getElementById('displayFullName').textContent = obj.fullName || 'John Doe';
-        document.getElementById('displayUsername').textContent = obj.username ? '@'+obj.username : '@jdupont';
-      }catch(e){}
-    }
-
-    function saveProfile(){
-      const payload = {
-        avatar: currentAvatarData || null,
-        fullName: fields.fullName.value.trim(),
-        username: fields.username.value.trim(),
-        email: fields.email.value.trim(),
-        phone: fields.phone.value.trim()
-      };
-
-      if(!payload.fullName){ showMsg('Le nom complet est requis', false); return; }
-      if(!payload.username){ showMsg("Le nom d'utilisateur est requis", false); return; }
-      if(payload.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)){ showMsg('Email invalide', false); return; }
-      if(payload.phone && !/^[0-9+\s\-()]{6,20}$/.test(payload.phone)){ showMsg('Téléphone invalide', false); return; }
-
-      try{ localStorage.setItem(KEY, JSON.stringify(payload)); showMsg('Profil enregistré', true);
-        // met à jour l'affichage sous l'avatar
-        document.getElementById('displayFullName').textContent = payload.fullName;
-        document.getElementById('displayUsername').textContent = payload.username ? '@'+payload.username : '';
-      }catch(e){ showMsg('Impossible d\'enregistrer', false); }
-    }
-
-    inputFile.addEventListener('change', async (e)=>{
-      const f = e.target.files && e.target.files[0];
-      if(!f) return;
-      if(!/^image\//.test(f.type)){ showMsg('Veuillez choisir une image', false); return; }
-      try{
-        const data = await readFileAsDataURL(f);
-        preview.style.backgroundImage = `url(${data})`;
-        preview.textContent = '';
-        currentAvatarData = data;
-      }catch(err){ showMsg('Lecture du fichier impossible', false); }
-    });
-
-    removeBtn.addEventListener('click', ()=>{ 
-      preview.style.backgroundImage = ''; preview.textContent = 'JD'; currentAvatarData = null; 
-      // restore display names to inputs if cleared
-    });
-
-    // remplacer le binding des boutons pour qu'ils retournent à la page précédente
-    if(saveBtn) saveBtn.addEventListener('click', function(e){
-      // ne pas enregistrer ici, juste revenir à la page précédente
-      try{ window.history.back(); }catch(err){ window.location.href = 'Accueil.html'; }
-    });
-    if(cancelBtn) cancelBtn.addEventListener('click', function(e){
-      // annuler => revenir à la page précédente
-      try{ window.history.back(); }catch(err){ window.location.href = 'Accueil.html'; }
-    });
-
-    loadProfile();
-  })();
-  </script>
+  <!-- moved inline scripts into js/profit.js -->
+  <script src="js/profit.js" defer></script>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

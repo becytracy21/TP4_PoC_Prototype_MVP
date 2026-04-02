@@ -14,12 +14,34 @@ body{
   color: #222;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  display: flex;           /* <-- nouveau : layout flex pour permettre main.flex:1 */
+  flex-direction: column;  /* <-- nouveau */
 }
 .container{
   max-width:1100px;
   margin:0 auto;
   padding:20px;
 }
+
+/* make main take remaining space so table can expand */
+main.container {
+  flex: 1 1 auto;    /* occupe l'espace vertical restant */
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px; /* garder un peu d'espace en bas */
+  min-height: 0;      /* important pour que les enfants scrollent correctement */
+}
+
+/* allow the table wrapper to grow and scroll inside main */
+.classes-table-wrap{
+  /* ne pas forcer le conteneur à occuper l'espace et afficher le scroll interne */
+  flex: none;    /* laisse le conteneur grandir naturellement */
+  min-height: 0;
+  overflow: visible; /* IMPORTANT : laisser la page défiler, pas le tableau */
+  border-radius:6px;
+  border:1px solid #eef0f3;
+}
+
 /* Header / Navigation */
 .site-header{
   background:#fff;
@@ -237,7 +259,8 @@ body{
 /* Limite minimale d'une colonne (~8px) */
 .classes-table th,.classes-table td{min-width:8px}
 /* Limite d'affichage: 6 lignes visibles (approx) - hauteur calculée ~ 6 * row height (40px) */
-.classes-table-wrap[data-scroll="true"]{max-height:240px;overflow-y:auto}
+/* For most pages we keep the small scroll area, but when the wrapper is used for full-page tables we allow it to expand. */
+.classes-table-wrap[data-scroll="true"]{max-height:none;overflow:visible}
 .classes-table-wrap[data-scroll="false"]{max-height:none}
 /* indicateur de tri */
 .classes-table thead th.sorted::after{content:' ▾';font-weight:700}
@@ -263,7 +286,7 @@ body{
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
-/* Styles pour le menu profil */
+/* Styles pour le menu profil (moved from Entry.html) */
 .profile-toggle { background:none; border:0; padding:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:inherit; }
 .profile-toggle:focus { outline:2px solid rgba(0,123,255,0.25); border-radius:4px; }
 .profile-toggle .avatar { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#333; color:#fff; font-weight:600; }
@@ -286,3 +309,50 @@ body{
 .field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
 .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
 .login-header{text-align:center;margin-bottom:8px}
+
+/* Styles pour la page Inscription (moved from Inscription.html) */
+.signup-wrap{max-width:520px;margin:36px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
+.socials{display:flex;gap:8px;margin-top:12px}
+.btn-social{flex=1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:8px;border:1px solid transparent;color:#fff}
+.btn-instagram{background:#E1306C}
+.btn-facebook{background:#1877F2}
+.btn-indeed{background:#2164A8}
+.btn-linkedin{background:#0A66C2}
+.field{display:flex;flex-direction:column;margin-top:10px}
+.field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
+.small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
+.signup-header{text-align:center;margin-bottom:8px}
+
+/* Styles spécifiques pour Profil.html (moved from Profil.html) */
+/* Style inspiré du snippet Bootdey */
+body { background:#f4f6f9; }
+.card { border-radius:6px; }
+.profile-user-box { padding: 20px; }
+.avatar-xl { width:120px; height:120px; object-fit:cover; border-radius:6px; border:1px solid #e6e6e6; }
+/* Avatar sous forme de div avec initiales (JD) */
+.avatar { width:120px; height:120px; border-radius:6px; background:#007bff; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:28px; border:1px solid #e6e6e6; background-size:cover; background-position:center; margin:0 auto; text-align:center; overflow:hidden; }
+#profileNames { text-align:center; }
+.btn-block { display:inline-block }
+.muted { color:#6c757d }
+.profile-form label { font-weight:600; }
+.message-box { margin-left:12px; }
+@media (max-width:767px){ .profile-user-box { text-align:center } }
+
+/* Styles pour la pop-up de localisation des données (data locator) */
+.data-locator-overlay{
+  position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:2000
+}
+.data-locator-modal{
+  background:#fff;padding:18px;border-radius:8px;max-width:560px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.12);border:1px solid #eef0f3
+}
+.data-locator-modal h2{margin:0 0 8px 0}
+.data-locator-modal .field{display:flex;flex-direction:column}
+.data-locator-modal input[type="text"]{padding:8px;border-radius:6px;border:1px solid #e6e9ef;margin-top:6px}
+.data-locator-modal .btn{padding:8px 12px}
+.data-locator-modal .message-box{margin-top:8px}
+
+/* Forcer l'absence de scroll interne : la page défilera plutôt que le conteneur */
+.classes-table-wrap{
+  overflow: visible !important;
+  max-height: none !important;
+}

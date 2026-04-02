@@ -5,19 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Inscription</title>
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    .signup-wrap{max-width:520px;margin:36px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
-    .socials{display:flex;gap:8px;margin-top:12px}
-    .btn-social{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:8px;border:1px solid transparent;color:#fff}
-    .btn-instagram{background:#E1306C}
-    .btn-facebook{background:#1877F2}
-    .btn-indeed{background:#2164A8}
-    .btn-linkedin{background:#0A66C2}
-    .field{display:flex;flex-direction:column;margin-top:10px}
-    .field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
-    .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
-    .signup-header{text-align:center;margin-bottom:8px}
-  </style>
+  <!-- inline styles moved to css/style.css -->
 </head>
 <body>
   <header class="site-header">
@@ -48,14 +36,7 @@
     </div>
   </main>
 
-  <script>
-    // Maquette non fonctionnelle : redirige vers Accueil.html
-    document.getElementById('signupBtn').addEventListener('click', function(){
-      window.location.href = 'Accueil.html';
-    });
-    document.querySelectorAll('.btn-social').forEach(b=>b.addEventListener('click', function(e){
-      e.preventDefault(); alert('Inscription sociale non implémentée dans cette maquette.');
-    }));
-  </script>
+  <!-- external script: moved from inline to js/inscription.js -->
+  <script src="js/inscription.js" defer></script>
 </body>
 </html>

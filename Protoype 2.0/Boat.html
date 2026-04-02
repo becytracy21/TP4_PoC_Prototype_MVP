@@ -57,19 +57,15 @@
             <input id="boatName" type="text" required />
           </div>
           <div class="row" style="margin-top:8px">
-            <label for="boatType">H/cap type</label>
-            <select id="boatType">
-              <option value="PY">PY</option>
-              <option value="TMF">TMF</option>
-            </select>
-          </div>
-          <div class="row" style="margin-top:8px">
-            <label for="boatValue">H/cap value</label>
-            <input id="boatValue" type="text" placeholder="e.g. 1.234"/>
-          </div>
-          <div class="row" style="margin-top:8px">
             <label for="boatClass">Classe</label>
-            <input id="boatClass" type="text" placeholder="ex: ClassA" />
+            <select id="boatClass">
+              <option value="">-- Sélectionner --</option>
+              <option value="Laser">Laser</option>
+              <option value="Solo">Solo</option>
+              <option value="Albacore">Albacore</option>
+              <option value="TS-240">TS-240</option>
+              <option value="Wanderer">Wanderer</option>
+            </select>
           </div>
           <div class="row" style="margin-top:8px">
             <label for="boatSail">Numéro de voile</label>
@@ -91,8 +87,6 @@
       <thead>
         <tr>
           <th>Nom du bateau</th>
-          <th>H/cap type</th>
-          <th>H/cap value</th>
           <th>Classe</th>
           <th>Numéro de voile</th>
           <th>Barreur</th>
@@ -102,27 +96,21 @@
       <tbody>
         <tr>
           <td>Sea Breeze</td>
-          <td><span class="badge badge--py">PY</span></td>
-          <td>1.234</td>
-          <td>ClassA</td>
+          <td>Laser</td>
           <td>101</td>
           <td>Alice</td>
           <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
         </tr>
         <tr>
           <td>Wind Rider</td>
-          <td><span class="badge badge--tmf">TMF</span></td>
-          <td>0.987</td>
-          <td>ClassB</td>
+          <td>Solo</td>
           <td>102</td>
           <td>Bob</td>
           <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
         </tr>
         <tr>
           <td>Blue Horizon</td>
-          <td><span class="badge badge--py">PY</span></td>
-          <td>1.102</td>
-          <td>ClassA</td>
+          <td>Albacore</td>
           <td>103</td>
           <td>Charlie</td>
           <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
@@ -131,149 +119,6 @@
     </table>
   </main>
 
-  <script src="js/accueil.js"></script>
-  <script>
-    // JS minimal pour ajouter une ligne au tableau et gérer suppression + suggestions de classes
-    (function(){
-      const form = document.getElementById('addBoatForm');
-      const addBtn = document.getElementById('addBoatBtn');
-      const table = document.getElementById('boatTable').querySelector('tbody');
-      const classInput = document.getElementById('boatClass');
-      const msgBox = null;
 
-      let suggestEl = null;
-
-      function loadClasses(){
-        try{const raw = localStorage.getItem('yrr_classes_v1'); return raw?JSON.parse(raw):[];}catch(e){return []}
-      }
-
-      function attachDeleteHandlers(tbody){
-        tbody.querySelectorAll('.btn-delete').forEach(btn=>{
-          btn.removeEventListener('click', onDelete);
-          btn.addEventListener('click', onDelete);
-        });
-      }
-
-      function onDelete(e){
-        const tr = e.currentTarget.closest('tr');
-        if(!confirm('Supprimer ce bateau ?')) return;
-        tr.parentNode.removeChild(tr);
-      }
-
-      function getClassSliceCentered(prevClass){
-        const list = loadClasses().map(c=>c.name).sort((a,b)=>a.localeCompare(b));
-        if(list.length===0) return [];
-        let start = 0;
-        const idx = list.indexOf(prevClass);
-        if(idx>=0) start = Math.max(0, idx-2);
-        if(start + 5 > list.length) start = Math.max(0, list.length-5);
-        return list.slice(start, start+5);
-      }
-
-      function showSuggest(target, prevClass){
-        const slice = getClassSliceCentered(prevClass);
-        if(slice.length===0){ alert('Aucune classe disponible. Veuillez créer des classes d\'abord.'); return; }
-        if(suggestEl) suggestEl.remove();
-        suggestEl = document.createElement('div'); suggestEl.className='class-suggest';
-        slice.forEach(name=>{
-          const btn = document.createElement('button'); btn.type='button'; btn.textContent = name;
-          btn.addEventListener('click', ()=>{
-            if(target.tagName.toLowerCase()==='input') target.value = name; else target.textContent = name;
-            target.focus();
-            suggestEl && suggestEl.remove(); suggestEl = null;
-          });
-          suggestEl.appendChild(btn);
-        });
-        document.body.appendChild(suggestEl);
-        const rect = target.getBoundingClientRect();
-        suggestEl.style.left = rect.left + 'px';
-        suggestEl.style.top = (rect.bottom + window.scrollY) + 'px';
-        suggestEl.style.width = rect.width + 'px';
-      }
-
-      // close suggest when clicking outside
-      document.addEventListener('click', (e)=>{
-        if(suggestEl && !suggestEl.contains(e.target) && e.target !== classInput && !e.target.classList.contains('boat-class')){
-          suggestEl.remove(); suggestEl = null;
-        }
-      });
-
-      // attach suggestion to form input
-      classInput.addEventListener('focus', ()=>{
-        const prev = table.querySelector('tr:last-of-type td:nth-child(4)'); // class column in sample table when static
-        const prevClass = (prev && prev.textContent.trim()) || '';
-        showSuggest(classInput, prevClass);
-      });
-
-      // attach suggestion to table class cells (delegation)
-      table.addEventListener('click', (e)=>{
-        const td = e.target.closest('td');
-        if(!td) return;
-        // class column index depends on table: find header index for "Classe"
-        const ths = document.querySelectorAll('#boatTable thead th');
-        let classIndex = -1; ths.forEach((th,i)=>{ if(th.textContent.trim()==='Classe') classIndex = i; });
-        const tr = td.closest('tr');
-        if(!tr) return;
-        const cells = Array.from(tr.children);
-        const idx = cells.indexOf(td);
-        if(idx === classIndex){
-          // make editable
-          td.setAttribute('contenteditable','true'); td.focus();
-          // determine previous boat's class
-          const prevTr = tr.previousElementSibling;
-          const prevClass = prevTr ? (prevTr.children[classIndex] ? prevTr.children[classIndex].textContent.trim() : '') : '';
-          showSuggest(td, prevClass);
-        }
-      });
-
-      addBtn.addEventListener('click', ()=>{
-        const name = document.getElementById('boatName').value.trim();
-        const type = document.getElementById('boatType').value;
-        const value = document.getElementById('boatValue').value.trim();
-        const cls = document.getElementById('boatClass').value.trim();
-        const sail = document.getElementById('boatSail').value.trim();
-        const helm = document.getElementById('boatHelm').value.trim();
-        if(!name) return alert('Nom requis');
-        if(sail && !/^\d{1,6}$/.test(sail)) return alert('Numéro de voile invalide (1 à 6 chiffres)');
-        // require class exists
-        const classNames = loadClasses().map(c=>c.name);
-        if(!classNames.includes(cls)){
-          return alert('La classe sélectionnée n\'existe pas. Veuillez ajouter la classe depuis la fenêtre Classes.');
-        }
-        const tr = document.createElement('tr');
-        const tdName = document.createElement('td'); tdName.textContent = name;
-        const tdType = document.createElement('td');
-        const span = document.createElement('span');
-        span.className = 'badge ' + (type === 'PY' ? 'badge--py' : 'badge--tmf');
-        span.textContent = type;
-        tdType.appendChild(span);
-        const tdValue = document.createElement('td'); tdValue.textContent = value || '-';
-        const tdClass = document.createElement('td'); tdClass.textContent = cls || '-'; tdClass.className='boat-class';
-        const tdSail = document.createElement('td'); tdSail.textContent = sail || '-';
-        const tdHelm = document.createElement('td'); tdHelm.textContent = helm || '-';
-        const tdActions = document.createElement('td'); tdActions.className='action-cell';
-        const del = document.createElement('button'); del.className='btn-delete'; del.textContent='Supprimer';
-        tdActions.appendChild(del);
-        tr.appendChild(tdName); tr.appendChild(tdType); tr.appendChild(tdValue); tr.appendChild(tdClass); tr.appendChild(tdSail); tr.appendChild(tdHelm); tr.appendChild(tdActions);
-        table.appendChild(tr);
-        // reset
-        form.reset();
-        document.getElementById('addBoat').removeAttribute('open');
-        attachDeleteHandlers(table);
-      });
-
-      // attach to existing rows
-      attachDeleteHandlers(table);
-    })();
-
-    (function(){
-      var btn = document.getElementById('logoutBtn');
-      if(btn){
-        btn.addEventListener('click', function(){
-          window.location.href = 'Connexion.html';
-        });
-      }
-    })();
-  </script>
  </body>
  </html>

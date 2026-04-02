@@ -5,18 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Courses</title>
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    /* Styles pour le menu profil */
-    .profile-toggle { background:none; border:0; padding:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:inherit; }
-    .profile-toggle:focus { outline:2px solid rgba(0,123,255,0.25); border-radius:4px; }
-    .profile-toggle .avatar { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#333; color:#fff; font-weight:600; }
-    .profile-toggle .username { font-size:0.95rem; }
-    .profile-menu { position:relative; display:inline-block; }
-    .profile-dropdown { position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #ddd; box-shadow:0 6px 18px rgba(0,0,0,0.08); min-width:160px; border-radius:6px; z-index:1000; }
-    .profile-dropdown[hidden] { display:none; }
-    .profile-dropdown .menu-item { display:block; width:100%; padding:8px 12px; text-align:left; background:none; border:0; color:#222; text-decoration:none; cursor:pointer; }
-    .profile-dropdown .menu-item:hover, .profile-dropdown .menu-item:focus { background:#f5f7fa; }
-  </style>
 </head>
 <body>
   <header class="site-header">
@@ -92,111 +80,6 @@
 
   </main>
 
-  <script>
-    // Menu profil: ouverture/fermeture et action déconnexion
-    (function(){
-      const toggle = document.getElementById('profileToggle');
-      const dropdown = document.getElementById('profileDropdown');
-      if(!toggle || !dropdown) return;
-
-      function openDropdown(){ dropdown.hidden = false; toggle.setAttribute('aria-expanded','true'); }
-      function closeDropdown(){ dropdown.hidden = true; toggle.setAttribute('aria-expanded','false'); }
-
-      toggle.addEventListener('click', function(e){ e.stopPropagation(); if(dropdown.hidden) openDropdown(); else closeDropdown(); });
-
-      const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-      if(logoutMenuBtn){
-        logoutMenuBtn.addEventListener('click', function(){
-          if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-          try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
-          window.location.href = 'Connexion.html';
-        });
-      }
-
-      document.addEventListener('click', function(e){ if(!dropdown.hidden && !toggle.contains(e.target) && !dropdown.contains(e.target)) closeDropdown(); });
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDropdown(); });
-    })();
-    // Simplified logic to switch between 'hors série' and 'selected series'
-    (function(){
-      const selector = document.getElementById('seriesSelector');
-      const table = document.getElementById('raceTable');
-
-      // example series definition (would come from Series page in real app)
-      const seriesDefinitions = {
-        seriesA: {od:'Monotype', class:'Laser', races: [ {date:'2026-04-12'},{date:'2026-04-13'},{date:''} ]},
-        seriesB: {od:'Handicap', class:'IC', races: [ {date:''},{date:''} ]}
-      };
-
-      function renderForSeries(key){
-        const tbody = table.querySelector('tbody');
-        tbody.innerHTML = '';
-        if(key === 'none'){
-          // render examples (kept simple)
-          tbody.innerHTML = `
-            <tr data-series="none">
-              <td><input class="cell-input small" data-field="od" value="Monotype"></td>
-              <td><input class="cell-input small" data-field="class" value="FM"></td>
-              <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
-              <td><input class="cell-input small" data-field="time" type="time" value="10:30"></td>
-              <td><input class="cell-input" data-field="name" value="Regate Matinale"></td>
-              <td><input class="cell-input small" data-field="course" value="Parcours A"></td>
-            </tr>
-            <tr data-series="none">
-              <td><input class="cell-input small" data-field="od" value="Handicap"></td>
-              <td><input class="cell-input small" data-field="class" value="Open"></td>
-              <td><input class="cell-input" data-field="date" type="date" value="2026-04-10"></td>
-              <td><input class="cell-input small" data-field="time" type="time" value="14:00"></td>
-              <td><input class="cell-input" data-field="name" value="Course Après-midi"></td>
-              <td><input class="cell-input small" data-field="course" value="Parcours B"></td>
-            </tr>
-          `;
-        } else {
-          const def = seriesDefinitions[key];
-          def.races.forEach((r,i)=>{
-            const tr = document.createElement('tr');
-            tr.dataset.series = key;
-            // OD and class inherited, not editable
-            tr.innerHTML = `
-              <td>${def.od}</td>
-              <td>${def.class}</td>
-              <td><input class="cell-input" data-field="date" type="date" value="${r.date||''}"></td>
-              <td><input class="cell-input small" data-field="time" type="time" value=""></td>
-              <td><input class="cell-input" data-field="name" value="Course ${i+1}" readonly></td>
-              <td><input class="cell-input small" data-field="course" value=""></td>
-            `;
-            tbody.appendChild(tr);
-          });
-          // ensure chronological order - rows already in order of def.races
-        }
-      }
-
-      selector.addEventListener('change', ()=>{
-        const key = selector.value;
-        renderForSeries(key);
-      });
-
-      // initial
-      renderForSeries('none');
-
-      // When a time is set in a series, propagate to following races if empty
-      document.addEventListener('input', (e)=>{
-        if(e.target && e.target.dataset.field === 'time'){
-          const tr = e.target.closest('tr');
-          if(tr && tr.dataset.series && tr.dataset.series !== 'none'){
-            // propagate to subsequent rows with same series if they have empty time
-            const tbody = tr.parentElement;
-            const rows = Array.from(tbody.querySelectorAll(`tr[data-series="${tr.dataset.series}"]`));
-            const idx = rows.indexOf(tr);
-            const val = e.target.value;
-            for(let i=idx+1;i<rows.length;i++){
-              const input = rows[i].querySelector('input[data-field="time"]');
-              if(input && !input.value) input.value = val;
-            }
-          }
-        }
-      });
-
-    })();
-  </script>
+  <script src="js/race.js" defer></script>
 </body>
 </html>

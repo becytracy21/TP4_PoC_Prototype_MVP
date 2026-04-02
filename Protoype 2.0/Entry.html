@@ -3,20 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Accueil</title>
+  <title>Inscriptions</title>
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    /* Styles pour le menu profil */
-    .profile-toggle { background:none; border:0; padding:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:inherit; }
-    .profile-toggle:focus { outline:2px solid rgba(0,123,255,0.25); border-radius:4px; }
-    .profile-toggle .avatar { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#333; color:#fff; font-weight:600; }
-    .profile-toggle .username { font-size:0.95rem; }
-    .profile-menu { position:relative; display:inline-block; }
-    .profile-dropdown { position:absolute; right:0; top:calc(100% + 8px); background:#fff; border:1px solid #ddd; box-shadow:0 6px 18px rgba(0,0,0,0.08); min-width:160px; border-radius:6px; z-index:1000; }
-    .profile-dropdown[hidden] { display:none; }
-    .profile-dropdown .menu-item { display:block; width:100%; padding:8px 12px; text-align:left; background:none; border:0; color:#222; text-decoration:none; cursor:pointer; }
-    .profile-dropdown .menu-item:hover, .profile-dropdown .menu-item:focus { background:#f5f7fa; }
-  </style>
 </head>
 <body>
   <header class="site-header">
@@ -27,14 +15,15 @@
           <li><a href="Accueil.html">Home</a></li>
           <li><a href="Boat.html">Boat</a></li>
           <li><a href="Classe.html">Classes</a></li>
-          <li><a href="Entry.html">Entry</a></li>
+          <li><a href="Entry.html" class="active">Entry</a></li>
           <li><a href="Race.html">Race</a></li>
-          <li><a href="Series.html" class="active">Serie</a></li>
+          <li><a href="Series.html">Serie</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-      </div>
+        <div class="header-actions">
+        </div>
 
         <!-- Profil affiché quand l'utilisateur est connecté (menu déroulant) -->
         <div class="header-actions profile-menu" style="margin-left:8px;">
@@ -55,44 +44,83 @@
   </header>
 
   <main class="container" role="main">
-    <h1>Bienvenue</h1>
-    <p>Utilisez le menu en haut pour naviguer entre les pages Boat, Entry, Race, Resultat et Serie.</p>
+    <!-- Controls: Previous / Title / Next -->
+    <div class="controls" aria-hidden="false">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button id="prevRace" class="btn">&laquo; Précédent</button>
+        <button id="nextRace" class="btn">Suivant &raquo;</button>
+      </div>
+      <div style="margin-left:16px;">
+        <h1 id="entryTitle">Inscriptions</h1>
+        <div class="title-status" id="entrySubtitle"></div>
+      </div>
+    </div>
+
+    <!-- Actions: ajouter une inscription -->
+    <div class="controls" style="margin-top:12px;">
+      <details id="addEntry" class="add-details">
+        <summary class="add-summary">+ Ajouter une inscription</summary>
+        <form id="addEntryForm" class="add-form" onsubmit="return false;">
+          <div class="row">
+            <label for="entryBoatName">Nom du bateau</label>
+            <input id="entryBoatName" type="text" required />
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="entryBoatClass">Classe</label>
+            <select id="entryBoatClass">
+              <option value="">-- Sélectionner --</option>
+              <option value="Laser">Laser</option>
+              <option value="Solo">Solo</option>
+              <option value="Albacore">Albacore</option>
+              <option value="TS-240">TS-240</option>
+              <option value="Wanderer">Wanderer</option>
+            </select>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="entrySail">Numéro de voile</label>
+            <input id="entrySail" type="text" placeholder="ex: 101" />
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="entryHelm">Barreur</label>
+            <input id="entryHelm" type="text" placeholder="Nom du barreur" />
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label for="entryResult">Résultat</label>
+            <input id="entryResult" type="text" placeholder="ex: 01:23:45 ou DNS" />
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="addEntrySubmit">Ajouter</button>
+            <button class="btn btn-outline" type="button" onclick="document.getElementById('addEntry').removeAttribute('open')">Annuler</button>
+          </div>
+        </form>
+      </details>
+      <div class="small-muted">Les colonnes Position et Points sont calculées automatiquement.</div>
+    </div>
+
+    <!-- Table des inscriptions -->
+    <div class="classes-table-wrap" data-scroll="true">
+      <table class="classes-table" id="entriesTable" aria-label="Table des inscriptions">
+        <thead>
+          <tr>
+            <th>Nom du bateau</th>
+            <th>Classe de bateau</th>
+            <th>Numéro de voile</th>
+            <th>Barreur</th>
+            <th>Résultat</th>
+            <th>Position</th>
+            <th>Points</th>
+            <th class="action-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Lignes générées dynamiquement par js/entry.js -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="message" class="small-muted" style="margin-top:12px;"></div>
   </main>
 
-  <script>
-    // Menu profil: ouverture/fermeture et action déconnexion
-    (function(){
-      const toggle = document.getElementById('profileToggle');
-      const dropdown = document.getElementById('profileDropdown');
-      if(!toggle || !dropdown) return;
-
-      function openDropdown(){ dropdown.hidden = false; toggle.setAttribute('aria-expanded','true'); }
-      function closeDropdown(){ dropdown.hidden = true; toggle.setAttribute('aria-expanded','false'); }
-
-      toggle.addEventListener('click', function(e){ e.stopPropagation(); if(dropdown.hidden) openDropdown(); else closeDropdown(); });
-
-      const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-      if(logoutMenuBtn){
-        logoutMenuBtn.addEventListener('click', function(){
-          if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-          try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
-          window.location.href = 'Connexion.html';
-        });
-      }
-
-      document.addEventListener('click', function(e){ if(!dropdown.hidden && !toggle.contains(e.target) && !dropdown.contains(e.target)) closeDropdown(); });
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDropdown(); });
-    })();
-
-    (function(){
-      var btn = document.getElementById('logoutBtn');
-      if(!btn) return;
-      btn.addEventListener('click', function(){
-        if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-        try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
-        window.location.href = 'Connexion.html';
-      });
-    })();
-  </script>
+  <script src="js/entry.js" defer></script>
 </body>
 </html>

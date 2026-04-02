@@ -43,39 +43,46 @@
   </header>
 
   <main class="container" role="main">
-    <h1>Gestion des classes</h1>
-    <p>Editez les classes ci-dessous. La dernière ligne est vide pour ajouter une nouvelle classe.</p>
-
-    <div class="classes-wrap">
-      <div class="classes-actions">
-        <button id="btn-add" class="btn btn-primary">Ajouter</button>
-        <button id="btn-delete" class="btn" disabled>Supprimer</button>
-        <div id="message" class="message-box" aria-live="polite" hidden></div>
-      </div>
-
-      <div class="classes-table-wrap">
-        <table id="classes-table" class="classes-table" role="grid" aria-label="Table des classes">
-          <thead>
-            <tr>
-              <th class="col-handle" aria-hidden="true"></th>
-              <th data-col="name">Nom</th>
-              <th data-col="type">Type H</th>
-              <th data-col="value">Valeur H</th>
-              <th data-col="desc">Description</th>
-            </tr>
-          </thead>
-          <tbody id="classes-body">
-            <!-- rempli par JS -->
-          </tbody>
-        </table>
-      </div>
-
-      <div class="classes-footer">
-        <small>Affichage limité à 6 lignes. Défilement activé si plus de 5 classes.</small>
-      </div>
-    </div>
+    <h1>Classes</h1>
+    <table class="boat-table" aria-label="Tableau des classe" id="boatTable">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>H/cap type</th>
+          <th>H/cap value</th>
+          <th class="action-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Laser</td>
+          <td><span class="badge badge--py">PY</span></td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td>Solo</td>
+          <td><span class="badge badge--tmf">TMF</span></td>
+          <td>102</td>
+        </tr>
+        <tr>
+          <td>Albacore</td>
+          <td><span class="badge badge--py">PY</span></td>
+          <td>98</td>
+        </tr>
+        <tr>
+          <td>TS-240</td>
+          <td><span class="badge badge--tmf">TMF</span></td>
+          <td>120</td>
+        </tr>
+        <tr>
+          <td>Wanderer</td>
+          <td><span class="badge badge--py">PY</span></td>
+          <td>105</td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 
   <script src="js/classe.js"></script>
-</body>
-</html>
+ </body>
+ </html>
