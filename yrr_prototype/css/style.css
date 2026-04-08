@@ -455,36 +455,6 @@ body.home-page .panel {
   text-align: right;
 }
 
-.boat-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  background-color: var(--card);
-}
-
-.boat-table thead {
-  background: #f3f4f6;
-}
-
-.boat-table th,
-.boat-table td {
-  padding: 8px 10px;
-  border: 1px solid #e1e4ea;
-}
-
-.boat-table tbody tr:nth-child(even) {
-  background: #fafbff;
-}
-
-.boat-table tbody tr:hover {
-  background: #eef3ff;
-}
-
-.boat-table th {
-  text-align: left;
-}
-
-.boat-table td.action-cell,
 .table-standard td.action-cell {
   text-align: center;
   white-space: nowrap;
