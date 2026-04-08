@@ -9,6 +9,7 @@
   --shadow: 0 12px 36px rgba(44, 18, 80, 0.07);
   --green: #34d399;
   --green-2: #059669;
+  --green-gradient: linear-gradient(90deg, var(--green), var(--green-2));
 }
 
 * {
@@ -155,7 +156,7 @@ header nav a.active {
 }
 
 .brand {
-  background: linear-gradient(180deg, var(--accent-2), #6d28d9);
+  background: var(--accent);
   color: #fff;
   padding: 40px;
   display: flex;
@@ -271,7 +272,7 @@ textarea {
 }
 
 .btn:hover {
-  background: linear-gradient(90deg, var(--green), var(--green-2));
+  background: var(--green-gradient);
 }
 
 .btn.ghost {
