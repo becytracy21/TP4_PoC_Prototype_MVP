@@ -20,8 +20,6 @@
   --table-zebra: rgba(124, 58, 237, 0.04);
   --table-hover: rgba(52, 211, 153, 0.10);
   --radius: 12px;
-
-  /* UI utilitaires / badges */
   --badge-py-bg: rgba(124, 58, 237, 0.16);
   --badge-py-border: rgba(124, 58, 237, 0.28);
   --badge-tmf-bg: rgba(52, 211, 153, 0.16);
@@ -78,7 +76,8 @@ header {
   border-bottom: 1px solid rgba(209, 213, 219, 0.8);
 }
 
-header h1 {
+header h1,
+header h2 {
   margin: 0;
   white-space: nowrap;
   color: var(--muted);
