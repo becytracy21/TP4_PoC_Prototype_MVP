@@ -439,10 +439,10 @@ footer {
 
 /* Panel dimension fixe, identique sur toutes les pages (sauf Accueil, Connexion, Inscription) */
 .panel {
-  width: 960px;
+  width: 1080px;
   /* largeur fixe identique partout */
-  max-width: 960px;
-  min-width: 960px;
+  max-width: 1080px;
+  min-width: 1080px;
   height: 480px;
   /* hauteur fixe identique partout */
   min-height: 480px;
@@ -458,9 +458,9 @@ footer {
 
 /* Sur la page d’accueil, laisser le panel libre (hauteur auto) */
 body.home-page .panel {
-  width: 960px;          /* on garde la meme largeur */
-  max-width: 960px;
-  min-width: 960px;
+  width: 1080px;          /* on garde la meme largeur */
+  max-width: 1080px;
+  min-width: 1080px;
   height: 280px;          /* hauteur auto pour fitter le contenu */
   min-height: 0;
   max-height: none;
