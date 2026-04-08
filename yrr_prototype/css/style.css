@@ -1,28 +1,22 @@
-/* Styles globaux unifiés pour tout le prototype YRR */
 :root {
   --bg: #f8f4ff;
-  /* fond violet très pâle */
   --card: #fff8fe;
   --accent-1: #a259e6;
-  /* violet principal */
   --accent-2: #7c3aed;
-  /* violet foncé */
   --accent: linear-gradient(90deg, var(--accent-1), var(--accent-2));
   --muted: #5b4b6b;
-  /* violet/gris foncé */
   --text: #2d1a3a;
   --shadow: 0 12px 36px rgba(44, 18, 80, 0.07);
   --green: #34d399;
-  /* vert accent */
 }
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%
+  height: 100%;
 }
 
 body {
@@ -38,7 +32,6 @@ body {
   min-height: 100vh;
 }
 
-/* Centrer .container-main dans le body */
 .container-main {
   margin: auto;
   max-width: 1120px;
@@ -48,10 +41,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center
+  align-items: center;
 }
 
-/* Header / layout helpers */
 header {
   position: sticky;
   top: 0;
@@ -63,7 +55,6 @@ header {
   padding: 10px 24px;
   margin-bottom: 16px;
   background: rgba(255, 255, 255, 0.5);
-  /* opacite reduite a 0.5 */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(209, 213, 219, 0.8);
@@ -72,6 +63,7 @@ header {
 header h1 {
   margin: 0;
   white-space: nowrap;
+  color: var(--accent-2);
 }
 
 .header-center {
@@ -85,14 +77,13 @@ header nav a {
   text-decoration: none;
   font-weight: 600;
   margin-left: 12px;
-  transition: color 0.2s
+  transition: color 0.2s;
 }
 
 header nav a:hover {
-  color: var(--green)
+  color: var(--green);
 }
 
-/* Lien actif dans la navbar */
 header nav a.active {
   font-weight: 800;
 }
@@ -127,7 +118,7 @@ header nav a.active {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: #1f2937;
+  background: #b91c1c;
   color: #fff;
   display: flex;
   align-items: center;
@@ -140,17 +131,15 @@ header nav a.active {
   font-size: 0.9rem;
 }
 
-/* Container cards (used on many pages) */
 .panel,
 .card,
 .card-small {
   background: var(--card);
   border-radius: 14px;
   padding: 18px;
-  box-shadow: var(--shadow)
+  box-shadow: var(--shadow);
 }
 
-/* Variante : cartes pleine largeur sans padding pour Connexion / Inscription */
 .card.auth-card {
   padding: 0;
 }
@@ -161,7 +150,7 @@ header nav a.active {
   gap: 0;
   overflow: hidden;
   border-radius: 12px;
-  min-height: 420px
+  min-height: 420px;
 }
 
 .brand {
@@ -172,7 +161,7 @@ header nav a.active {
   flex-direction: column;
   gap: 10px;
   border-radius: 12px 0 0 12px;
-  height: 100%
+  height: 100%;
 }
 
 .form-wrap {
@@ -180,17 +169,16 @@ header nav a.active {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%
+  height: 100%;
 }
 
-/* Hero / title styles (inspirés du composant) */
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin: 12px
+  margin: 12px;
 }
 
 .hero-title {
@@ -198,14 +186,14 @@ header nav a.active {
   margin: 0;
   line-height: 1.02;
   font-weight: 800;
-  color: var(--accent-2)
+  color: var(--accent-2);
 }
 
 .hero-subtitle {
   font-size: 1rem;
   color: #23445a;
   opacity: 0.95;
-  margin: 0
+  margin: 0;
 }
 
 .title-underline {
@@ -214,10 +202,9 @@ header nav a.active {
   border-radius: 999px;
   background: var(--accent);
   margin: 8px auto;
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.12)
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.12);
 }
 
-/* Decorative blobs */
 .decor {
   position: absolute;
   width: 260px;
@@ -225,31 +212,30 @@ header nav a.active {
   border-radius: 50%;
   filter: blur(40px);
   opacity: 0.18;
-  pointer-events: none
+  pointer-events: none;
 }
 
 .decor-left {
   left: -80px;
   top: -80px;
-  background: radial-gradient(circle at 30% 30%, var(--green), transparent 40%)
+  background: radial-gradient(circle at 30% 30%, var(--green), transparent 40%);
 }
 
 .decor-right {
   right: -100px;
   bottom: -80px;
-  background: radial-gradient(circle at 70% 70%, var(--accent-1), transparent 40%)
+  background: radial-gradient(circle at 70% 70%, var(--accent-1), transparent 40%);
 }
 
-/* Forms */
 form {
   display: flex;
   flex-direction: column;
-  gap: 12px
+  gap: 12px;
 }
 
 label {
   font-size: 13px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
 input[type='text'],
@@ -263,16 +249,16 @@ textarea {
   border: 1px solid #e6eef8;
   background: #fbfdff;
   color: var(--text);
-  outline: none
+  outline: none;
 }
 
 .row {
   display: flex;
-  gap: 12px
+  gap: 12px;
 }
 
 .row .col {
-  flex: 1
+  flex: 1;
 }
 
 .actions {
@@ -280,20 +266,18 @@ textarea {
   align-items: center;
   justify-content: space-between;
   margin-top: 6px;
-  gap: 12px
+  gap: 12px;
 }
 
-/* Empêcher le retour à la ligne de "Se souvenir de moi" */
 .actions .small {
   flex: 0 0 auto;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .actions .small label {
-  white-space: nowrap
+  white-space: nowrap;
 }
 
-/* Buttons */
 .btn {
   display: inline-block;
   padding: 12px 18px;
@@ -308,13 +292,13 @@ textarea {
 }
 
 .btn:hover {
-  background: linear-gradient(90deg, var(--green), var(--accent-2))
+  background: linear-gradient(90deg, var(--green), var(--accent-2));
 }
 
 .btn.ghost {
   background: transparent;
   border: 1px solid rgba(11, 36, 64, 0.06);
-  color: var(--text)
+  color: var(--text);
 }
 
 a.button-ghost {
@@ -324,18 +308,17 @@ a.button-ghost {
   background: transparent;
   border: 1px solid var(--accent-1);
   color: var(--accent-2);
-  text-decoration: none
+  text-decoration: none;
 }
 
 a.button-ghost:hover {
   background: var(--green);
   color: #fff;
-  border-color: var(--green)
+  border-color: var(--green);
 }
 
 .button-simulate {
   background-color: #7c3aed;
-  /* violet */
   color: #ffffff;
   border-color: #7c3aed;
 }
@@ -345,43 +328,40 @@ a.button-ghost:hover {
   border-color: #6d28d9;
 }
 
-/* Espacement vertical standard entre les boutons d'action (Ajouter / Retour) */
 .actions-row {
   margin-top: 12px;
   display: flex;
   align-items: center;
-  gap: 8px
+  gap: 8px;
 }
 
 .mt-2 {
-  margin-top: 8px
+  margin-top: 8px;
 }
 
 .mb-2 {
-  margin-bottom: 8px
+  margin-bottom: 8px;
 }
 
-/* Small utilities */
 .small {
   font-size: 13px;
   color: var(--muted);
   display: inline-flex;
   align-items: center;
-  gap: 6px
+  gap: 6px;
 }
 
 .small label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin: 0
+  margin: 0;
 }
 
 .lead {
-  color: var(--muted)
+  color: var(--muted);
 }
 
-/* Boxes used in some screens */
 .box {
   background: #ffffff;
   border-radius: 14px;
@@ -389,21 +369,20 @@ a.button-ghost:hover {
   width: 340px;
   text-align: center;
   font-weight: 700;
-  box-shadow: 0 12px 36px rgba(11, 36, 64, 0.06)
+  box-shadow: 0 12px 36px rgba(11, 36, 64, 0.06);
 }
 
-/* Result / history cards */
 .result {
   margin-top: 18px;
   padding: 18px;
   border-radius: 12px;
   background: #fff;
   border: 1px solid rgba(11, 36, 64, 0.04);
-  box-shadow: 0 10px 28px rgba(11, 36, 64, 0.04)
+  box-shadow: 0 10px 28px rgba(11, 36, 64, 0.04);
 }
 
 .history-list {
-  margin-top: 24px
+  margin-top: 24px;
 }
 
 .history-card {
@@ -414,59 +393,50 @@ a.button-ghost:hover {
   box-shadow: 0 5px 14px rgba(11, 36, 64, 0.02);
   display: flex;
   flex-direction: column;
-  gap: 6px
+  gap: 6px;
 }
 
 .history-result {
-  font-weight: 700
+  font-weight: 700;
 }
 
-/* Footer fixe en bas */
 footer {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.5);
-  /* opacite reduite a 0.5 pour le footer aussi */
   padding: 12px 24px;
   box-shadow: 0 -6px 20px rgba(11, 36, 64, 0.05);
   z-index: 1000;
   text-align: center;
   font-size: 13px;
-  color: var(--muted)
+  color: var(--muted);
 }
 
-/* Panel dimension fixe, identique sur toutes les pages (sauf Accueil, Connexion, Inscription) */
 .panel {
   width: 1080px;
-  /* largeur fixe identique partout */
   max-width: 1080px;
   min-width: 1080px;
   height: 480px;
-  /* hauteur fixe identique partout */
   min-height: 480px;
   max-height: 480px;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  /* si trop de contenu, scroll interne */
   padding-top: 12px;
   padding-bottom: 12px;
-  /* reduit la hauteur verticale globale du panneau */
 }
 
-/* Sur la page d’accueil, laisser le panel libre (hauteur auto) */
 body.home-page .panel {
-  width: 1080px;          /* on garde la meme largeur */
+  width: 1080px;
   max-width: 1080px;
   min-width: 1080px;
-  height: 280px;          /* hauteur auto pour fitter le contenu */
+  height: 280px;
   min-height: 0;
   max-height: none;
 }
 
-/* Tableaux génériques pour tout le prototype */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -518,7 +488,6 @@ body.home-page .panel {
   text-align: right;
 }
 
-/* Spécifique aux tableaux de bateaux, courses, résultats mais basé sur table-standard */
 .boat-table {
   width: 100%;
   border-collapse: collapse;
@@ -554,101 +523,51 @@ body.home-page .panel {
   white-space: nowrap;
 }
 
-/* Navigation bar styles */
-.main-nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.main-nav-bar .nav-left {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.nav-user {
-  margin-left: 16px;
-}
-
-.nav-user-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: #1f2937;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.username {
-  font-size: 0.9rem;
-}
-
-/* Responsive */
-@media (max-width:960px) {
+@media (max-width: 960px) {
   .card {
     grid-template-columns: 1fr;
-    min-height: auto
+    min-height: auto;
   }
 
   .brand {
     border-radius: 12px 12px 0 0;
-    height: auto
+    height: auto;
   }
 
   .form-wrap {
-    height: auto
+    height: auto;
   }
 }
 
-/* Form-specific compatibility with existing classes */
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px
+  padding: 24px;
 }
 
 .brand .small {
-  opacity: 0.95
+  opacity: 0.95;
 }
 
-/* Ensure form card spacing remains consistent on small pages */
 .form-wrap input {
-  width: 100%
+  width: 100%;
 }
 
-/* Minor accessibility/focus */
 input:focus,
 button:focus,
 a:focus {
   outline: 3px solid rgba(59, 130, 246, 0.12);
-  outline-offset: 2px
+  outline-offset: 2px;
 }
 
-/* Bouton deconnexion dans la nav du profil */
 .btn-logout {
-  background: #dc2626; /* rouge vif */
+  background: #dc2626;
   background-image: none;
-  box-shadow: 0 12px 36px rgba(220,38,38,0.18);
+  box-shadow: 0 12px 36px rgba(220, 38, 38, 0.18);
 }
 
 .btn-logout:hover {
   background: #b91c1c;
 }
-
-/* End of unified style */
