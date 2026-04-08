@@ -310,6 +310,17 @@ main.container {
 .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
 .login-header{text-align:center;margin-bottom:8px}
 
+/* Boîte de connexion : taille fixe et indépendance du texte */
+.login-wrap{
+  width:420px;        /* taille fixe demandée */
+  max-width:none;     /* annule le max-width précédent */
+  box-sizing:border-box;
+}
+.login-wrap .field span{display:block;margin-bottom:6px;font-weight:600}
+.login-wrap input{width:100%;box-sizing:border-box}
+/* Empêcher les boutons de s'agrandir avec le texte */
+.login-wrap .btn{white-space:nowrap;min-width:110px}
+
 /* Styles pour la page Inscription (moved from Inscription.html) */
 .signup-wrap{max-width:520px;margin:36px auto;background:#fff;padding:20px;border-radius:8px;border:1px solid #eef0f3}
 .socials{display:flex;gap:8px;margin-top:12px}
@@ -322,6 +333,21 @@ main.container {
 .field input{padding:8px;border-radius:6px;border:1px solid #e6e9ef}
 .small-muted{color:var(--muted);font-size:0.9rem;margin-top:8px}
 .signup-header{text-align:center;margin-bottom:8px}
+
+/* Page Inscription : taille fixe et indépendance du texte (comme Connexion) */
+.signup-wrap{
+  width:420px;        /* taille fixe demandée */
+  max-width:none;     /* annule le max-width précédent */
+  margin:36px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+  border:1px solid #eef0f3;
+  box-sizing: border-box;
+}
+.signup-wrap .field span{display:block;margin-bottom:6px;font-weight:600}
+.signup-wrap input{width:100%;box-sizing:border-box}
+.signup-wrap .btn{white-space:nowrap;min-width:110px}
 
 /* Styles spécifiques pour Profil.html (moved from Profil.html) */
 /* Style inspiré du snippet Bootdey */

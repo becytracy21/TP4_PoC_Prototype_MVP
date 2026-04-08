@@ -45,7 +45,11 @@
   function loadState(){
     const raw = localStorage.getItem(STORAGE_KEY);
     if(raw){
-      try { return JSON.parse(raw); } catch(e) { /* fallthrough */ }
+      try {
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === 'object') return parsed; // seulement si on a un objet valide
+        // si parsed est null (ou autre), on ignore et on crée l'état de demo
+      } catch(e) { /* fallthrough */ }
     }
     const demo = {
       series: [
@@ -57,10 +61,8 @@
                 { boatName: 'Blue Horizon', boatClass: 'Albacore', sailNumber: '103', helm: 'Charlie', result: 'DNS', position: '', points: '' },
                 { boatName: 'Wave Runner', boatClass: 'TS-240', sailNumber: '105', helm: 'Eve', result: '', position: '', points: '' }
               ] },
-            { name:'Course 2', entries:[] },
-            { name:'Course 3', entries:[] }
           ] },
-        { name: 'Series B', races: [ {name:'Course 1', entries:[]}, {name:'Course 2', entries:[]}, {name:'Course 3', entries:[]} ] }
+        { name: 'Series B', races: [ {name:'Course 1', entries:[]}] }
       ],
       currentSeriesIndex: 0,
       currentRaceIndex: 0
