@@ -15,6 +15,11 @@
   --danger: #dc2626;
   --danger-2: #b91c1c;
   --danger-shadow: 0 12px 36px rgba(220, 38, 38, 0.18);
+  --table-border: #e1e4ea;
+  --table-head-bg: rgba(162, 89, 230, 0.14);
+  --table-zebra: rgba(124, 58, 237, 0.04);
+  --table-hover: rgba(52, 211, 153, 0.10);
+  --radius: 14px;
 }
 
 * {
@@ -408,41 +413,51 @@ body.home-page .panel {
   width: 100%;
   overflow-x: auto;
   margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--table-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .table-standard {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
   border-spacing: 0;
-  background-color: var(--card);
+  background-color: transparent;
 }
 
 .table-standard thead {
-  background: #f3f4f6;
+  background: var(--table-head-bg);
 }
 
 .table-standard th,
 .table-standard td {
-  padding: 8px 10px;
-  border: 1px solid #e1e4ea;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--table-border);
 }
 
 .table-standard th {
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
+  color: var(--accent-2);
 }
 
 .table-standard td {
   vertical-align: middle;
+  background: rgba(255, 255, 255, 0.35);
 }
 
-.table-standard tbody tr:nth-child(even) {
-  background: #fafbff;
+.table-standard tbody tr:nth-child(even) td {
+  background: var(--table-zebra);
 }
 
-.table-standard tbody tr:hover {
-  background: #eef3ff;
+.table-standard tbody tr:hover td {
+  background: var(--table-hover);
+}
+
+.table-standard tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .table-standard td.text-center,
