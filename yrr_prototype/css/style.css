@@ -1,5 +1,5 @@
 :root {
-  --bg: #f8f4ff;
+  --bg: linear-gradient(135deg, #f8f4ff 0%, #e9e0ff 40%, #f3eaff 100%);
   --card: #fff8fe;
   --accent-1: #a259e6;
   --accent-2: #7c3aed;
@@ -10,6 +10,11 @@
   --green: #34d399;
   --green-2: #059669;
   --green-gradient: linear-gradient(90deg, var(--green), var(--green-2));
+  --input-border: #e6eef8;
+  --input-bg: #fbfdff;
+  --danger: #dc2626;
+  --danger-2: #b91c1c;
+  --danger-shadow: 0 12px 36px rgba(220, 38, 38, 0.18);
 }
 
 * {
@@ -24,7 +29,7 @@ body {
 body {
   margin: 0;
   font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #f8f4ff 0%, #e9e0ff 40%, #f3eaff 100%);
+  background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,7 +70,7 @@ header {
 header h1 {
   margin: 0;
   white-space: nowrap;
-  color: var(--accent-2);
+  color: var(--muted);
 }
 
 .header-center {
@@ -120,8 +125,8 @@ header nav a.active {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: #b91c1c;
-  color: #fff;
+  background: var(--muted);
+  color: var(--card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +162,7 @@ header nav a.active {
 
 .brand {
   background: var(--accent);
-  color: #fff;
+  color: var(--card);
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -193,7 +198,7 @@ header nav a.active {
 
 .hero-subtitle {
   font-size: 1rem;
-  color: #23445a;
+  color: var(--muted);
   opacity: 0.95;
   margin: 0;
 }
@@ -226,8 +231,8 @@ select,
 textarea {
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #e6eef8;
-  background: #fbfdff;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
   color: var(--text);
   outline: none;
 }
@@ -239,6 +244,9 @@ textarea {
 
 .row .col {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .actions {
@@ -264,7 +272,7 @@ textarea {
   border-radius: 12px;
   border: none;
   background: var(--accent);
-  color: #fff;
+  color: var(--card);
   text-decoration: none;
   cursor: pointer;
   font-weight: 700;
@@ -293,19 +301,8 @@ a.button-ghost {
 
 a.button-ghost:hover {
   background: var(--green);
-  color: #fff;
+  color: var(--card);
   border-color: var(--green);
-}
-
-.button-simulate {
-  background-color: #7c3aed;
-  color: #ffffff;
-  border-color: #7c3aed;
-}
-
-.button-simulate:hover {
-  background-color: #6d28d9;
-  border-color: #6d28d9;
 }
 
 .actions-row {
@@ -342,21 +339,11 @@ a.button-ghost:hover {
   color: var(--muted);
 }
 
-.box {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 24px;
-  width: 340px;
-  text-align: center;
-  font-weight: 700;
-  box-shadow: 0 12px 36px rgba(11, 36, 64, 0.06);
-}
-
 .result {
   margin-top: 18px;
   padding: 18px;
   border-radius: 12px;
-  background: #fff;
+  background: var(--card);
   border: 1px solid rgba(11, 36, 64, 0.04);
   box-shadow: 0 10px 28px rgba(11, 36, 64, 0.04);
 }
@@ -366,7 +353,7 @@ a.button-ghost:hover {
 }
 
 .history-card {
-  background: #fff;
+  background: var(--card);
   padding: 10px;
   border-radius: 10px;
   border: 1px solid rgba(11, 36, 64, 0.03);
@@ -427,7 +414,7 @@ body.home-page .panel {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  background-color: #fff;
+  background-color: var(--card);
 }
 
 .table-standard thead {
@@ -472,7 +459,7 @@ body.home-page .panel {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  background-color: #fff;
+  background-color: var(--card);
 }
 
 .boat-table thead {
@@ -543,11 +530,11 @@ a:focus {
 }
 
 .btn-logout {
-  background: #dc2626;
+  background: var(--danger);
   background-image: none;
-  box-shadow: 0 12px 36px rgba(220, 38, 38, 0.18);
+  box-shadow: var(--danger-shadow);
 }
 
 .btn-logout:hover {
-  background: #b91c1c;
+  background: var(--danger-2);
 }
