@@ -198,6 +198,12 @@ header nav a.active {
   gap: 12px;
 }
 
+.hero-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
 .hero-title {
   margin: 0;
   font-size: 2.2rem;
