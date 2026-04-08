@@ -34,20 +34,20 @@
     </div>
 
     <section class="panel">
-      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-        <div style="flex:1;min-width:240px">
+      <div class="row gap-18 flex-wrap items-center justify-between">
+        <div class="flex-1 minw-240">
           <h3>Informations</h3>
           <p class="muted">Les données affichées sont simulées pour le prototype.</p>
-          <div style="margin-top:12px">
+          <div class="mt-12">
             <label class="small">Nom complet</label>
-            <input type="text" value="Jean Dupont" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef8;background:#fbfdff;margin-top:6px" />
+            <input class="mt-8" type="text" value="Jean Dupont" readonly />
           </div>
-          <div style="margin-top:12px">
+          <div class="mt-12">
             <label class="small">Email</label>
-            <input type="email" value="jean.dupont@example.com" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef8;background:#fbfdff;margin-top:6px" />
+            <input class="mt-8" type="email" value="jean.dupont@example.com" readonly />
           </div>
         </div>
-        <div style="min-width:220px;display:flex;flex-direction:column;gap:8px">
+        <div class="minw-220 stack gap-8">
           <a class="button-ghost" href="Accueil.html">Retour</a>
           <a class="button-ghost" href="#">Modifier (simulé)</a>
         </div>
@@ -55,6 +55,6 @@
     </section>
   </div>
 
-  <footer class="muted" style="margin-top:18px">Prototype non fonctionnel — interface de démonstration.</footer>
+  <footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>
 </body>
 </html>
