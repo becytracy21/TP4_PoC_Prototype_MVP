@@ -146,6 +146,7 @@ header nav a.active {
 
 .username {
   font-size: 0.9rem;
+  font-weight: bold;
 }
 
 .card,
@@ -423,6 +424,7 @@ a.toggle:hover {
 
 .mt-18 {
   margin-top: 18px;
+  font-weight: bold;
 }
 
 .mb-2 {
