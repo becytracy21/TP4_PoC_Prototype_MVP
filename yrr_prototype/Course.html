@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <header>
     <h2>YRR — Prototype</h2>
@@ -37,7 +39,11 @@
     </div>
 
     <section class="panel">
-      <h3>Courses <select id="seriesSelector" class="title-select"><option value="none">Courses hors série</option><option value="seriesA">Série A</option><option value="seriesB">Série B</option></select></h3>
+      <h3>Courses <select id="seriesSelector" class="title-select">
+          <option value="none">Courses hors série</option>
+          <option value="seriesA">Série A</option>
+          <option value="seriesB">Série B</option>
+        </select></h3>
 
       <div class="table-wrapper">
         <table class="table-standard" id="raceTable" aria-label="Tableau des courses">
@@ -81,19 +87,19 @@
   <footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>
 
   <script>
-    (function(){
+    (function () {
       const selector = document.getElementById('seriesSelector');
       const table = document.getElementById('raceTable');
 
       const seriesDefinitions = {
-        seriesA: {od:'Monotype', class:'Laser', races: [ {date:'2026-04-12'},{date:'2026-04-13'},{date:''} ]},
-        seriesB: {od:'Handicap', class:'IC', races: [ {date:''},{date:''} ]}
+        seriesA: { od: 'Monotype', class: 'Laser', races: [{ date: '2026-04-12' }, { date: '2026-04-13' }, { date: '' }] },
+        seriesB: { od: 'Handicap', class: 'IC', races: [{ date: '' }, { date: '' }] }
       };
 
-      function renderForSeries(key){
+      function renderForSeries(key) {
         const tbody = table.querySelector('tbody');
         tbody.innerHTML = '';
-        if(key === 'none'){
+        if (key === 'none') {
           tbody.innerHTML = `
             <tr data-series="none">
               <td><input class="cell-input small" data-field="od" value="Monotype"></td>
@@ -114,15 +120,15 @@
           `;
         } else {
           const def = seriesDefinitions[key];
-          def.races.forEach((r,i)=>{
+          def.races.forEach((r, i) => {
             const tr = document.createElement('tr');
             tr.dataset.series = key;
             tr.innerHTML = `
               <td>${def.od}</td>
               <td>${def.class}</td>
-              <td><input class="cell-input" data-field="date" type="date" value="${r.date||''}"></td>
+              <td><input class="cell-input" data-field="date" type="date" value="${r.date || ''}"></td>
               <td><input class="cell-input small" data-field="time" type="time" value=""></td>
-              <td><input class="cell-input" data-field="name" value="Course ${i+1}" readonly></td>
+              <td><input class="cell-input" data-field="name" value="Course ${i + 1}" readonly></td>
               <td><input class="cell-input small" data-field="course" value=""></td>
             `;
             tbody.appendChild(tr);
@@ -130,24 +136,24 @@
         }
       }
 
-      selector.addEventListener('change', ()=>{
+      selector.addEventListener('change', () => {
         const key = selector.value;
         renderForSeries(key);
       });
 
       renderForSeries('none');
 
-      document.addEventListener('input', (e)=>{
-        if(e.target && e.target.dataset.field === 'time'){
+      document.addEventListener('input', (e) => {
+        if (e.target && e.target.dataset.field === 'time') {
           const tr = e.target.closest('tr');
-          if(tr && tr.dataset.series && tr.dataset.series !== 'none'){
+          if (tr && tr.dataset.series && tr.dataset.series !== 'none') {
             const tbody = tr.parentElement;
             const rows = Array.from(tbody.querySelectorAll(`tr[data-series="${tr.dataset.series}"]`));
             const idx = rows.indexOf(tr);
             const val = e.target.value;
-            for(let i=idx+1;i<rows.length;i++){
+            for (let i = idx + 1; i < rows.length; i++) {
               const input = rows[i].querySelector('input[data-field="time"]');
-              if(input && !input.value) input.value = val;
+              if (input && !input.value) input.value = val;
             }
           }
         }
@@ -155,4 +161,5 @@
     })();
   </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <header>
     <h2>YRR — Prototype</h2>
@@ -59,7 +61,8 @@
             </div>
             <div class="actions">
               <button class="btn btn-primary" id="addBoatBtn">Ajouter</button>
-              <button class="btn btn-outline" type="button" onclick="document.getElementById('addBoat').removeAttribute('open')">Annuler</button>
+              <button class="btn btn-outline" type="button"
+                onclick="document.getElementById('addBoat').removeAttribute('open')">Annuler</button>
             </div>
           </form>
         </details>
@@ -106,29 +109,29 @@
   <footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>
 
   <script>
-    (function(){
+    (function () {
       const form = document.getElementById('addBoatForm');
       const addBtn = document.getElementById('addBoatBtn');
       const table = document.getElementById('boatTable').querySelector('tbody');
 
-      function attachDeleteHandlers(tbody){
-        tbody.querySelectorAll('.btn-delete').forEach(btn=>{
+      function attachDeleteHandlers(tbody) {
+        tbody.querySelectorAll('.btn-delete').forEach(btn => {
           btn.removeEventListener('click', onDelete);
           btn.addEventListener('click', onDelete);
         });
       }
 
-      function onDelete(e){
+      function onDelete(e) {
         const tr = e.currentTarget.closest('tr');
-        if(!confirm('Supprimer ce bateau ?')) return;
+        if (!confirm('Supprimer ce bateau ?')) return;
         tr.parentNode.removeChild(tr);
       }
 
-      addBtn.addEventListener('click', ()=>{
+      addBtn.addEventListener('click', () => {
         const name = document.getElementById('boatName').value.trim();
         const type = document.getElementById('boatType').value;
         const value = document.getElementById('boatValue').value.trim();
-        if(!name) return alert('Nom requis');
+        if (!name) return alert('Nom requis');
         const tr = document.createElement('tr');
         const tdName = document.createElement('td'); tdName.textContent = name;
         const tdType = document.createElement('td');
@@ -137,8 +140,8 @@
         span.textContent = type;
         tdType.appendChild(span);
         const tdValue = document.createElement('td'); tdValue.textContent = value || '-';
-        const tdActions = document.createElement('td'); tdActions.className='action-cell';
-        const del = document.createElement('button'); del.className='btn-delete'; del.textContent='Supprimer';
+        const tdActions = document.createElement('td'); tdActions.className = 'action-cell';
+        const del = document.createElement('button'); del.className = 'btn-delete'; del.textContent = 'Supprimer';
         tdActions.appendChild(del);
         tr.appendChild(tdName); tr.appendChild(tdType); tr.appendChild(tdValue); tr.appendChild(tdActions);
         table.appendChild(tr);
@@ -151,4 +154,5 @@
     })();
   </script>
 </body>
+
 </html>
