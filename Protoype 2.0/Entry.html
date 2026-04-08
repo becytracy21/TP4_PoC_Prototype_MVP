@@ -46,11 +46,7 @@
   <main class="container" role="main">
     <!-- Controls: Previous / Title / Next -->
     <div class="controls" aria-hidden="false">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button id="prevRace" class="btn">&laquo; Précédent</button>
-        <button id="nextRace" class="btn">Suivant &raquo;</button>
-      </div>
-      <div style="margin-left:16px;">
+      <div style="margin-left:0;">
         <h1 id="entryTitle">Inscriptions</h1>
         <div class="title-status" id="entrySubtitle"></div>
       </div>
@@ -94,7 +90,12 @@
           </div>
         </form>
       </details>
-      <div class="small-muted">Les colonnes Position et Points sont calculées automatiquement.</div>
+    </div>
+
+    <!-- Boutons Précédent / Suivant (placés au dessus du tableau) -->
+    <div style="display:flex;align-items:center;gap:8px;margin-top:12px;margin-bottom:8px;">
+      <button id="prevRace" class="btn">&laquo; Précédent</button>
+      <button id="nextRace" class="btn">Suivant &raquo;</button>
     </div>
 
     <!-- Table des inscriptions -->

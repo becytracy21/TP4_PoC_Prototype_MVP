@@ -56,163 +56,56 @@
   </header>
 
   <main class="container" role="main">
-    <h1>Classement de la série <span class="title-status" id="seriesStatus">(Série A — éliminations activées)</span></h1>
-
-    <div class="controls">
-      <label for="discards">Discards — courses à compter :</label>
-      <select id="discards">
-        <option value="5">5 (aucun discard)</option>
-        <option value="4">4 (1 discard)</option>
-        <option value="3">3 (2 discards)</option>
-        <option value="2">2 (3 discards)</option>
-      </select>
-
-      <button id="toggleDiscards" class="toggle active">Eliminations activées</button>
-      <button id="series-result" class="toggle" type="button">Resultat</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <h1 style="margin:0">Séries <span class="title-status" id="seriesStatus"></span></h1>
+      <div>
+        <a href="Resultat.html"><button id="resultsBtn" class="btn btn-primary">Results</button></a>
+      </div>
     </div>
+    <br/>
 
-    <table class="boat-table" id="seriesTable" aria-label="Tableau de la série">
-      <thead>
-        <tr>
-          <th>Nom du bateau</th>
-          <th>Classe</th>
-          <th>N° voile</th>
-          <th>Barreur</th>
-          <th>R1</th>
-          <th>R2</th>
-          <th>R3</th>
-          <th>R4</th>
-          <th>R5</th>
-          <th>Total</th>
-          <th>Classement général</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Sea Breeze</td>
-          <td>Laser</td>
-          <td>12345</td>
-          <td>Martin</td>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>2</td>
-          <td>1</td>
-          <td class="total">9</td>
-          <td class="overall">1</td>
-        </tr>
-        <tr>
-          <td>Wind Rider</td>
-          <td>Optimist</td>
-          <td>54321</td>
-          <td>Claire</td>
-          <td>3</td>
-          <td>1</td>
-          <td>2</td>
-          <td>4</td>
-          <td>3</td>
-          <td class="total">13</td>
-          <td class="overall">2</td>
-        </tr>
-        <tr>
-          <td>Blue Horizon</td>
-          <td>RS</td>
-          <td>67890</td>
-          <td>Paul</td>
-          <td>2</td>
-          <td>3</td>
-          <td>1</td>
-          <td>1</td>
-          <td>2</td>
-          <td class="total">9</td>
-          <td class="overall">3</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="classes-table-wrap" data-scroll="true">
+      <table class="classes-table" aria-label="Tableau des séries" id="seriesTable">
+        <thead>
+          <tr>
+            <th>Nom de la série</th>
+            <th>OD/H</th>
+            <th>Classe</th>
+            <th>#Courses</th>
+            <th>#Courses à comptabiliser</th>
+            <th class="action-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Summer Cup</td>
+            <td>OD</td>
+            <td>Laser</td>
+            <td>5</td>
+            <td>4</td>
+            <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+          </tr>
+          <tr>
+            <td>Autumn Regatta</td>
+            <td>H</td>
+            <td>TS-240</td>
+            <td>6</td>
+            <td>5</td>
+            <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+          </tr>
+          <tr>
+            <td>Club Series</td>
+            <td>OD</td>
+            <td>Solo</td>
+            <td>4</td>
+            <td>3</td>
+            <td class="action-cell"><button class="btn-delete">Supprimer</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </main>
 
-  <script>
-    // Gère le recalcul des Totals selon discards et l'affichage de l'état
-    (function(){
-      const select = document.getElementById('discards');
-      const toggle = document.getElementById('toggleDiscards');
-      const status = document.getElementById('seriesStatus');
-      const table = document.getElementById('seriesTable');
-
-      let enabled = true; // discards activés
-
-      function recalc(){
-        const toCount = parseInt(select.value,10); // nombre de courses à compter
-        const rows = table.querySelectorAll('tbody tr');
-        rows.forEach(row=>{
-          const scores = Array.from(row.querySelectorAll('td')).slice(4,9).map(td=>{
-            const v = parseFloat(td.textContent);
-            return isNaN(v) ? Infinity : v;
-          });
-
-          let total;
-          if(enabled){
-            const sorted = scores.slice().sort((a,b)=>a-b);
-            const best = sorted.slice(0,toCount);
-            total = best.reduce((s,n)=>s + (isFinite(n) ? n : 0),0);
-          } else {
-            total = scores.reduce((s,n)=> s + (isFinite(n) ? n : 0),0);
-          }
-
-          row.querySelector('.total').textContent = total;
-        });
-
-        // recalcul classement général
-        const rowsArray = Array.from(rows);
-        rowsArray.sort((a,b)=> parseFloat(a.querySelector('.total').textContent) - parseFloat(b.querySelector('.total').textContent));
-        rowsArray.forEach((r,i)=> r.querySelector('.overall').textContent = i+1);
-
-        // mettre à jour le titre
-        status.textContent = enabled ? '(Série A — éliminations activées)' : '(Série A — éliminations désactivées)';
-      }
-
-      toggle.addEventListener('click', ()=>{
-        enabled = !enabled;
-        toggle.classList.toggle('active', enabled);
-        toggle.textContent = enabled ? 'Eliminations activées' : 'Eliminations désactivées';
-        recalc();
-      });
-
-      // bouton Resultat - navigation
-      const seriesResultBtn = document.getElementById('series-result');
-      if(seriesResultBtn){ seriesResultBtn.addEventListener('click', ()=>{ window.location.href = 'Resultat.html'; }); }
-
-      select.addEventListener('change', recalc);
-      recalc();
-    })();
-
-    // Menu profil: ouverture/fermeture et action déconnexion
-    (function(){
-      const toggle = document.getElementById('profileToggle');
-      const dropdown = document.getElementById('profileDropdown');
-      if(!toggle || !dropdown) return;
-
-      function openDropdown(){ dropdown.hidden = false; toggle.setAttribute('aria-expanded','true'); }
-      function closeDropdown(){ dropdown.hidden = true; toggle.setAttribute('aria-expanded','false'); }
-
-      toggle.addEventListener('click', function(e){ e.stopPropagation(); if(dropdown.hidden) openDropdown(); else closeDropdown(); });
-
-      // logout from menu
-      const logoutMenuBtn = document.getElementById('logoutMenuBtn');
-      if(logoutMenuBtn){
-        logoutMenuBtn.addEventListener('click', function(){
-          if(!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-          try{ localStorage.removeItem('yrr_session_v1'); localStorage.removeItem('yrr_profile_v1'); }catch(e){}
-          window.location.href = 'Connexion.html';
-        });
-      }
-
-      // fermer au clic dehors
-      document.addEventListener('click', function(e){ if(!dropdown.hidden && !toggle.contains(e.target) && !dropdown.contains(e.target)) closeDropdown(); });
-      // fermer avec Escape
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDropdown(); });
-    })();
-  </script>
 </body>
 </html>

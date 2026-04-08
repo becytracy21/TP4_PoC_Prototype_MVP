@@ -60,7 +60,7 @@
             { name:'Course 2', entries:[] },
             { name:'Course 3', entries:[] }
           ] },
-        { name: 'Series B', races: [ {name:'Course 1', entries:[]}, {name:'Course 2', entries:[]}, {name:'RaCoursece 3', entries:[]} ] }
+        { name: 'Series B', races: [ {name:'Course 1', entries:[]}, {name:'Course 2', entries:[]}, {name:'Course 3', entries:[]} ] }
       ],
       currentSeriesIndex: 0,
       currentRaceIndex: 0
