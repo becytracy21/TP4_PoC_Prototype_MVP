@@ -108,32 +108,31 @@
         <summary class="add-summary">+ Ajouter un bateau</summary>
         <form class="add-form" on:submit|preventDefault={addBoat}>
           <div class="row">
-            <div class="col">
-              <label for="boatName">Nom du bateau (optionnel)</label>
+            <label class="stack" for="boatName">
+              <span>Nom du bateau</span>
               <input id="boatName" type="text" bind:value={name} placeholder="Sea Breeze" />
-            </div>
+            </label>
           </div>
 
           <div class="row mt-8">
-            <div class="col">
-              <label for="boatType">H/cap type</label>
+            <label class="stack" for="boatType">
+              <span>H/cap type</span>
               <select id="boatType" bind:value={handicap_type}>
                 <option value="PY">PY</option>
                 <option value="TMF">TMF</option>
               </select>
-            </div>
+            </label>
 
-            <div class="col">
-              <label for="boatValue">H/cap value</label>
+            <label class="stack" for="boatValue">
+              <span>H/cap value</span>
               <input
                 id="boatValue"
-                type="number"
-                step="any"
+                type="text"
+                inputmode="decimal"
                 bind:value={handicap_value}
                 placeholder="e.g. 1.234"
-                required
               />
-            </div>
+            </label>
           </div>
 
           <div class="actions">
@@ -145,7 +144,7 @@
     </div>
 
     <div class="table-wrapper">
-      <table class="table-standard" aria-label="Tableau des bateaux">
+      <table class="table-standard" aria-label="Tableau des bateaux" id="boatTable">
         <thead>
           <tr>
             <th>Nom du bateau</th>
@@ -161,7 +160,7 @@
             </tr>
           {:else if boats.length === 0}
             <tr>
-              <td colspan="4" class="muted">Aucun bateau (ajoute-en un avec “+ Ajouter un bateau”).</td>
+              <td colspan="4" class="muted">Aucun bateau</td>
             </tr>
           {:else}
             {#each boats as b (b.id)}
@@ -182,10 +181,14 @@
         </tbody>
       </table>
     </div>
+
+    <div class="actions-row mt-2">
+      <span class="muted"> </span>
+    </div>
   </section>
 </div>
 
-<footer class="muted mt-18">MVP — page unique Bateaux (MongoDB + Django + Svelte).</footer>
+<footer class="muted mt-18">Prototype → MVP (UI identique, données MongoDB).</footer>
 
 <style>
   /* Styles adaptés du prototype HTML/CSS (look & feel) */
@@ -286,13 +289,18 @@
     height: 480px;
     min-height: 480px;
     max-height: 480px;
-    padding: 12px 18px;
-    border-radius: var(--radius);
-    background: var(--card);
-    box-shadow: var(--shadow);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
     display: flex;
     flex-direction: column;
     overflow: auto;
+
+    /* Prototype look */
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
   }
 
   h3 {
@@ -318,7 +326,6 @@
   }
 
   input[type='text'],
-  input[type='number'],
   select {
     padding: 10px;
     border-radius: var(--radius);
@@ -382,7 +389,8 @@
   .table-wrapper {
     width: 100%;
     margin-bottom: 18px;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     max-height: 277.5px;
     border: 1px solid var(--table-border);
     border-radius: var(--radius);
@@ -431,7 +439,7 @@
     border-bottom: none;
   }
 
-  .action-cell {
+  .table-standard td.action-cell {
     white-space: nowrap;
     text-align: center;
   }
@@ -514,6 +522,10 @@
 
   .mt-18 {
     margin-top: 18px;
+  }
+
+  .mt-2 {
+    margin-top: 8px;
   }
 
   .error {
