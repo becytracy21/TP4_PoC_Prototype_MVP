@@ -297,6 +297,28 @@ code {
 }
 
 /* =============================
+   IMPORTANT (pixel-perfect prototype)
+   On neutralise les styles globaux du template Vite
+   qui modifient h2 (header) et créent des écarts.
+   ============================= */
+
+/* Neutralisation des titres globaux du template.
+   Le prototype ne force pas de font-weight/margin sur h2.
+   => on évite que le h2 du header devienne 500 avec marge/baseline différente. */
+h1,
+h2 {
+  font-family: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+/* =============================
    MVP (look prototype Bateaux)
    ============================= */
 
@@ -773,4 +795,23 @@ header nav a.active {
 .username {
   font-size: 0.9rem;
   font-weight: bold;
+}
+
+/* Bouton ghost (Retour) : présent dans le prototype */
+a.button-ghost {
+  padding: 11px 17px;
+  border: 1px solid var(--accent-1);
+  background: transparent;
+  color: var(--accent-2);
+  box-shadow: 0 12px 36px rgba(124, 58, 237, 0.12);
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-block;
+}
+
+a.button-ghost:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--card);
 }

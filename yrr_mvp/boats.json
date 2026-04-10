@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Sea Breeze",
+    "handicap_type": "PY",
+    "handicap_value": 1.234
+  },
+  {
+    "name": "Wind Rider",
+    "handicap_type": "TMF",
+    "handicap_value": 0.987
+  },
+  {
+    "name": "Blue Horizon",
+    "handicap_type": "PY",
+    "handicap_value": 1.102
+  },
+  {
+    "name": "Ocean Spirit",
+    "handicap_type": "TMF",
+    "handicap_value": 1.7976931348623157e308
+  },
+  {
+    "name": "Silver Wave",
+    "handicap_type": "PY",
+    "handicap_value": 5e-324
+  },
+  {
+    "name": "Red Falcon",
+    "handicap_type": "TMF",
+    "handicap_value": 2.2250738585072014e-308
+  },
+  {
+    "name": "Northern Star",
+    "handicap_type": "PY",
+    "handicap_value": 999999999999.9999
+  },
+  {
+    "name": "Aqua Nova",
+    "handicap_type": "TMF",
+    "handicap_value": 0.0000000001234
+  },
+  {
+    "name": "Storm Chaser",
+    "handicap_type": "PY",
+    "handicap_value": 123456.789012
+  },
+  {
+    "name": "Golden Tide",
+    "handicap_type": "TMF",
+    "handicap_value": 0.00004567
+  }
+]

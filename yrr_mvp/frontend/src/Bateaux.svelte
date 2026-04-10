@@ -118,7 +118,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des bateaux</h2>
-    <p class="hero-subtitle">Liste des bateaux inscrits (MVP)</p>
+    <p class="hero-subtitle">Liste des bateaux inscrits (MVP, données MongoDB)</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
@@ -209,9 +209,9 @@
     </div>
 
     <div class="actions-row mt-2">
-      <span class="muted"> </span>
+      <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Retour</a>
     </div>
   </section>
 </div>
 
-<footer class="muted mt-18">Prototype → MVP (UI identique, données MongoDB).</footer>
+<footer class="muted mt-18">MVP fonctionnel — interface connectée à MongoDB.</footer>
