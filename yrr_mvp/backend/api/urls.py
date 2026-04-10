@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import calculate_corrected_time
+
+from .views import boats, boat_delete
 
 urlpatterns = [
-    path('calculate/', calculate_corrected_time),
+    path('boats', boats),
+    path('boats/<str:boat_id>', boat_delete),
 ]
