@@ -1,14 +1,7 @@
-\# TP4 — PoC / Prototype / MVP
-
-
+# TP4 — PoC / Prototype / MVP
 
 Ce dossier contient :
 
-
-
-\- \*\*yrr\_poc\*\* : preuve de concept  
-
-\- \*\*yrr\_prototype\*\* : prototype HTML/CSS  
-
-\- \*\*yrr\_mvp\*\* : version MVP fonctionnelle (Svelte + Django + MongoDB)
-
+- **yrr_poc** : preuve de concept  
+- **yrr_prototype** : prototype HTML/CSS  
+- **yrr_mvp** : version MVP fonctionnelle (Svelte + Django + MongoDB)
