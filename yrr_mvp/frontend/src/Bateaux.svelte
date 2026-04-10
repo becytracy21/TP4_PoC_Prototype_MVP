@@ -72,7 +72,7 @@
 
   async function deleteBoat(id: string) {
     errorMsg = '';
-    if (!confirm('Supprimer ce bateau ?')) return;
+    if (!confirm('Supprimer ce bateau?')) return;
 
     try {
       const res = await fetch(`${API_BASE}/boats/${id}`, { method: 'DELETE' });
