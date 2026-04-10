@@ -295,7 +295,8 @@
     padding-right: 18px;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     /* Prototype look */
     border-radius: var(--radius);
@@ -403,6 +404,7 @@
     border-collapse: separate;
     border-spacing: 0;
     background-color: transparent;
+    table-layout: fixed;
   }
 
   .table-standard thead {
@@ -413,6 +415,7 @@
   .table-standard td {
     padding: 10px 12px;
     border-bottom: 1px solid var(--table-border);
+    word-break: break-word;
   }
 
   .table-standard th {
