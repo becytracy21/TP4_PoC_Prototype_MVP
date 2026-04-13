@@ -8,8 +8,6 @@ Démarrer la backend
 2. python -m venv .venv
 3. .\.venv\Scripts\Activate.ps1
 4. pip install django djangorestframework django-cors-headers "pymongo[srv]"
-5. $env:MONGODB_URI="mongodb+srv://6271304_db_user:3vgiuBlPQi0ZiesE@cluster0.gu0hq7x.mongodb.net/?appName=Cluster0" 
-	(Si on est à la maison)
 5. $env:MONGODB_URI="mongodb://localhost:27017/"
 	(Si à l'école)
 6. python manage.py migrate
