@@ -512,6 +512,140 @@ footer {
   box-shadow: 0 -6px 20px rgba(11, 36, 64, 0.05);
 }
 
+/* =====================================================================
+   Auth (Inscription/Connexion) — repris du prototype HTML-CSS/style.css
+   ===================================================================== */
+
+.card,
+.card-small,
+.panel {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.card.auth-card {
+  padding: 0;
+}
+
+.card {
+  min-height: 420px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  overflow: hidden;
+}
+
+.brand {
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--card);
+}
+
+.form-wrap {
+  height: 100%;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lead {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+
+.small {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.toggle {
+  margin-left: 8px;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.toggle:hover {
+  color: var(--green);
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input[type='email'],
+input[type='password'],
+input[type='number'],
+textarea {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+}
+
+.btn {
+  display: inline-block;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 14px;
+  border: 0;
+  cursor: pointer;
+  color: var(--card);
+  background: var(--green-gradient);
+  box-shadow: 0 10px 22px rgba(5, 150, 105, 0.16);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--danger);
+}
+
+/* Responsive: empile la card en mobile */
+@media (max-width: 860px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+  .brand {
+    border-radius: 0;
+  }
+}
+
 @media (max-width: 960px) {
   .panel {
     width: 100%;
