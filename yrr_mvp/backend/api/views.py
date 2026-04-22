@@ -76,3 +76,45 @@ def boat_delete(request, boat_id: str):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def _serialize_user(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "name": doc.get("name"),
+        "email": doc.get("email"),
+    }
+
+
+@api_view(["POST"])
+def register(request):
+    db = get_mongo_db()
+    collection = db.users
+
+    payload = request.data if isinstance(request.data, dict) else {}
+
+    name = (payload.get("name") or "").strip()
+    email = (payload.get("email") or "").strip().lower()
+    password = payload.get("password")
+
+    if not name:
+        return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not email:
+        return Response({"detail": "email is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not isinstance(password, str) or len(password) < 6:
+        return Response({"detail": "password must be at least 6 characters"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Unicité email (simple)
+    if collection.find_one({"email": email}):
+        return Response({"detail": "email already exists"}, status=status.HTTP_409_CONFLICT)
+
+    # MVP: on stocke le mot de passe en clair (à remplacer par un hash si on va plus loin)
+    doc = {
+        "name": name,
+        "email": email,
+        "password": password,
+    }
+
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response(_serialize_user(created), status=status.HTTP_201_CREATED)
