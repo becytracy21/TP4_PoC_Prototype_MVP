@@ -81,6 +81,7 @@ header h2 {
   white-space: nowrap;
   color: var(--muted);
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
 .header-center {
@@ -103,6 +104,11 @@ header nav a:hover {
 
 header nav a.active {
   font-weight: 800;
+  text-shadow: 0 5px 16px rgba(124, 58, 237, 0.5);
+  color: var(--accent-2);
+  background: rgba(124, 58, 237, 0.12);
+  border: 2px solid rgba(124, 58, 237, 0.28);
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.14);
 }
 
 .main-nav-bar {
@@ -142,11 +148,13 @@ header nav a.active {
   font-size: 0.9rem;
   background: var(--muted);
   color: var(--card);
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
 .username {
   font-size: 0.9rem;
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
 .container-main {
@@ -177,6 +185,7 @@ header nav a.active {
   font-size: 2.2rem;
   line-height: 1.02;
   font-weight: 800;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--accent-2), transparent 50%);
   color: var(--accent-2);
 }
 
@@ -303,6 +312,8 @@ a.button-ghost:hover {
 
 header a.button-ghost {
   margin: 0;
+  border: 1px solid rgba(124, 58, 237, 0.28);
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.14);
 }
 
 .btn-delete {
@@ -342,6 +353,7 @@ header a.button-ghost {
 .mt-18 {
   margin-top: 18px;
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 75%);
 }
 
 .mb-18 {

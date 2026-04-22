@@ -103,7 +103,9 @@
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Classes</a>
         <a class="button-ghost active" href="bateaux">Bateaux</a>
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Séries</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Résultats</a>
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Course</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Inscriptions</a>
       </div>
     </nav>
   </div>
