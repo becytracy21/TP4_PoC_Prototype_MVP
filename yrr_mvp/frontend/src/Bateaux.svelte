@@ -86,6 +86,19 @@
     }
   }
 
+  function go(href: string) {
+    if (!href) return;
+    if (href.startsWith('#')) window.location.hash = href;
+    else if (href.startsWith('/')) window.location.hash = '#' + href;
+    else window.location.href = href;
+  }
+
+  function navigate(e: MouseEvent) {
+    e.preventDefault();
+    const a = e.currentTarget as HTMLAnchorElement;
+    go(a.getAttribute('href') || '');
+  }
+
   function onHeaderLinkClick(e: MouseEvent) {
     e.preventDefault();
     alert('MVP : seule la page Bateaux est disponible.');
@@ -99,10 +112,10 @@
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#" on:click={onHeaderLinkClick}>Accueil</a>
+        <a href="#/bateaux" on:click={navigate}>Accueil</a>
         <a href="#" on:click={onHeaderLinkClick}>Classes</a>
-        <a href="#" class="active" on:click={onHeaderLinkClick}>Bateaux</a>
-        <a href="#" on:click={onHeaderLinkClick}>Séries</a>
+        <a href="#/bateaux" class="active" on:click={navigate}>Bateaux</a>
+        <a href="#/series" on:click={navigate}>Séries</a>
         <a href="#" on:click={onHeaderLinkClick}>Course</a>
       </div>
     </nav>
