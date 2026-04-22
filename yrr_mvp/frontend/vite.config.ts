@@ -1,7 +1,27 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import * as historyApiFallbackImport from 'connect-history-api-fallback'
+
+const historyApiFallback =
+  (historyApiFallbackImport as any).default ?? (historyApiFallbackImport as any)
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
+  server: {
+    host: true,
+    allowedHosts: ['yachtracingresults.yrr'],
+  },
+  plugins: [
+    svelte(),
+    {
+      name: 'spa-fallback',
+      configureServer(server) {
+        server.middlewares.use(
+          historyApiFallback({
+            htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+          })
+        )
+      },
+    },
+  ],
 })
