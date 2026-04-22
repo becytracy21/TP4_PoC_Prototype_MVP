@@ -1,12 +1,20 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
   import Bateaux from './Bateaux.svelte';
   import Inscription from './Inscription.svelte';
 
-  let page: 'inscription' | 'bateaux' = 'inscription';
+  import { route, navigate } from './router';
+
+  onMount(() => {
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+      navigate('inscription');
+    }
+  });
 </script>
 
-{#if page === 'inscription'}
-  <Inscription onSuccess={() => (page = 'bateaux')} />
+{#if $route === 'inscription'}
+  <Inscription onSuccess={() => navigate('bateaux')} />
 {:else}
   <Bateaux />
 {/if}
