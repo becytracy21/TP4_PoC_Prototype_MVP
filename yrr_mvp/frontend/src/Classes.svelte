@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import './Classes.css';
 
   export let onBack: () => void = () => {};
@@ -20,26 +21,43 @@
 
   // Type pour les classes
   type BoatClass = {
-    id: number;
+    id: string;
     name: string;
     handicap_type: 'PY' | 'TMF';
     handicap_value: number;
   };
 
   // Données des classes
-  let classes: BoatClass[] = [
-    { id: 1, name: 'Albacore', handicap_type: 'PY', handicap_value: 1068 },
-    { id: 2, name: 'Laser', handicap_type: 'PY', handicap_value: 1078 },
-    { id: 3, name: 'Solo', handicap_type: 'PY', handicap_value: 1155 },
-    { id: 4, name: 'TS-240', handicap_type: 'TMF', handicap_value: 998 },
-    { id: 5, name: 'Wanderer', handicap_type: 'PY', handicap_value: 1155 },
-  ];
+  let classes: BoatClass[] = [];
+
+  // URL de base de l'API
+  const API_URL = 'http://localhost:8000/api';
+
+  // Charger les classes depuis la base de données
+  async function loadClasses() {
+    try {
+      const response = await fetch(`${API_URL}/classes`);
+      if (response.ok) {
+        classes = await response.json();
+      } else {
+        showNotification('Erreur lors du chargement des classes');
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des classes:', error);
+      showNotification('Erreur de connexion au serveur');
+    }
+  }
+
+  // Charger les classes au montage du composant
+  onMount(() => {
+    loadClasses();
+  });
 
   // Ensemble des IDs sélectionnés
-  let selectedIds = new Set<number>();
+  let selectedIds = new Set<string>();
 
   // ID de la dernière ligne sélectionnée (pour Shift+clic)
-  let lastSelectedId: number | null = null;
+  let lastSelectedId: string | null = null;
 
   // Fonction pour afficher une notification
   function showNotification(message: string) {
@@ -52,7 +70,7 @@
   }
 
   // Fonction pour ajouter une classe
-  function addClass() {
+  async function addClass() {
     // Validation simple
     if (!className.trim()) {
       showNotification('Le nom de la classe est requis');
@@ -62,21 +80,37 @@
       showNotification('La valeur de handicap est requise');
       return;
     }
-    // Ajouter la nouvelle classe à la liste
-    const newId = Math.max(...classes.map(c => c.id), 0) + 1;
-    classes = [...classes, {
-      id: newId,
-      name: className,
-      handicap_type,
-      handicap_value: Number(handicap_value)
-    }];
-    // Afficher notification de succès
-    showNotification(`Classe ${className} ajoutée avec succès !`);
-    // Réinitialiser le formulaire
-    className = '';
-    handicap_type = 'PY';
-    handicap_value = '';
-    showModal = false;
+
+    try {
+      const response = await fetch(`${API_URL}/classes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: className,
+          handicap_type,
+          handicap_value: parseFloat(handicap_value),
+        }),
+      });
+
+      if (response.ok) {
+        const newClass = await response.json();
+        classes = [...classes, newClass];
+        showNotification(`Classe ${className} ajoutée avec succès !`);
+        // Réinitialiser le formulaire
+        className = '';
+        handicap_type = 'PY';
+        handicap_value = '';
+        showModal = false;
+      } else {
+        const error = await response.json();
+        showNotification(`Erreur : ${error.detail || 'Impossible d\'ajouter la classe'}`);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout:', error);
+      showNotification('Erreur de connexion au serveur');
+    }
   }
 
   // Fonction pour supprimer les classes sélectionnées
@@ -90,12 +124,32 @@
   }
 
   // Fonction pour confirmer la suppression
-  function confirmDelete() {
+  async function confirmDelete() {
     const count = selectedIds.size;
-    classes = classes.filter(c => !selectedIds.has(c.id));
-    selectedIds.clear();
-    showNotification(`${count} classe(s) supprimée(s) avec succès !`);
-    showDeleteConfirm = false;
+    const idsToDelete = Array.from(selectedIds);
+
+    try {
+      // Supprimer chaque classe une par une
+      for (const id of idsToDelete) {
+        const response = await fetch(`${API_URL}/classes/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          showNotification(`Erreur lors de la suppression de la classe ${id}`);
+          return;
+        }
+      }
+
+      // Filtrer les classes supprimées
+      classes = classes.filter(c => !selectedIds.has(c.id));
+      selectedIds.clear();
+      showNotification(`${count} classe(s) supprimée(s) avec succès !`);
+      showDeleteConfirm = false;
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      showNotification('Erreur de connexion au serveur');
+    }
   }
 
   // Fonction pour annuler la suppression
