@@ -213,6 +213,13 @@ header nav a.active {
   overflow-x: hidden;
 }
 
+/* Fenêtre Bateaux — largeur spécifique (~7 pouces = 672px) */
+.panel--bateaux {
+  width: 672px;
+  min-width: 672px;
+  max-width: 672px;
+}
+
 h3 {
   margin: 18.720px 0 18.720px;
   color: var(--text);

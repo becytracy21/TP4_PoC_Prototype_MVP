@@ -4,8 +4,9 @@
   type Boat = {
     id: string;
     name?: string;
-    handicap_type: 'PY' | 'TMF';
-    handicap_value: number;
+    classe?: 'Albacore' | 'Comet' | 'Fireball' | 'Laser' | 'Mirror';
+    sail_number?: number;
+    helmsman?: string;
   };
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
@@ -17,8 +18,21 @@
   let formOpen = false;
 
   let name = '';
-  let handicap_type: 'PY' | 'TMF' = 'PY';
-  let handicap_value = '';
+  let classe: 'Albacore' | 'Comet' | 'Fireball' | 'Laser' | 'Mirror' = 'Albacore';
+  let sail_number = '';
+  let helmsman = '';
+
+  const CLASS_OPTIONS = ['Albacore', 'Comet', 'Fireball', 'Laser', 'Mirror'].sort();
+
+  function mapBoat(raw: any): Boat {
+    return {
+      id: raw.id ?? raw._id ?? String(raw._id ?? Date.now()),
+      name: raw.name ?? raw.nom ?? undefined,
+      classe: raw.classe ?? raw.class ?? undefined,
+      sail_number: raw.sail_number ?? raw.numero_voile ?? undefined,
+      helmsman: raw.helmsman ?? raw.barreur ?? undefined,
+    } as Boat;
+  }
 
   async function loadBoats() {
     loading = true;
@@ -26,7 +40,8 @@
     try {
       const res = await fetch(`${API_BASE}/boats`);
       if (!res.ok) throw new Error(`GET /boats -> ${res.status}`);
-      boats = (await res.json()) as Boat[];
+      const raw = await res.json().catch(() => []);
+      boats = (Array.isArray(raw) ? raw.map(mapBoat) : []).filter(Boolean) as Boat[];
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     } finally {
@@ -37,34 +52,65 @@
   async function addBoat() {
     errorMsg = '';
 
-    const hv = Number(handicap_value);
-    if (Number.isNaN(hv)) {
-      errorMsg = 'H/cap value doit être un nombre';
-      return;
-    }
-
     try {
+      const nv = sail_number === '' ? undefined : Number(sail_number);
+      if (nv !== undefined && Number.isNaN(nv)) {
+        errorMsg = 'Numéro de voile doit être un nombre';
+        return;
+      }
+
+      const payload = {
+        name: name.trim() === '' ? undefined : name.trim(),
+        classe: classe,
+        sail_number: nv,
+        class: classe,
+        helmsman: helmsman.trim() === '' ? undefined : helmsman.trim(),
+      };
+
+      console.debug('POST /boats payload:', payload);
+
       const res = await fetch(`${API_BASE}/boats`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim() === '' ? undefined : name.trim(),
-          handicap_type,
-          handicap_value: hv,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.detail ?? `POST /boats -> ${res.status}`);
+        const txt = await res.text().catch(() => null);
+        let detail: string | null = null;
+        if (txt) {
+          try {
+            const j = JSON.parse(txt);
+            detail = j.detail ?? j.message ?? JSON.stringify(j);
+          } catch {
+            detail = txt;
+          }
+        }
+        throw new Error(detail ? `POST /boats -> ${res.status}: ${detail}` : `POST /boats -> ${res.status}`);
+      }
+
+      const createdRaw = await res.json().catch(() => null);
+      console.debug('addBoat created (raw):', createdRaw);
+
+      if (createdRaw) {
+        const createdBoat = mapBoat(createdRaw);
+        boats = [createdBoat, ...boats];
+      } else {
+        const localBoat: Boat = {
+          id: `local-${Date.now()}`,
+          name: name.trim() === '' ? undefined : name.trim(),
+          classe: classe,
+          sail_number: nv,
+          helmsman: helmsman.trim() === '' ? undefined : helmsman.trim(),
+        };
+        boats = [localBoat, ...boats];
       }
 
       name = '';
-      handicap_type = 'PY';
-      handicap_value = '';
+      classe = 'Albacore';
+      sail_number = '';
+      helmsman = '';
       formOpen = false;
-
-      await loadBoats();
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     }
@@ -138,26 +184,24 @@
               <span>Nom du bateau</span>
               <input id="boatName" type="text" bind:value={name} placeholder="Sea Breeze" />
             </label>
-          </div>
 
-          <div class="row mt-8">
-            <label class="stack" for="boatType">
-              <span>H/cap type</span>
-              <select id="boatType" bind:value={handicap_type}>
-                <option value="PY">PY</option>
-                <option value="TMF">TMF</option>
+            <label class="stack" for="boatClass">
+              <span>Classe</span>
+              <select id="boatClass" bind:value={classe}>
+                {#each CLASS_OPTIONS as opt}
+                  <option value={opt}>{opt}</option>
+                {/each}
               </select>
             </label>
 
-            <label class="stack" for="boatValue">
-              <span>H/cap value</span>
-              <input
-                id="boatValue"
-                type="text"
-                inputmode="decimal"
-                bind:value={handicap_value}
-                placeholder="e.g. 1.234"
-              />
+            <label class="stack" for="boatNumber">
+              <span>Numéro de voile</span>
+              <input id="boatNumber" type="text" inputmode="decimal" bind:value={sail_number} placeholder="e.g. 1234" />
+            </label>
+
+            <label class="stack" for="boatHelmsman">
+              <span>Barreur</span>
+              <input id="boatHelmsman" type="text" bind:value={helmsman} placeholder="Jean Dupont" />
             </label>
           </div>
 
@@ -174,30 +218,28 @@
         <thead>
           <tr>
             <th>Nom du bateau</th>
-            <th>H/cap type</th>
-            <th>H/cap value</th>
+            <th>Classe</th>
+            <th>Numéro de voile</th>
+            <th>Barreur</th>
             <th class="action-cell"></th>
           </tr>
         </thead>
         <tbody>
           {#if loading}
             <tr>
-              <td colspan="4" class="muted">Chargement…</td>
+              <td colspan="5" class="muted">Chargement…</td>
             </tr>
           {:else if boats.length === 0}
             <tr>
-              <td colspan="4" class="muted">Aucun bateau</td>
+              <td colspan="5" class="muted">Aucun bateau</td>
             </tr>
           {:else}
             {#each boats as b (b.id)}
               <tr>
                 <td>{b.name ?? ''}</td>
-                <td>
-                  <span class={"badge " + (b.handicap_type === 'PY' ? 'badge--py' : 'badge--tmf')}>
-                    {b.handicap_type}
-                  </span>
-                </td>
-                <td>{b.handicap_value}</td>
+                <td>{b.classe ?? ''}</td>
+                <td>{b.sail_number ?? ''}</td>
+                <td>{b.helmsman ?? ''}</td>
                 <td class="action-cell">
                   <button class="btn-delete" type="button" on:click={() => deleteBoat(b.id)}>Supprimer</button>
                 </td>
