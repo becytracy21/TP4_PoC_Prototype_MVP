@@ -88,7 +88,7 @@
 
   function onHeaderLinkClick(e: MouseEvent) {
     e.preventDefault();
-    alert('MVP : seule la page Bateaux est disponible.');
+    alert('Seule la page Bateaux est disponible.');
   }
 
   onMount(loadBoats);
@@ -101,7 +101,7 @@
       <div class="nav-left">
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Accueil</a>
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Classes</a>
-        <a class="button-ghost active" href="#" on:click={onHeaderLinkClick}>Bateaux</a>
+        <a class="button-ghost active" href="bateaux">Bateaux</a>
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Séries</a>
         <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Course</a>
       </div>
@@ -118,7 +118,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des bateaux</h2>
-    <p class="hero-subtitle">Liste des bateaux inscrits (MVP, données MongoDB)</p>
+    <p class="hero-subtitle">Liste des bateaux inscrits</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 

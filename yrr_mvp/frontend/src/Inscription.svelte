@@ -120,7 +120,7 @@
 
           <div class="mt-12">
             <span class="small">Déjà inscrit ?</span>
-            <a class="toggle" href="#" on:click|preventDefault={() => alert('MVP : seule l\'inscription est implémentée pour le moment.')}
+            <a class="toggle" href="#" on:click|preventDefault={() => alert('Seule l\'inscription est implémentée pour le moment.')}
               >Se connecter</a
             >
           </div>
