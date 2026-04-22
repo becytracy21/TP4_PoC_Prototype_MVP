@@ -76,3 +76,49 @@ def boat_delete(request, boat_id: str):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def _serialize_course(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "od": doc.get("od"),
+        "class_name": doc.get("class_name"),
+        "date": doc.get("date"),
+        "time": doc.get("time"),
+        "name": doc.get("name"),
+        "course": doc.get("course"),
+    }
+
+@api_view(["GET", "POST"])
+def courses(request):
+    db = get_mongo_db()
+    collection = db.courses
+
+    if request.method == "GET":
+        courses_list = [_serialize_course(d) for d in collection.find().sort("_id", -1)]
+        return Response(courses_list)
+
+    # POST
+    payload = request.data if isinstance(request.data, dict) else {}
+    od = payload.get("od")
+    class_name = payload.get("class_name")
+    date = payload.get("date")
+    time = payload.get("time")
+    name = payload.get("name")
+    course = payload.get("course")
+
+    # Validation simple
+    if not all([od, class_name, date, time, name, course]):
+        return Response({"detail": "Tous les champs sont obligatoires"}, status=status.HTTP_400_BAD_REQUEST)
+
+    doc = {
+        "od": str(od),
+        "class_name": str(class_name),
+        "date": str(date),
+        "time": str(time),
+        "name": str(name),
+        "course": str(course),
+    }
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response(_serialize_course(created), status=status.HTTP_201_CREATED)

@@ -344,11 +344,24 @@ a.button-ghost:hover {
   margin-bottom: 18px;
 }
 
+.title-select {
+  padding: 6px 10px;
+  margin-left: 8px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1rem;
+  min-width: 160px;
+}
+
 .table-wrapper {
   width: 100%;
+  margin-bottom: 18px;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 280px;
+  max-height: 277.5px;
   border: 1px solid var(--table-border);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.55);
@@ -434,9 +447,28 @@ a.button-ghost:hover {
   border-bottom: none;
 }
 
-.table-standard td.action-cell {
-  white-space: nowrap;
-  text-align: center;
+.table-standard input.cell-input,
+.table-standard select.cell-input,
+.table-standard textarea.cell-input {
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text);
+  outline: none;
+}
+
+.table-standard input.cell-input.small {
+  min-width: 90px;
+}
+
+.table-standard input.cell-input:focus,
+.table-standard select.cell-input:focus,
+.table-standard textarea.cell-input:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
 }
 
 .badge {

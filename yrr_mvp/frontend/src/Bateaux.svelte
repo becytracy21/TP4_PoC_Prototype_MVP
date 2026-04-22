@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
 
   type Boat = {
     id: string;
@@ -19,6 +20,8 @@
   let name = '';
   let handicap_type: 'PY' | 'TMF' = 'PY';
   let handicap_value = '';
+
+  const dispatch = createEventDispatcher();
 
   async function loadBoats() {
     loading = true;
@@ -86,9 +89,14 @@
     }
   }
 
-  function onHeaderLinkClick(e: MouseEvent) {
+  function onHeaderLinkClick(e: MouseEvent, page: string = '') {
     e.preventDefault();
-    alert('MVP : seule la page Bateaux est disponible.');
+    if (page === 'course') {
+      // navigation vers la page Course
+      dispatch('navigate', 'course');
+    } else {
+      alert('MVP : seule la page Bateaux et Course sont disponibles.');
+    }
   }
 
   onMount(loadBoats);
@@ -99,11 +107,11 @@
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#" on:click={onHeaderLinkClick}>Accueil</a>
-        <a href="#" on:click={onHeaderLinkClick}>Classes</a>
-        <a href="#" class="active" on:click={onHeaderLinkClick}>Bateaux</a>
-        <a href="#" on:click={onHeaderLinkClick}>Séries</a>
-        <a href="#" on:click={onHeaderLinkClick}>Course</a>
+        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Accueil</a>
+        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Classes</a>
+        <a href="#" class="active" on:click={(e) => onHeaderLinkClick(e)}>Bateaux</a>
+        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Séries</a>
+        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'course')}>Course</a>
       </div>
     </nav>
   </div>
