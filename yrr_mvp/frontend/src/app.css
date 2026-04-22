@@ -512,24 +512,20 @@ footer {
   box-shadow: 0 -6px 20px rgba(11, 36, 64, 0.05);
 }
 
-/* =====================================================================
-   Auth (Inscription/Connexion) — repris du prototype HTML-CSS/style.css
-   ===================================================================== */
-
-.card,
-.card-small,
-.panel {
+/* Styles Inscription/Connexion isolés: n'impacte pas la page Bateaux */
+.auth-page .card,
+.auth-page .card-small {
   padding: 18px;
   border-radius: var(--radius);
   background: var(--card);
   box-shadow: var(--shadow);
 }
 
-.card.auth-card {
+.auth-page .card.auth-card {
   padding: 0;
 }
 
-.card {
+.auth-page .card {
   min-height: 420px;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -537,7 +533,7 @@ footer {
   overflow: hidden;
 }
 
-.brand {
+.auth-page .brand {
   height: 100%;
   padding: 40px;
   display: flex;
@@ -548,7 +544,7 @@ footer {
   color: var(--card);
 }
 
-.form-wrap {
+.auth-page .form-wrap {
   height: 100%;
   padding: 36px;
   display: flex;
@@ -556,51 +552,59 @@ footer {
   justify-content: center;
 }
 
-.lead {
+.auth-page .lead {
   margin-top: 0;
   color: var(--muted);
 }
 
-.mt-0 {
-  margin-top: 0;
-}
-
-.mt-12 {
-  margin-top: 12px;
-}
-
-.small {
-  font-size: 0.85rem;
+.auth-page .small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
   color: var(--muted);
 }
 
-.toggle {
-  margin-left: 8px;
+.auth-page .small label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.auth-page a.toggle {
   font-weight: 700;
   color: var(--accent-2);
   text-decoration: none;
 }
 
-.toggle:hover {
-  color: var(--green);
+.auth-page a.toggle:hover {
+  color: var(--green-2);
+  text-decoration: underline;
 }
 
-.row {
-  display: flex;
-  gap: 12px;
-}
-
-.col {
+.auth-page .row .col {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-input[type='email'],
-input[type='password'],
-input[type='number'],
-textarea {
+.auth-page .actions .small {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.auth-page .actions .small label {
+  white-space: nowrap;
+}
+
+.auth-page input[type='text'],
+.auth-page input[type='email'],
+.auth-page input[type='password'],
+.auth-page input[type='number'],
+.auth-page select,
+.auth-page textarea {
   padding: 10px;
   border-radius: var(--radius);
   border: 1px solid var(--input-border);
@@ -609,62 +613,40 @@ textarea {
   outline: none;
 }
 
-.btn {
-  display: inline-block;
-  border-radius: var(--radius);
-  text-decoration: none;
-  font-weight: 700;
-  padding: 10px 14px;
-  border: 0;
+.auth-page .btn {
+  padding: 12px 18px;
+  border: none;
   cursor: pointer;
+  background: var(--accent);
   color: var(--card);
+  box-shadow: 0 12px 36px rgba(124, 58, 237, 0.12);
+}
+
+.auth-page .btn:hover {
   background: var(--green-gradient);
-  box-shadow: 0 10px 22px rgba(5, 150, 105, 0.16);
 }
 
-.btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.error {
-  margin: 10px 0;
-  padding: 10px 12px;
+.auth-page .error {
   border-radius: var(--radius);
-  border: 1px solid rgba(220, 38, 38, 0.25);
+  padding: 10px 12px;
+  margin-bottom: 12px;
   background: rgba(220, 38, 38, 0.08);
-  color: var(--danger);
-}
-
-/* Responsive: empile la card en mobile */
-@media (max-width: 860px) {
-  .card {
-    grid-template-columns: 1fr;
-  }
-  .brand {
-    border-radius: 0;
-  }
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  color: var(--danger-2);
+  font-weight: bold;
 }
 
 @media (max-width: 960px) {
-  .panel {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
+  .auth-page .card {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .auth-page .brand {
     height: auto;
-    min-height: 0;
-    max-height: none;
   }
 
-  .row {
-    flex-direction: column;
-  }
-
-  footer {
-    position: static;
-  }
-
-  .container-main {
-    padding-bottom: 24px;
+  .auth-page .form-wrap {
+    height: auto;
   }
 }

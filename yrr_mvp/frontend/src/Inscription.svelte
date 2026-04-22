@@ -64,68 +64,70 @@
   }
 </script>
 
-<div class="container-main">
-  <div class="card auth-card">
-    <div class="brand">
-      <h2>YRR - Prototype</h2>
-      <p>Création de compte (fonctionnel).</p>
-      <p>Les données sont enregistrées dans MongoDB.</p>
-    </div>
+<div class="auth-page">
+  <div class="container-main">
+    <div class="card auth-card">
+      <div class="brand">
+        <h2>YRR - Prototype</h2>
+        <p>Création de compte (fonctionnel).</p>
+        <p>Les données sont enregistrées dans MongoDB.</p>
+      </div>
 
-    <div class="form-wrap">
-      <h1 class="mt-0">Inscription</h1>
-      <p class="lead">Créez un compte en quelques secondes.</p>
+      <div class="form-wrap">
+        <h1 class="mt-0">Inscription</h1>
+        <p class="lead">Créez un compte en quelques secondes.</p>
 
-      {#if errorMsg}
-        <div class="error" role="alert">{errorMsg}</div>
-      {/if}
+        {#if errorMsg}
+          <div class="error" role="alert">{errorMsg}</div>
+        {/if}
 
-      <form on:submit|preventDefault={submit}>
-        <label for="regName">Nom complet</label>
-        <input id="regName" type="text" bind:value={name} required placeholder="Votre nom" autocomplete="name" />
+        <form on:submit|preventDefault={submit}>
+          <label for="regName">Nom complet</label>
+          <input id="regName" type="text" bind:value={name} required placeholder="Votre nom" autocomplete="name" />
 
-        <label for="regEmail">Email</label>
-        <input id="regEmail" type="email" bind:value={email} required placeholder="exemple@domaine.com" autocomplete="email" />
+          <label for="regEmail">Email</label>
+          <input id="regEmail" type="email" bind:value={email} required placeholder="exemple@domaine.com" autocomplete="email" />
 
-        <div class="row">
-          <div class="col">
-            <label for="regPassword">Mot de passe</label>
-            <input
-              id="regPassword"
-              type="password"
-              bind:value={password}
-              required
-              minlength={6}
-              placeholder="Mot de passe (min 6)"
-              autocomplete="new-password"
-            />
+          <div class="row">
+            <div class="col">
+              <label for="regPassword">Mot de passe</label>
+              <input
+                id="regPassword"
+                type="password"
+                bind:value={password}
+                required
+                minlength={6}
+                placeholder="Mot de passe (min 6)"
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="col">
+              <label for="regPassword2">Confirmer mot de passe</label>
+              <input
+                id="regPassword2"
+                type="password"
+                bind:value={password2}
+                required
+                minlength={6}
+                placeholder="Confirmer"
+                autocomplete="new-password"
+              />
+            </div>
           </div>
-          <div class="col">
-            <label for="regPassword2">Confirmer mot de passe</label>
-            <input
-              id="regPassword2"
-              type="password"
-              bind:value={password2}
-              required
-              minlength={6}
-              placeholder="Confirmer"
-              autocomplete="new-password"
-            />
+
+          <div class="actions">
+            <div class="small"></div>
+            <button class="btn" type="submit" disabled={loading}>{loading ? 'Création…' : 'Créer le compte'}</button>
           </div>
-        </div>
 
-        <div class="actions">
-          <div class="small"></div>
-          <button class="btn" type="submit" disabled={loading}>{loading ? 'Création…' : 'Créer le compte'}</button>
-        </div>
-
-        <div class="mt-12">
-          <span class="small">Déjà inscrit ?</span>
-          <a class="toggle" href="#" on:click|preventDefault={() => alert('MVP : seule l\'inscription est implémentée pour le moment.')}
-            >Se connecter</a
-          >
-        </div>
-      </form>
+          <div class="mt-12">
+            <span class="small">Déjà inscrit ?</span>
+            <a class="toggle" href="#" on:click|preventDefault={() => alert('MVP : seule l\'inscription est implémentée pour le moment.')}
+              >Se connecter</a
+            >
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
