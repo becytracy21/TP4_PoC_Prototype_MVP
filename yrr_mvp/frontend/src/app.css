@@ -513,6 +513,11 @@ footer {
 }
 
 /* Styles Inscription/Connexion isolés: n'impacte pas la page Bateaux */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+}
+
 .auth-page .card,
 .auth-page .card-small {
   padding: 18px;
