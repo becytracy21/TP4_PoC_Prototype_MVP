@@ -7,6 +7,10 @@ const historyApiFallback =
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    host: true,
+    allowedHosts: ['yachtracingresults.yrr'],
+  },
   plugins: [
     svelte(),
     {
