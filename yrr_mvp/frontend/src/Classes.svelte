@@ -59,6 +59,10 @@
   // ID de la dernière ligne sélectionnée (pour Shift+clic)
   let lastSelectedId: string | null = null;
 
+  // État du tri
+  let sortColumn: 'name' | 'handicap_type' | 'handicap_value' | null = null;
+  let sortDirection: 'asc' | 'desc' = 'asc';
+
   // Fonction pour afficher une notification
   function showNotification(message: string) {
     snackMessage = message;
@@ -67,6 +71,32 @@
     setTimeout(() => {
       showSnack = false;
     }, 3000);
+  }
+
+  // Fonction pour trier les classes
+  function sortClasses(column: 'name' | 'handicap_type' | 'handicap_value') {
+    if (sortColumn === column) {
+      // Si on clique sur la même colonne, inverser la direction
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Sinon, trier par la nouvelle colonne en ordre croissant
+      sortColumn = column;
+      sortDirection = 'asc';
+    }
+
+    // Trier le tableau
+    classes = [...classes].sort((a, b) => {
+      let aVal: any = a[column];
+      let bVal: any = b[column];
+
+      // Convertir en minuscules pour les strings
+      if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+      if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 
   // Fonction pour ajouter une classe
@@ -265,9 +295,15 @@
                 aria-label="Sélectionner tout"
               />
             </th>
-            <th>Nom de la classe</th>
-            <th>Type de handicap</th>
-            <th class="text-center">Valeur de handicap</th>
+            <th role="button" on:click={() => sortClasses('name')} style="cursor: pointer;">
+              Nom de la classe {sortColumn === 'name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+            </th>
+            <th role="button" on:click={() => sortClasses('handicap_type')} style="cursor: pointer;">
+              Type de handicap {sortColumn === 'handicap_type' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+            </th>
+            <th role="button" on:click={() => sortClasses('handicap_value')} class="text-center" style="cursor: pointer;">
+              Valeur de handicap {sortColumn === 'handicap_value' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -296,12 +332,12 @@
     </div>
     <div class="actions-row mt-2">
       <button class="btn" type="button" on:click={openModal}>Ajouter</button>
-      <!-- Bouton Supprimer désactivé si aucune ligne sélectionnée -->
-      <button class="btn" type="button" on:click={deleteSelected} disabled={selectedIds.size === 0}>
+      <button class="btn" type="button">Imprimer</button>
+      <a class="button-ghost" href="#" on:click={() => onBack()}>Retour</a>
+      <!-- Bouton Supprimer à droite et en rouge -->
+      <button class="btn-delete" type="button" on:click={deleteSelected} disabled={selectedIds.size === 0} style="margin-left: auto;">
         Supprimer {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
       </button>
-      <button class="btn" type="button">Imprimer</button>
-      <a class="button-ghost" href="#" on:click={() => onBack()}>Annuler / Retour</a>
     </div>
   </section>
 </div>
