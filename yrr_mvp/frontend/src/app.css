@@ -84,6 +84,10 @@ header h2 {
   text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
+.auth-page h2 {
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--text), transparent 25%);
+}
+
 .header-center {
   flex: 1;
   display: flex;
