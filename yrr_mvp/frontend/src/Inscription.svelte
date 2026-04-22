@@ -15,19 +15,19 @@
     errorMsg = '';
 
     if (name.trim() === '') {
-      errorMsg = 'Nom complet requis';
+      errorMsg = 'Le nom complet est requis.';
       return;
     }
     if (email.trim() === '') {
-      errorMsg = 'Email requis';
+      errorMsg = 'L\'adresse e-mail est requise.';
       return;
     }
     if (password.length < 6) {
-      errorMsg = 'Mot de passe : minimum 6 caractères';
+      errorMsg = 'Le mot de passe doit contenir au moins 6 caractères.';
       return;
     }
     if (password !== password2) {
-      errorMsg = 'Les mots de passe ne correspondent pas';
+      errorMsg = 'Les mots de passe ne correspondent pas.';
       return;
     }
 
@@ -45,7 +45,7 @@
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.detail ?? `POST /users/register -> ${res.status}`);
+        throw new Error(data?.detail ?? `Erreur lors de l\'inscription (HTTP ${res.status}).`);
       }
 
       name = '';
@@ -55,7 +55,7 @@
 
       onSuccess?.();
     } catch (e) {
-      errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
+      errorMsg = e instanceof Error ? e.message : 'Erreur réseau.';
     } finally {
       loading = false;
     }

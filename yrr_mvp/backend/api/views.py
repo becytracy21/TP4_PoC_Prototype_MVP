@@ -98,15 +98,18 @@ def register(request):
     password = payload.get("password")
 
     if not name:
-        return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Le nom complet est requis."}, status=status.HTTP_400_BAD_REQUEST)
     if not email:
-        return Response({"detail": "email is required"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "L’adresse e-mail est requise."}, status=status.HTTP_400_BAD_REQUEST)
     if not isinstance(password, str) or len(password) < 6:
-        return Response({"detail": "password must be at least 6 characters"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"detail": "Le mot de passe doit contenir au moins 6 caractères."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     # Unicité email (simple)
     if collection.find_one({"email": email}):
-        return Response({"detail": "email already exists"}, status=status.HTTP_409_CONFLICT)
+        return Response({"detail": "Cette adresse e-mail est déjà utilisée."}, status=status.HTTP_409_CONFLICT)
 
     # MVP: on stocke le mot de passe en clair (à remplacer par un hash si on va plus loin)
     doc = {

@@ -99,11 +99,11 @@
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#" on:click={onHeaderLinkClick}>Accueil</a>
-        <a href="#" on:click={onHeaderLinkClick}>Classes</a>
-        <a href="#" class="active" on:click={onHeaderLinkClick}>Bateaux</a>
-        <a href="#" on:click={onHeaderLinkClick}>Séries</a>
-        <a href="#" on:click={onHeaderLinkClick}>Course</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Accueil</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Classes</a>
+        <a class="button-ghost active" href="#" on:click={onHeaderLinkClick}>Bateaux</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Séries</a>
+        <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Course</a>
       </div>
     </nav>
   </div>
