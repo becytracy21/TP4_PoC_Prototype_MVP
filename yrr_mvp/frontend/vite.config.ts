@@ -14,7 +14,6 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use(
           historyApiFallback({
-            // réécrit uniquement les routes "propres" vers /index.html
             htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
           })
         )

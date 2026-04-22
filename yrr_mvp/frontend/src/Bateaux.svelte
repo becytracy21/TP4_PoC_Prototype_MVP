@@ -95,7 +95,7 @@
 </script>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>Yacht Racing Results</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
@@ -214,4 +214,4 @@
   </section>
 </div>
 
-<footer class="muted mt-18">MVP fonctionnel — interface connectée à MongoDB.</footer>
+<footer class="text-muted mt-18 small">&copy; 2026 Yacht Racing Results (YRR) - Radmehr Rahmani (2356157)</footer>

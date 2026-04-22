@@ -9,7 +9,6 @@
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
-  // Permet à App.svelte de basculer vers la page Bateaux après inscription
   export let onSuccess: (() => void) | undefined;
 
   async function submit() {
@@ -49,7 +48,6 @@
         throw new Error(data?.detail ?? `POST /users/register -> ${res.status}`);
       }
 
-      // reset minimal
       name = '';
       email = '';
       password = '';
