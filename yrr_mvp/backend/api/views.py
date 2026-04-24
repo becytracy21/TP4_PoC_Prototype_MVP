@@ -11,18 +11,10 @@ def _serialize_boat(doc):
     return {
         "id": str(doc.get("_id")),
         "name": doc.get("name"),
-        "handicap_type": doc.get("handicap_type"),
-        "handicap_value": doc.get("handicap_value"),
+        "class": doc.get("class"),
+        "sail_number": doc.get("sail_number"),
+        "helmsman": doc.get("helmsman")
     }
-
-
-def _parse_handicap_value(value):
-    # handicap_value doit être un nombre (float)
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
-
 
 @api_view(["GET", "POST"])
 def boats(request):
@@ -37,24 +29,30 @@ def boats(request):
     payload = request.data if isinstance(request.data, dict) else {}
 
     name = payload.get("name")
-    handicap_type = payload.get("handicap_type")
-    handicap_value_raw = payload.get("handicap_value")
+    boat_class = payload.get("class")
+    sail_number = payload.get("sail_number")
+    helmsman = payload.get("helmsman")
 
-    if handicap_type not in {"PY", "TMF"}:
-        return Response({"detail": "handicap_type must be 'PY' or 'TMF'"}, status=status.HTTP_400_BAD_REQUEST)
+    # construire le document en évitant l'utilisation d'une variable non initialisée
+    doc = {}
 
-    handicap_value = _parse_handicap_value(handicap_value_raw)
-    if handicap_value is None:
-        return Response({"detail": "handicap_value must be a number"}, status=status.HTTP_400_BAD_REQUEST)
-
-    doc = {
-        "handicap_type": handicap_type,
-        "handicap_value": handicap_value,
-    }
-
-    # name optionnel
+    # ajouter les champs fournis (name est optionnel)
     if name not in (None, ""):
         doc["name"] = str(name)
+
+    if boat_class:
+        doc["class"] = boat_class
+
+    if sail_number is not None:
+        # accepter 0 et valeurs numériques
+        doc["sail_number"] = sail_number
+
+    if helmsman:
+        doc["helmsman"] = helmsman
+
+    # si aucun champ n'a été fourni, retourner une erreur
+    if not doc:
+        return Response({"detail": "No data provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})

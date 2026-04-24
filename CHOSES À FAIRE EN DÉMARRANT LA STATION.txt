@@ -1,7 +1,7 @@
 CHOSES À FAIRE EN DÉMARRANT LA STATION
 
 1. Télécharger MongoDB Community Server
-   Lien : https://www.mongodb.com/try/download/community
+   Lien : https://mongodb.com
 
 2. Démarrer le Backend
    1. cd TP4_PoC_Prototype_MVP\yrr_mvp\backend
