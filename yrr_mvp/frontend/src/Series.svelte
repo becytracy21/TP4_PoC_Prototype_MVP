@@ -22,24 +22,40 @@
   let formOpen = false;
   let seriesName = '';
   let seriesRaces = 3;
+  let seriesClasse = '';
+  let seriesCounted = 3;
   let series = [
-    { id: 1, name: 'Série A', races: 3 },
-    { id: 2, name: 'Série B', races: 2 }
+    { id: 1, name: 'Série A', races: 3, classe: 'Laser', counted: 3 },
+    { id: 2, name: 'Série B', races: 2, classe: 'Solo', counted: 2 }
   ];
   let errorMessage = '';
 
   function addSeries() {
     const name = (seriesName || '').trim();
+    const classe = (seriesClasse || '').trim();
     const races = Math.max(1, Number(seriesRaces) || 1);
+    const counted = Math.max(1, Number(seriesCounted) || 1);
     if (!name) {
       errorMessage = 'Veuillez saisir un nom de série.';
       formOpen = true;
       return;
     }
+    if (!classe) {
+      errorMessage = "Veuillez saisir un nom de classe.";
+      formOpen = true;
+      return;
+    }
+    if (counted > races) {
+      errorMessage = 'Le nombre de courses à comptabiliser ne peut pas dépasser le nombre total de courses.';
+      formOpen = true;
+      return;
+    }
     const id = Date.now();
-    series = [{ id, name, races }, ...series];
+    series = [{ id, name, races, classe, counted }, ...series];
     seriesName = '';
     seriesRaces = 3;
+    seriesClasse = '';
+    seriesCounted = 3;
     formOpen = false;
     errorMessage = '';
   }
@@ -82,7 +98,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des séries</h2>
-    <p class="hero-subtitle">Liste des séries de courses (prototype, données simulées)</p>
+    <p class="hero-subtitle">Liste des séries de courses</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
@@ -93,6 +109,8 @@
         <thead>
           <tr>
             <th>Nom de la série</th>
+            <th>Classe</th>
+            <th class="text-center">Nombre de course<br/> à comptabiliser</th>
             <th class="text-center">Nombre de courses</th>
             <th>Actions</th>
           </tr>
@@ -100,12 +118,14 @@
         <tbody>
           {#if series.length === 0}
             <tr>
-              <td colspan="3" class="muted">Aucune série</td>
+              <td colspan="5" class="muted">Aucune série</td>
             </tr>
           {:else}
             {#each series as s (s.id)}
               <tr>
                 <td>{s.name}</td>
+                <td>{s.classe}</td>
+                <td class="text-center">{s.counted}</td>
                 <td class="text-center">{s.races}</td>
                 <td>
                   <div class="table-actions">
@@ -135,10 +155,24 @@
             {/if}
           </div>
 
+          <div class="row mt-6">
+            <label class="stack" for="seriesClasse">
+              <span>Classe</span>
+              <input id="seriesClasse" type="text" bind:value={seriesClasse} placeholder="Laser" />
+            </label>
+          </div>
+
+          <div class="row mt-6">
+            <label class="stack" for="seriesCounted">
+              <span>Nombre de courses à comptabiliser</span>
+              <input id="seriesCounted" type="number" min="1" bind:value={seriesCounted} />
+            </label>
+          </div>
+
           <div class="row mt-8">
             <label class="stack" for="seriesRaces">
               <span>Nombre de courses</span>
-              <input id="seriesRaces" type="number" min="1" bind:value={seriesRaces} />
+              <input id="seriesRaces" type="number" min="2" bind:value={seriesRaces} />
             </label>
           </div>
 
