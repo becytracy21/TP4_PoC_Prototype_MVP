@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte';
+
   // navigation hash: assure que l'app reste dans le SPA
   function go(href) {
     if (!href) return;
@@ -18,19 +20,41 @@
     go(href);
   }
 
-  // séries localement gérées (simulation)
+  // séries gérées via l'API
   let formOpen = false;
   let seriesName = '';
   let seriesRaces = 3;
   let seriesClasse = '';
   let seriesCounted = 3;
-  let series = [
-    { id: 1, name: 'Série A', races: 3, classe: 'Laser', counted: 3 },
-    { id: 2, name: 'Série B', races: 2, classe: 'Solo', counted: 2 }
-  ];
+  let series = [];
   let errorMessage = '';
 
-  function addSeries() {
+  async function loadSeries() {
+    errorMessage = '';
+    try {
+      const res = await fetch('/api/series');
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const body = await res.json().catch(() => null);
+          if (body) detail = body.detail || JSON.stringify(body);
+        } catch (e) {
+          detail = '';
+        }
+        errorMessage = `Erreur serveur ${res.status}: ${detail || res.statusText}`;
+         return;
+       }
+       series = await res.json();
+     } catch (e) {
+      errorMessage = `Erreur réseau lors du chargement des séries: ${e && e.message ? e.message : e}`;
+     }
+   }
+
+  onMount(() => {
+    loadSeries();
+  });
+
+  async function addSeries() {
     const name = (seriesName || '').trim();
     const classe = (seriesClasse || '').trim();
     const races = Math.max(1, Number(seriesRaces) || 1);
@@ -50,19 +74,46 @@
       formOpen = true;
       return;
     }
-    const id = Date.now();
-    series = [{ id, name, races, classe, counted }, ...series];
-    seriesName = '';
-    seriesRaces = 3;
-    seriesClasse = '';
-    seriesCounted = 3;
-    formOpen = false;
-    errorMessage = '';
+
+    try {
+      const res = await fetch('/api/series', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, classe, races, counted })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        errorMessage = data.detail || 'Erreur lors de la création de la série.';
+        formOpen = true;
+        return;
+      }
+      // succès : insérer la série retournée par l'API
+      series = [data, ...series];
+      seriesName = '';
+      seriesRaces = 3;
+      seriesClasse = '';
+      seriesCounted = 3;
+      formOpen = false;
+      errorMessage = '';
+    } catch (e) {
+      errorMessage = 'Erreur réseau lors de la création.';
+      formOpen = true;
+    }
   }
 
-  function deleteSeries(id) {
+  async function deleteSeries(id) {
     if (!confirm('Supprimer cette série ?')) return;
-    series = series.filter(s => s.id !== id);
+    try {
+      const res = await fetch(`/api/series/${id}`, { method: 'DELETE' });
+      if (res.status === 204) {
+        series = series.filter(s => s.id !== id);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        errorMessage = data.detail || 'Impossible de supprimer la série.';
+      }
+    } catch (e) {
+      errorMessage = 'Erreur réseau lors de la suppression.';
+    }
   }
 </script>
 

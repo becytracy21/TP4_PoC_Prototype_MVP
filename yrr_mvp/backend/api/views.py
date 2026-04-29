@@ -76,3 +76,71 @@ def boat_delete(request, boat_id: str):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST"])
+def series(request):
+    db = get_mongo_db()
+    collection = db.series
+
+    if request.method == "GET":
+        series_list = []
+        for d in collection.find().sort("_id", -1):
+            series_list.append({
+                "id": str(d.get("_id")),
+                "name": d.get("name"),
+                "classe": d.get("classe"),
+                "races": d.get("races"),
+                "counted": d.get("counted"),
+            })
+        return Response(series_list)
+
+    # POST
+    payload = request.data if isinstance(request.data, dict) else {}
+    name = (payload.get("name") or "").strip()
+    classe = (payload.get("classe") or "").strip()
+    try:
+        races = int(payload.get("races", 0))
+    except Exception:
+        races = 0
+    try:
+        counted = int(payload.get("counted", 0))
+    except Exception:
+        counted = 0
+
+    if not name:
+        return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not classe:
+        return Response({"detail": "classe is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if races < 1:
+        return Response({"detail": "races must be >= 1"}, status=status.HTTP_400_BAD_REQUEST)
+    if counted < 1 or counted > races:
+        return Response({"detail": "counted must be between 1 and races"}, status=status.HTTP_400_BAD_REQUEST)
+
+    doc = {"name": name, "classe": classe, "races": races, "counted": counted}
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response({
+        "id": str(created.get("_id")),
+        "name": created.get("name"),
+        "classe": created.get("classe"),
+        "races": created.get("races"),
+        "counted": created.get("counted"),
+    }, status=status.HTTP_201_CREATED)
+
+
+@api_view(["DELETE"])
+def series_delete(request, series_id: str):
+    db = get_mongo_db()
+    collection = db.series
+
+    try:
+        oid = ObjectId(series_id)
+    except Exception:
+        return Response({"detail": "Invalid id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    res = collection.delete_one({"_id": oid})
+    if res.deleted_count == 0:
+        return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
