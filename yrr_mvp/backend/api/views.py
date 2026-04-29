@@ -59,8 +59,13 @@ def boats(request):
     return Response(_serialize_boat(created), status=status.HTTP_201_CREATED)
 
 
-@api_view(["DELETE"])
-def boat_delete(request, boat_id: str):
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def boat_detail(request, boat_id: str):
+    """Gère GET/PUT/PATCH/DELETE sur /boats/<id>.
+    - GET : retourne le document
+    - PUT/PATCH : met à jour les champs fournis
+    - DELETE : supprime le document
+    """
     db = get_mongo_db()
     collection = db.boats
 
@@ -69,8 +74,60 @@ def boat_delete(request, boat_id: str):
     except Exception:
         return Response({"detail": "Invalid id"}, status=status.HTTP_400_BAD_REQUEST)
 
-    res = collection.delete_one({"_id": oid})
-    if res.deleted_count == 0:
+    if request.method == 'GET':
+        doc = collection.find_one({"_id": oid})
+        if not doc:
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(_serialize_boat(doc))
+
+    if request.method == 'DELETE':
+        res = collection.delete_one({"_id": oid})
+        if res.deleted_count == 0:
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # PUT / PATCH -> update
+    payload = request.data if isinstance(request.data, dict) else {}
+
+    name = payload.get("name")
+    boat_class = payload.get("class")
+    sail_number = payload.get("sail_number")
+    helmsman = payload.get("helmsman")
+
+    # construire l'objet $set pour la mise à jour
+    update_doc = {}
+    if name not in (None, ""):
+        update_doc["name"] = str(name)
+    elif name == "":
+        # si explicitement vidé -> unset
+        update_doc["name"] = None
+
+    if boat_class is not None:
+        update_doc["class"] = boat_class
+
+    if sail_number is not None:
+        update_doc["sail_number"] = sail_number
+
+    if helmsman is not None:
+        update_doc["helmsman"] = helmsman
+
+    # si rien à mettre à jour, renvoyer 400
+    if not update_doc:
+        return Response({"detail": "No data provided for update"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Nettoyage : si une clé est explicitement None, on la supprime du document
+    set_doc = {k: v for k, v in update_doc.items() if v is not None}
+    unset_keys = [k for k, v in update_doc.items() if v is None]
+
+    update_ops = {}
+    if set_doc:
+        update_ops['$set'] = set_doc
+    if unset_keys:
+        update_ops['$unset'] = {k: "" for k in unset_keys}
+
+    res = collection.update_one({"_id": oid}, update_ops)
+    if res.matched_count == 0:
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    updated = collection.find_one({"_id": oid})
+    return Response(_serialize_boat(updated))

@@ -15,6 +15,17 @@
   let loading = false;
   let errorMsg = '';
 
+  // notification state
+  let notification = '';
+  let notificationType: 'success' | 'error' = 'success';
+  function showNotification(msg: string, type: 'success' | 'error' = 'success') {
+    notification = msg;
+    notificationType = type;
+    setTimeout(() => {
+      notification = '';
+    }, 3000);
+  }
+
   let formOpen = false;
   let editingId: string | null = null;
 
@@ -151,14 +162,21 @@
     errorMsg = '';
     if (!confirm('Supprimer ce bateau?')) return;
 
+    // Mise à jour optimiste : retirer immédiatement le bateau de la liste affichée
+    const originalBoats = boats.slice();
+    boats = boats.filter(b => b.id !== id);
+
     try {
       const res = await fetch(`${API_BASE}/boats/${id}`, { method: 'DELETE' });
       if (!res.ok && res.status !== 204) {
         const data = await res.json().catch(() => null);
         throw new Error(data?.detail ?? `DELETE /boats/${id} -> ${res.status}`);
       }
-      await loadBoats();
+      // Si besoin de s'assurer de la cohérence serveur -> on pourrait recharger
+      // await loadBoats();
     } catch (e) {
+      // Restaure la liste locale et affiche l'erreur
+      boats = originalBoats;
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     }
   }
@@ -268,6 +286,7 @@
       }
 
       editingId = null;
+      showNotification('Modification enregistrée.', 'success');
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     }
@@ -317,11 +336,15 @@
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
-  <section class="panel">
+  <section class="panel" style="position:relative;">
     <h3>Liste des bateaux</h3>
 
-    {#if errorMsg}
-      <div class="error" role="alert">{errorMsg}</div>
+    {#if notification}
+      <div class={"notification-wrap " + (notificationType === 'success' ? 'success' : 'error')} role="status" aria-live="polite" style="position:absolute;left:50%;transform:translateX(-50%);top:46px;z-index:9999;pointer-events:none;">
+        <div style="pointer-events:auto;min-width:220px;max-width:640px;padding:0.45rem 0.9rem;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#a78bfa);box-shadow:0 10px 30px rgba(0,0,0,0.12);color:#fff;text-align:center;font-weight:700;">
+          {notification}
+        </div>
+      </div>
     {/if}
 
     <div class="add-boat-wrap mb-18">
