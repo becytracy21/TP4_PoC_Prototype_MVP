@@ -151,14 +151,21 @@
     errorMsg = '';
     if (!confirm('Supprimer ce bateau?')) return;
 
+    // Mise à jour optimiste : retirer immédiatement le bateau de la liste affichée
+    const originalBoats = boats.slice();
+    boats = boats.filter(b => b.id !== id);
+
     try {
       const res = await fetch(`${API_BASE}/boats/${id}`, { method: 'DELETE' });
       if (!res.ok && res.status !== 204) {
         const data = await res.json().catch(() => null);
         throw new Error(data?.detail ?? `DELETE /boats/${id} -> ${res.status}`);
       }
-      await loadBoats();
+      // Si besoin de s'assurer de la cohérence serveur -> on pourrait recharger
+      // await loadBoats();
     } catch (e) {
+      // Restaure la liste locale et affiche l'erreur
+      boats = originalBoats;
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     }
   }
