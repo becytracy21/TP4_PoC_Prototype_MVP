@@ -57,7 +57,7 @@
           <tr>
             <th>Bateau</th>
             <th>Classe</th>
-            <th>Numéro de voile</th>
+            <th>Numéro<br/>de voile</th>
             <th>Barreur</th>
             <th class="text-center">Course 1</th>
             <th class="text-center">Course 2</th>
@@ -65,7 +65,7 @@
             <th class="text-center">Course 4</th>
             <th class="text-center">Course 5</th>
             <th class="text-right">Total</th>
-            <th class="text-center">Classement général</th>
+            <th class="text-center">Classement<br/>général</th>
           </tr>
         </thead>
         <tbody>
@@ -226,5 +226,3 @@
     </div>
   </section>
 </div>
-
-<footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>

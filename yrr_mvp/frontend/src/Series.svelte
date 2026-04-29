@@ -26,16 +26,22 @@
     { id: 1, name: 'Série A', races: 3 },
     { id: 2, name: 'Série B', races: 2 }
   ];
+  let errorMessage = '';
 
   function addSeries() {
     const name = (seriesName || '').trim();
     const races = Math.max(1, Number(seriesRaces) || 1);
-    if (!name) return;
+    if (!name) {
+      errorMessage = 'Veuillez saisir un nom de série.';
+      formOpen = true;
+      return;
+    }
     const id = Date.now();
     series = [{ id, name, races }, ...series];
     seriesName = '';
     seriesRaces = 3;
     formOpen = false;
+    errorMessage = '';
   }
 
   function deleteSeries(id) {
@@ -116,8 +122,6 @@
     </div>
 
     <div class="actions-row mt-2">
-      <button class="btn" type="button" on:click={() => (formOpen = true)}>Ajouter une série</button>
-
       <details class="add-details" bind:open={formOpen}>
         <summary class="add-summary">Créer une série</summary>
         <form class="add-form" on:submit|preventDefault={addSeries}>
@@ -126,6 +130,9 @@
               <span>Nom de la série</span>
               <input id="seriesName" type="text" bind:value={seriesName} placeholder="Série C" />
             </label>
+            {#if errorMessage}
+              <div class="error mt-1">{errorMessage}</div>
+            {/if}
           </div>
 
           <div class="row mt-8">
@@ -146,5 +153,3 @@
     </div>
   </section>
 </div>
-
-<footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>
