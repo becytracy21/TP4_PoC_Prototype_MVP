@@ -74,6 +74,7 @@
       const nv = sail_number === '' ? undefined : Number(sail_number);
       if (nv !== undefined && Number.isNaN(nv)) {
         errorMsg = 'Numéro de voile doit être un nombre';
+        showNotification(errorMsg, 'error');
         return;
       }
 
@@ -146,6 +147,9 @@
         }
       }
 
+      // Afficher notification de succès pour ajout ou modification
+      showNotification(isEdit ? 'Modification enregistrée.' : 'Bateau ajouté.', 'success');
+
       // reset form
       name = '';
       classe = 'Albacore';
@@ -155,6 +159,7 @@
       editingId = null;
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
+      showNotification(errorMsg, 'error');
     }
   }
 
@@ -200,6 +205,7 @@
       const nv = editSailNumber === '' ? undefined : Number(editSailNumber);
       if (nv !== undefined && Number.isNaN(nv)) {
         errorMsg = 'Numéro de voile doit être un nombre';
+        showNotification(errorMsg, 'error');
         return;
       }
 
