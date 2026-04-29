@@ -94,6 +94,8 @@
     if (page === 'course') {
       // navigation vers la page Course
       dispatch('navigate', 'course');
+    } else if (page === 'inscription') {
+      dispatch('navigate', 'inscription');
     } else {
       alert('MVP : seule la page Bateaux et Course sont disponibles.');
     }
@@ -112,6 +114,7 @@
         <a href="#" class="active" on:click={(e) => onHeaderLinkClick(e)}>Bateaux</a>
         <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Séries</a>
         <a href="#" on:click={(e) => onHeaderLinkClick(e, 'course')}>Course</a>
+        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'inscription')}>Inscription</a>
       </div>
     </nav>
   </div>
