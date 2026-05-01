@@ -122,3 +122,44 @@ def courses(request):
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})
     return Response(_serialize_course(created), status=status.HTTP_201_CREATED)
+
+
+@api_view(["GET", "POST"])
+def inscriptions(request):
+    db = get_mongo_db()
+    collection = db.inscriptions
+
+    if request.method == "GET":
+        # On retourne toutes les inscriptions
+        result = []
+        for d in collection.find().sort("_id", -1):
+            result.append({
+                "id": str(d.get("_id")),
+                "bateauId": str(d.get("boat")),
+                "courseId": str(d.get("course")),
+                "resultat": d.get("resultat")
+            })
+        return Response(result)
+
+    # POST
+    payload = request.data if isinstance(request.data, dict) else {}
+    boat_id = payload.get("boat") or payload.get("boat_id") or payload.get("bateauId")
+    course_id = payload.get("course") or payload.get("course_id") or payload.get("courseId")
+    resultat = payload.get("resultat")
+
+    if not all([boat_id, course_id, resultat]):
+        return Response({"detail": "Champs obligatoires manquants"}, status=status.HTTP_400_BAD_REQUEST)
+
+    doc = {
+        "boat": ObjectId(boat_id),
+        "course": ObjectId(course_id),
+        "resultat": str(resultat)
+    }
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response({
+        "id": str(created.get("_id")),
+        "bateauId": str(created.get("boat")),
+        "courseId": str(created.get("course")),
+        "resultat": created.get("resultat")
+    }, status=status.HTTP_201_CREATED)

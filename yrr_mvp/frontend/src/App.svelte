@@ -4,11 +4,22 @@
   import Inscription from './Inscription.svelte';
   let page: 'bateaux' | 'course' | 'inscription' = 'bateaux';
 
-  function handleNavigate(e: CustomEvent) {
-    if (e.detail === 'course') page = 'course';
-    else if (e.detail === 'inscription') page = 'inscription';
-    else page = 'bateaux'; // fallback simple
+ function handleNavigate(e: CustomEvent) {
+  const target = e.detail;
+
+  if (target === 'course') {
+    page = 'course';
+  } 
+  else if (target === 'inscription') {
+    page = 'inscription';
+  } 
+  else if (target === 'bateaux') {
+    page = 'bateaux';
+  } 
+  else {
+    console.warn('Page inconnue:', target);
   }
+}
 </script>
 
 {#if page === 'bateaux'}

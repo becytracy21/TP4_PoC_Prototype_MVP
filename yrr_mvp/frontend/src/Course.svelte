@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
@@ -91,6 +91,8 @@
       dispatch('navigate', 'bateau');
     }
   }
+
+  const dispatch = createEventDispatcher();
 
   onMount(loadCourses);
 </script>
@@ -216,7 +218,7 @@
     </div>
 
     <div class="actions-row mt-2">
-      <a class="btn" href="/Inscription">Gérer les inscriptions</a>
+      <button class="btn" type="button" on:click={() => dispatch('navigate', 'inscription')}>Gérer les inscriptions</button>
       <a class="button-ghost" href="/Accueil">Retour</a>
     </div>
   </section>
