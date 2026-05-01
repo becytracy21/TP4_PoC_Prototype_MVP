@@ -1,0 +1,23 @@
+EXPLICATIONS FICHIERS DOCKER
+
+1) docker-compose.yaml
+	- Se fichier se trouve dans la racine du projet et sert à lancer tous les morceaux. (bd, frontend et backend).
+	1. Service mongo --> télécharge l'image de Mongo (plus besoin de télécharger Compass😍) et spécifie les ports (gauche:pc, droite:conteneur), où stocker les données et 	tests s'il est prêt pour 	exécution muhehehe.
+	2. Service backend --> Va chercher le Dockerfile et construit l'image cool, spécifie les ports, la base de données et fait des tests avant de démarrer.
+	3. Service frontend --> Va chercher le Dockerfile et construit l'image, spécifie les ports et définie que frontend ne peut être executé qu'après backend.
+	4. Volumes --> idk
+
+2) .dockerignore
+	- Comme .gitignore, spécifie à docker de ne pas envoyer ces fichiers inutiles/trop lourds (exemple: node_modules, .git, .env, .venv).
+
+3) yrr_mvp/backend/Dockerfile
+	- Construit l'image Docker du backend :)
+
+4) yrr_mvp/backend/requirements.txt
+	- Basically fait l'équivalent de : pip install django djangorestframework django-cors-headers "pymongo[srv]"
+
+5) yrr_mvp/backend/entrypoint.sh
+	- Basically fait tous les commandes de démarrage qu'on faisait pour le backend.😁
+
+6) yrr_mvp/frontend/Dockerfile
+	- Construit l'image Docker du frontend :p
