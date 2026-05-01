@@ -123,13 +123,13 @@
 <svelte:head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Séries — YRR Prototype</title>
+  <title>Séries — YRR</title>
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/HTML-CSS/css/style.css" />
 </svelte:head>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>YRR</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">

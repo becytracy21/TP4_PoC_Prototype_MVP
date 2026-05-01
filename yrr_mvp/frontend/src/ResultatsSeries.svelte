@@ -11,18 +11,55 @@
     const a = /** @type {HTMLAnchorElement} */ (e.currentTarget);
     go(a.getAttribute('href') || '');
   }
+
+  // ajout : impression du tableau de résultats
+  function printResults(e) {
+    if (e) e.preventDefault();
+    const table = document.querySelector('.table-standard');
+    if (!table) {
+      alert('Tableau introuvable pour impression.');
+      return;
+    }
+
+    const w = window.open('', '_blank', 'width=900,height=700');
+    if (!w) {
+      alert("Impossible d'ouvrir une nouvelle fenêtre pour l'impression.");
+      return;
+    }
+
+    const doc = w.document;
+    doc.write('<!doctype html><html><head><meta charset="utf-8"><title>Impression - Résultats de série</title>');
+    doc.write('<link rel="stylesheet" href="/HTML-CSS/css/style.css">');
+    doc.write('<style>body{padding:20px;font-family:Arial,Helvetica,sans-serif;}table{width:100%;border-collapse:collapse;}@media print{.no-print{display:none}}</style>');
+    doc.write('</head><body>');
+    doc.write('<h2>Résultats de série</h2>');
+    doc.write(table.outerHTML);
+    doc.write('</body></html>');
+    doc.close();
+    w.focus();
+
+    // attendre un peu que la fenêtre rende le contenu puis imprimer
+    setTimeout(() => {
+      try {
+        w.print();
+        w.close();
+      } catch (err) {
+        console.error('Print error', err);
+      }
+    }, 300);
+  }
 </script>
 
 <svelte:head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Résultats séries — YRR Prototype</title>
+  <title>Résultats séries — YRR</title>
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/HTML-CSS/css/style.css" />
 </svelte:head>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>YRR</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
@@ -45,7 +82,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Résultats des séries</h2>
-    <p class="hero-subtitle">Affichage des résultats cumulés d'une série (prototype, données simulées)</p>
+    <p class="hero-subtitle">Affichage des résultats cumulés d'une série</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
@@ -219,7 +256,7 @@
       <a class="btn btn-outline" href="#" on:click|preventDefault={() => { /* simulation */ }}>Déductions (simulé)</a>
       <span class="muted">Déductions : aucune (simulation)</span>
       <span class="flex-1"></span>
-      <a class="btn" href="#" on:click|preventDefault={() => { /* impression simulée */ }}>Imprimer</a>
+      <a class="btn" href="#" on:click|preventDefault={printResults}>Imprimer</a>
       <a class="button-ghost" href="#" on:click|preventDefault={() => { /* précédent */ }}>Précédent</a>
       <a class="button-ghost" href="#" on:click|preventDefault={() => { /* suivant */ }}>Suivant</a>
       <a class="button-ghost" href="#/series" on:click={navigate}>Retour aux séries</a>
