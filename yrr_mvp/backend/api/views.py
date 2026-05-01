@@ -24,6 +24,23 @@ def _parse_handicap_value(value):
         return None
 
 
+def _parse_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _serialize_series(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "name": doc.get("name"),
+        "classe": doc.get("classe"),
+        "races": doc.get("races"),
+        "counted": doc.get("counted"),
+    }
+
+
 @api_view(["GET", "POST"])
 def boats(request):
     db = get_mongo_db()
@@ -84,29 +101,20 @@ def series(request):
     collection = db.series
 
     if request.method == "GET":
-        series_list = []
-        for d in collection.find().sort("_id", -1):
-            series_list.append({
-                "id": str(d.get("_id")),
-                "name": d.get("name"),
-                "classe": d.get("classe"),
-                "races": d.get("races"),
-                "counted": d.get("counted"),
-            })
+        series_list = [_serialize_series(d) for d in collection.find().sort("_id", -1)]
         return Response(series_list)
 
     # POST
     payload = request.data if isinstance(request.data, dict) else {}
     name = (payload.get("name") or "").strip()
     classe = (payload.get("classe") or "").strip()
-    try:
-        races = int(payload.get("races", 0))
-    except Exception:
-        races = 0
-    try:
-        counted = int(payload.get("counted", 0))
-    except Exception:
-        counted = 0
+
+    races = _parse_int(payload.get("races"))
+    counted = _parse_int(payload.get("counted"))
+
+    # Normalise les valeurs numériques
+    races = races if isinstance(races, int) else 0
+    counted = counted if isinstance(counted, int) else 0
 
     if not name:
         return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -120,13 +128,7 @@ def series(request):
     doc = {"name": name, "classe": classe, "races": races, "counted": counted}
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})
-    return Response({
-        "id": str(created.get("_id")),
-        "name": created.get("name"),
-        "classe": created.get("classe"),
-        "races": created.get("races"),
-        "counted": created.get("counted"),
-    }, status=status.HTTP_201_CREATED)
+    return Response(_serialize_series(created), status=status.HTTP_201_CREATED)
 
 
 @api_view(["DELETE"])

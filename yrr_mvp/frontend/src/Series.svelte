@@ -21,6 +21,9 @@
   }
 
   // séries gérées via l'API
+  // base de l'API (comme dans Bateaux.svelte)
+  const API_BASE = (import.meta.env && import.meta.env.VITE_API_BASE_URL) || 'http://localhost:8000/api';
+
   let formOpen = false;
   let seriesName = '';
   let seriesRaces = 3;
@@ -32,7 +35,7 @@
   async function loadSeries() {
     errorMessage = '';
     try {
-      const res = await fetch('/api/series');
+      const res = await fetch(`${API_BASE}/series`);
       if (!res.ok) {
         let detail = '';
         try {
@@ -76,7 +79,7 @@
     }
 
     try {
-      const res = await fetch('/api/series', {
+      const res = await fetch(`${API_BASE}/series`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, classe, races, counted })
@@ -104,7 +107,7 @@
   async function deleteSeries(id) {
     if (!confirm('Supprimer cette série ?')) return;
     try {
-      const res = await fetch(`/api/series/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE}/series/${id}`, { method: 'DELETE' });
       if (res.status === 204) {
         series = series.filter(s => s.id !== id);
       } else {
