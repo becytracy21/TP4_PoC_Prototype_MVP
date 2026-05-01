@@ -9,7 +9,7 @@ const historyApiFallback =
 export default defineConfig({
   server: {
     host: true,
-    allowedHosts: ['yachtracingresults.yrr'],
+    allowedHosts: ['yachtracingresults.yrr', 'localhost'],
   },
   plugins: [
     svelte(),
