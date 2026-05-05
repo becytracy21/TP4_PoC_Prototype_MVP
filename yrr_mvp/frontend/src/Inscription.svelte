@@ -1,5 +1,6 @@
 <script lang="ts">
   import { navigate } from './router';
+  import { auth, setRemember } from './auth';
 
   let name = '';
   let email = '';
@@ -101,12 +102,15 @@
 
     loading = true;
     try {
+      const cleanName = name.trim();
+      const cleanEmail = email.trim();
+
       const res = await fetch(`${API_BASE}/users/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
+          name: cleanName,
+          email: cleanEmail,
           password,
         }),
       });
@@ -114,6 +118,20 @@
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         throw new Error(data?.detail ?? `Erreur lors de l'inscription (HTTP ${res.status}).`);
+      }
+
+      const loginRes = await fetch(`${API_BASE}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, password }),
+      });
+
+      if (loginRes.ok) {
+        const data = (await loginRes.json()) as { token?: string; user?: { id: string; name: string; email: string } };
+        if (data?.token && data?.user) {
+          setRemember(true);
+          auth.set({ token: data.token, user: data.user });
+        }
       }
 
       name = '';

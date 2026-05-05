@@ -99,7 +99,6 @@
     const parts = n.split(/\s+/).filter(Boolean);
     const first = parts[0]?.[0] ?? '?';
 
-    // Si pas de nom de famille -> 1 seule lettre
     if (parts.length < 2) return first.toUpperCase();
 
     const last = parts[parts.length - 1]?.[0] ?? '';

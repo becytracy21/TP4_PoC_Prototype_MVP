@@ -21,10 +21,8 @@
     }
   });
 
-  // Titre de page
   $: document.title = titleFor($route);
 
-  // Garde d'accès
   $: if ($route === 'bateaux' && !isAuthenticated($auth)) {
     navigate('connexion');
   }
