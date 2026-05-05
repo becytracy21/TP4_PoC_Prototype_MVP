@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { auth } from './auth';
 
   type Boat = {
     id: string;
@@ -91,6 +92,20 @@
     alert('Seule la page Bateaux est disponible.');
   }
 
+  function initialsFromName(name?: string | null) {
+    const n = (name ?? '').trim();
+    if (!n) return '??';
+
+    const parts = n.split(/\s+/).filter(Boolean);
+    const first = parts[0]?.[0] ?? '?';
+
+    // Si pas de nom de famille -> 1 seule lettre
+    if (parts.length < 2) return first.toUpperCase();
+
+    const last = parts[parts.length - 1]?.[0] ?? '';
+    return (first + last).toUpperCase();
+  }
+
   onMount(loadBoats);
 </script>
 
@@ -111,8 +126,8 @@
   </div>
   <div class="nav-user">
     <a href="#" class="nav-user-link" on:click={onHeaderLinkClick}>
-      <div class="avatar" title="Profil">JD</div>
-      <div class="username">Jean Dupont</div>
+      <div class="avatar" title="Profil">{initialsFromName($auth.user?.name)}</div>
+      <div class="username">{$auth.user?.name ?? $auth.user?.email ?? ''}</div>
     </a>
   </div>
 </header>

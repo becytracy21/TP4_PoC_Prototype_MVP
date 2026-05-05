@@ -8,12 +8,23 @@
   import { route, navigate } from './router';
   import { auth, isAuthenticated } from './auth';
 
+  const TITLE_SUFFIX = 'YRR';
+  function titleFor(r: string) {
+    if (r === 'bateaux') return `Bateaux | ${TITLE_SUFFIX}`;
+    if (r === 'inscription') return `Inscription | ${TITLE_SUFFIX}`;
+    return `Connexion | ${TITLE_SUFFIX}`;
+  }
+
   onMount(() => {
     if (window.location.pathname === '/' || window.location.pathname === '') {
       navigate(isAuthenticated($auth) ? 'bateaux' : 'connexion');
     }
   });
 
+  // Titre de page
+  $: document.title = titleFor($route);
+
+  // Garde d'accès
   $: if ($route === 'bateaux' && !isAuthenticated($auth)) {
     navigate('connexion');
   }
