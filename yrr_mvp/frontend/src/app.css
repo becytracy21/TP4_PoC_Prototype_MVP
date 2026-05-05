@@ -694,6 +694,43 @@ body:has(.auth-page) {
   overflow: hidden;
 }
 
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.password-reveal {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0.85;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.password-reveal:hover {
+  opacity: 1;
+  color: var(--text);
+}
+
 @media (max-width: 960px) {
   .auth-page .card {
     min-height: auto;

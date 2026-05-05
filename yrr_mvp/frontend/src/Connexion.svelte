@@ -1,28 +1,66 @@
 <script lang="ts">
   import { navigate } from './router';
+  import { tick } from 'svelte';
 
   let email = '';
   let password = '';
   let remember = false;
-
   let errorMsg = '';
 
+  let showPassword = false;
+  let revealLocked = false;
+
+  let passwordInput: HTMLInputElement | null = null;
+
   function submit() {
-    // Prototype: pas d'auth réelle côté backend pour l'instant.
-    // On simule une connexion et on redirige vers Bateaux.
     errorMsg = '';
 
     if (email.trim() === '') {
       errorMsg = "L'adresse e-mail est requise.";
       return;
     }
+
     if (password.trim() === '') {
       errorMsg = 'Le mot de passe est requis.';
       return;
     }
 
-    void remember; // évite un warning TS si non utilisé ailleurs
+    void remember;
     navigate('bateaux');
+  }
+
+  function setReveal(next: boolean) {
+    showPassword = revealLocked ? true : next;
+  }
+
+  async function withCaret(fn: () => void) {
+    if (!passwordInput) {
+      fn();
+      return;
+    }
+
+    const start = passwordInput.selectionStart ?? password.length;
+    const end = passwordInput.selectionEnd ?? password.length;
+
+    fn();
+
+    await tick();
+    requestAnimationFrame(() => {
+      if (!passwordInput) return;
+      passwordInput.focus({ preventScroll: true });
+      passwordInput.setSelectionRange(start, end);
+    });
+  }
+
+  function toggleRevealLock() {
+    void withCaret(() => {
+      revealLocked = !revealLocked;
+      showPassword = revealLocked;
+    });
+  }
+
+  function onPointerDown(e: PointerEvent) {
+    if (e.pointerType === 'mouse') setReveal(true);
   }
 </script>
 
@@ -56,14 +94,73 @@
           />
 
           <label for="loginPassword">Mot de passe</label>
-          <input
-            id="loginPassword"
-            type="password"
-            bind:value={password}
-            required
-            placeholder="Votre mot de passe"
-            autocomplete="current-password"
-          />
+          <div class="password-field">
+            <input
+              id="loginPassword"
+              bind:this={passwordInput}
+              type={showPassword ? 'text' : 'password'}
+              bind:value={password}
+              required
+              placeholder="Votre mot de passe"
+              autocomplete="current-password"
+              on:blur={() => setReveal(false)}
+            />
+            <button
+              class="password-reveal"
+              type="button"
+              aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+              aria-pressed={revealLocked}
+              on:click|preventDefault={toggleRevealLock}
+              on:mouseenter={() => setReveal(true)}
+              on:mouseleave={() => setReveal(false)}
+              on:pointerdown|preventDefault={onPointerDown}
+              on:pointerup={() => setReveal(false)}
+            >
+              {#if showPassword}
+                <svg class="eye-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9.5 9.5a3.5 3.5 0 1 0 5 5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14.5 14.5a3.5 3.5 0 0 0-5-5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              {:else}
+                <svg class="eye-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4 4l16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              {/if}
+            </button>
+          </div>
 
           <div class="actions">
             <div class="small">
