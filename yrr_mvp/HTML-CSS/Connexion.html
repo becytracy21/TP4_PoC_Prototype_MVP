@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion / Inscription - Prototype</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="container-main">
+    <div class="card auth-card">
+      <div class="brand">
+        <h2>YRR - Prototype</h2>
+        <p>Accès au profil et aux fonctionnalités après authentification (simulation).</p>
+        <p>Prototype non fonctionnel — HTML/CSS seulement.</p>
+      </div>
+      <div class="form-wrap">
+        <h1 class="mt-0">Connexion</h1>
+        <p class="lead">Entrez votre email et mot de passe.</p>
+        <form action="Accueil.html" method="get">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" name="email" required placeholder="exemple@domaine.com" />
+
+          <label for="loginPassword">Mot de passe</label>
+          <input id="loginPassword" type="password" name="password" required placeholder="Votre mot de passe" />
+
+          <div class="actions">
+            <div class="small"><label><input type="checkbox" name="remember" /> Se souvenir de moi</label></div>
+            <button class="btn" type="submit">Se connecter</button>
+          </div>
+
+          <div class="mt-12">
+            <span class="small">Pas de compte ?</span>
+            <a class="toggle" href="Inscription.html">S'inscrire</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

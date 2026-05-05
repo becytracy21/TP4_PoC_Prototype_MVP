@@ -552,6 +552,7 @@ footer {
 
 .auth-page .card {
   min-height: 513.438px;
+  min-width: 932px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;

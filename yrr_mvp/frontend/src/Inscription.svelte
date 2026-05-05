@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { navigate } from './router';
+
   let name = '';
   let email = '';
   let password = '';
@@ -120,9 +122,7 @@
 
           <div class="mt-12">
             <span class="small">Déjà inscrit ?</span>
-            <a class="toggle" href="#" on:click|preventDefault={() => alert('Seule l\'inscription est implémentée pour le moment.')}
-              >Se connecter</a
-            >
+            <a class="toggle" href="/connexion" on:click|preventDefault={() => navigate('connexion')}>Se connecter</a>
           </div>
         </form>
       </div>
