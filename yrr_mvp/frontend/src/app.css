@@ -702,33 +702,39 @@ body:has(.auth-page) {
 
 .password-field input {
   width: 100%;
-  padding-right: 44px;
+  padding-right: 56px;
 }
 
 .password-reveal {
   position: absolute;
-  right: 10px;
-  background: transparent;
+  right: 2.5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--input-bg);
   border: none;
-  padding: 6px;
+  padding: 6.5px;
+  border-radius: 12px;
   cursor: pointer;
   line-height: 1;
   color: var(--muted);
-  opacity: 0.85;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
+.password-reveal:hover {
+  color: var(--text);
+}
+
 .eye-icon {
   width: 20px;
   height: 20px;
+  display: block;
   pointer-events: none;
 }
 
-.password-reveal:hover {
-  opacity: 1;
-  color: var(--text);
+.auth-page .row .col .password-field {
+  width: 100%;
 }
 
 @media (max-width: 960px) {
