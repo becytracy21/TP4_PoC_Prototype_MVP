@@ -6,12 +6,17 @@
   import Connexion from './Connexion.svelte';
 
   import { route, navigate } from './router';
+  import { auth, isAuthenticated } from './auth';
 
   onMount(() => {
     if (window.location.pathname === '/' || window.location.pathname === '') {
-      navigate('connexion');
+      navigate(isAuthenticated($auth) ? 'bateaux' : 'connexion');
     }
   });
+
+  $: if ($route === 'bateaux' && !isAuthenticated($auth)) {
+    navigate('connexion');
+  }
 </script>
 
 {#if $route === 'connexion'}

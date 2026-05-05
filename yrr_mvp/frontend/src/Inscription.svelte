@@ -302,7 +302,13 @@
 
           <div class="actions">
             <div class="small"></div>
-            <button class="btn" type="submit" disabled={loading}>{loading ? 'Création…' : 'Créer le compte'}</button>
+            <button class="btn" type="submit" disabled={loading} aria-busy={loading}>
+              {#if loading}
+                Création…
+              {:else}
+                Créer le compte
+              {/if}
+            </button>
           </div>
 
           <div class="mt-12">

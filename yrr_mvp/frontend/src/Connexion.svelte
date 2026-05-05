@@ -1,18 +1,22 @@
 <script lang="ts">
   import { navigate } from './router';
   import { tick } from 'svelte';
+  import { auth } from './auth';
 
   let email = '';
   let password = '';
   let remember = false;
   let errorMsg = '';
+  let loading = false;
+
+  const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
   let showPassword = false;
   let revealLocked = false;
 
   let passwordInput: HTMLInputElement | null = null;
 
-  function submit() {
+  async function submit() {
     errorMsg = '';
 
     if (email.trim() === '') {
@@ -25,8 +29,36 @@
       return;
     }
 
-    void remember;
-    navigate('bateaux');
+    loading = true;
+    try {
+      const res = await fetch(`${API_BASE}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.detail ?? `Erreur de connexion (HTTP ${res.status}).`);
+      }
+
+      const data = (await res.json()) as { token?: string; user?: { id: string; name: string; email: string } };
+      if (!data?.token || !data?.user) {
+        throw new Error('Réponse serveur invalide.');
+      }
+
+      auth.set({ token: data.token, user: data.user });
+
+      void remember; // MVP: persistance déjà gérée via localStorage dans auth.ts
+      navigate('bateaux');
+    } catch (e) {
+      errorMsg = e instanceof Error ? e.message : 'Erreur réseau.';
+    } finally {
+      loading = false;
+    }
   }
 
   function setReveal(next: boolean) {
@@ -169,7 +201,13 @@
                 Se souvenir de moi
               </label>
             </div>
-            <button class="btn" type="submit">Se connecter</button>
+            <button class="btn" type="submit" disabled={loading} aria-busy={loading}>
+              {#if loading}
+                Connexion…
+              {:else}
+                Se connecter
+              {/if}
+            </button>
           </div>
 
           <br />
