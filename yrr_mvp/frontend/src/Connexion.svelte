@@ -1,7 +1,7 @@
 <script lang="ts">
   import { navigate } from './router';
   import { tick } from 'svelte';
-  import { auth } from './auth';
+  import { auth, setRemember } from './auth';
 
   let email = '';
   let password = '';
@@ -50,9 +50,9 @@
         throw new Error('Réponse serveur invalide.');
       }
 
+      setRemember(remember);
       auth.set({ token: data.token, user: data.user });
 
-      void remember; // MVP: persistance déjà gérée via localStorage dans auth.ts
       navigate('bateaux');
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau.';
