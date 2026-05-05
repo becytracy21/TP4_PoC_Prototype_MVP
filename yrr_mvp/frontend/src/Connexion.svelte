@@ -24,20 +24,16 @@
     void remember; // évite un warning TS si non utilisé ailleurs
     navigate('bateaux');
   }
-
-  function onHeaderLinkClick(e: MouseEvent) {
-    e.preventDefault();
-    alert('Seules certaines pages sont disponibles dans ce prototype.');
-  }
 </script>
 
 <div class="auth-page">
   <div class="container-main">
     <div class="card auth-card">
       <div class="brand">
-        <h2>YRR - Prototype</h2>
-        <p>Création de compte (fonctionnel).</p>
-        <p>Les données sont enregistrées dans MongoDB.</p>
+        <h2>Yacht Racing Results</h2>
+        <div class="brand-logo-wrap">
+          <img class="brand-logo" src="/favicon.ico" alt="YRR" />
+        </div>
       </div>
 
       <div class="form-wrap">
@@ -78,6 +74,10 @@
             </div>
             <button class="btn" type="submit">Se connecter</button>
           </div>
+
+          <br />
+          <br />
+          <br />
 
           <div class="mt-12">
             <span class="small">Pas de compte ?</span>

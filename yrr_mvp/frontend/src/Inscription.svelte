@@ -68,9 +68,10 @@
   <div class="container-main">
     <div class="card auth-card">
       <div class="brand">
-        <h2>YRR - Prototype</h2>
-        <p>Création de compte (fonctionnel).</p>
-        <p>Les données sont enregistrées dans MongoDB.</p>
+        <h2>Yacht Racing Results</h2>
+        <div class="brand-logo-wrap">
+          <img class="brand-logo" src="/favicon.ico" alt="YRR" />
+        </div>
       </div>
 
       <div class="form-wrap">
