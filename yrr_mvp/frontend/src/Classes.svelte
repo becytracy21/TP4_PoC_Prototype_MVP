@@ -270,6 +270,76 @@
       headerCheckbox.indeterminate = true;
     }
   }
+
+  // Fonction pour imprimer la liste des classes
+  function printClasses() {
+    // Ouvrir une nouvelle fenêtre
+    const printWindow = window.open('', '_blank');
+
+    if (!printWindow) {
+      showNotification('Erreur lors de l\'ouverture de la fenêtre d\'impression');
+      return;
+    }
+
+    // Écrire le contenu HTML dans la nouvelle fenêtre
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Impression des classes</title>
+          <style>
+            /* Styles de base pour l'impression */
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            .table th, .table td { border: 1px solid #ddd; padding: 8px; }
+            .table th { background-color: #f2f2f2; }
+            .table td { vertical-align: top; }
+            h2 { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <h2>Liste des classes de bateaux</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nom de la classe</th>
+                <th>Type de handicap</th>
+                <th>Valeur de handicap</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${classes.map(c => `
+                <tr>
+                  <td>${escapeHtml(c.name)}</td>
+                  <td>${escapeHtml(c.handicap_type)}</td>
+                  <td>${escapeHtml(c.handicap_value)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+
+    // Attendre que le contenu soit chargé, puis imprimer
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+  }
+
+  // Nouvelle fonction utilitaire pour échapper du HTML
+  function escapeHtml(str: any) {
+    if (str == null) return '';
+    return String(str).replace(/[&<>"]/g, (s) => {
+      switch (s) {
+        case '&': return '&amp;';
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '"': return '&quot;';
+        default: return s;
+      }
+    });
+  }
 </script>
 
 <div class="container-main">
@@ -332,7 +402,7 @@
     </div>
     <div class="actions-row mt-2">
       <button class="btn" type="button" on:click={openModal}>Ajouter</button>
-      <button class="btn" type="button">Imprimer</button>
+      <button class="btn" type="button" on:click={printClasses}>Imprimer</button>
       <a class="button-ghost" href="#" on:click={() => onBack()}>Retour</a>
       <!-- Bouton Supprimer à droite et en rouge -->
       <button class="btn-delete" type="button" on:click={deleteSelected} disabled={selectedIds.size === 0} style="margin-left: auto;">
