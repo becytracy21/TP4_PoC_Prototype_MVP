@@ -119,20 +119,20 @@
 
 <header>
   <h2>YRR</h2>
-  <div class="header-center">
+  <div class="header-center" style="display: flex; justify-content: center;">
     <nav class="main-nav-bar">
       <div class="nav-left">
         <a href="#/bateaux" on:click={navigate}>Accueil</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Classes</a>
-        <a href="#/bateaux" class="active" on:click={navigate}>Bateaux</a>
+        <a href="#/classes" on:click={navigate}>Classes</a>
+        <a href="#/bateaux" on:click={navigate}>Bateaux</a>
         <a href="#/series" on:click={navigate}>Séries</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'course')}>Course</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'inscription')}>Inscription</a>
+        <a href="#/course" on:click={navigate}>Course</a>
+        <a href="#/inscription" on:click={navigate}>Inscription</a>
       </div>
     </nav>
   </div>
   <div class="nav-user">
-    <a href="#" class="nav-user-link" on:click={(e) => onHeaderLinkClick(e)}>
+    <a href="#/profil" class="nav-user-link" on:click={navigate}>
       <div class="avatar" title="Profil">JD</div>
       <div class="username">Jean Dupont</div>
     </a>

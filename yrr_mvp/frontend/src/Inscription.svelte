@@ -222,7 +222,7 @@ function onHeaderLinkClick(e: MouseEvent, page: string = '') {
 </script>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>YRR</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">

@@ -15,18 +15,26 @@
   let errorMsg = '';
 
   // Séries
-  let seriesFilter = 'none';
-  let seriesOptions = [
-    { value: 'none', label: 'Courses hors série' },
-    { value: 'seriesA', label: 'Série A' },
-    { value: 'seriesB', label: 'Série B' }
-  ];
+  let series = [];
+  let selectedSeriesId = '';
+
+  async function loadSeries() {
+    try {
+      const res = await fetch(`${API_BASE}/series`);
+      if (!res.ok) throw new Error('Erreur chargement séries');
+      series = await res.json();
+    } catch (e) {
+      // fallback ou message d'erreur si besoin
+      series = [];
+    }
+  }
 
   // Filtrage dynamique
-  $: filteredCourses =
-    seriesFilter === 'none'
-      ? courses.filter(c => !c.series)
-      : courses.filter(c => c.series === seriesFilter);
+  let filterSeriesId = '';
+
+  $: filteredCourses = filterSeriesId
+    ? courses.filter(c => c.series_id === filterSeriesId)
+    : courses;
 
   async function loadCourses() {
     loading = true;
@@ -59,6 +67,7 @@
           time,
           name: name.trim(),
           course: course.trim(),
+          series_id: selectedSeriesId,
         }),
       });
 
@@ -73,6 +82,7 @@
       time = '';
       name = '';
       course = '';
+      selectedSeriesId = '';
       formOpen = false;
 
       await loadCourses();
@@ -94,11 +104,14 @@
 
   const dispatch = createEventDispatcher();
 
-  onMount(loadCourses);
+  onMount(() => {
+    loadCourses();
+    loadSeries();
+  });
 </script>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>YRR</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
@@ -129,9 +142,10 @@
   <section class="panel">
     <div class="row mb-18" style="align-items: center;">
       <h3 style="margin: 0;">Courses</h3>
-      <select id="seriesSelector" class="title-select" bind:value={seriesFilter} style="margin-left: 18px;">
-        {#each seriesOptions as opt}
-          <option value={opt.value}>{opt.label}</option>
+      <select class="title-select" bind:value={filterSeriesId} style="margin-left: 18px; min-width: 180px;">
+        <option value="">Toutes les séries</option>
+        {#each series as s}
+          <option value={s.id}>{s.name}</option>
         {/each}
       </select>
     </div>
@@ -178,6 +192,18 @@
             <label class="stack" for="course">
               <span>Parcours</span>
               <input id="course" type="text" bind:value={course} />
+            </label>
+          </div>
+
+          <div class="row mt-8">
+            <label class="stack" for="series">
+              <span>Série associée</span>
+              <select id="series" bind:value={selectedSeriesId} required>
+                <option value="">Choisir une série</option>
+                {#each series as s}
+                  <option value={s.id}>{s.name}</option>
+                {/each}
+              </select>
             </label>
           </div>
 

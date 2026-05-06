@@ -31,6 +31,9 @@
   let seriesCounted = 3;
   let series = [];
   let errorMessage = '';
+  let courses = [];
+  let coursesCountBySeries = {};
+  let loading = false;
 
   async function loadSeries() {
     errorMessage = '';
@@ -53,14 +56,39 @@
      }
    }
 
+  async function loadCourses() {
+    loading = true;
+    errorMessage = '';
+    try {
+      const res = await fetch(`${API_BASE}/courses`);
+      if (!res.ok) throw new Error(`GET /courses -> ${res.status}`);
+      courses = await res.json();
+      // Calculer le nombre de courses par série
+      coursesCountBySeries = {};
+      if (Array.isArray(courses)) {
+        for (const c of courses) {
+          if (c.series_id) {
+            coursesCountBySeries[c.series_id] = (coursesCountBySeries[c.series_id] || 0) + 1;
+          }
+        }
+      }
+    } catch (e) {
+      // Si l'appel échoue, on laisse coursesCountBySeries vide mais on ne bloque pas la création de série
+      courses = [];
+      coursesCountBySeries = {};
+    } finally {
+      loading = false;
+    }
+  }
+
   onMount(() => {
     loadSeries();
+    loadCourses();
   });
 
   async function addSeries() {
     const name = (seriesName || '').trim();
     const classe = (seriesClasse || '').trim();
-    const races = Math.max(1, Number(seriesRaces) || 1);
     const counted = Math.max(1, Number(seriesCounted) || 1);
     if (!name) {
       errorMessage = 'Veuillez saisir un nom de série.';
@@ -72,17 +100,12 @@
       formOpen = true;
       return;
     }
-    if (counted > races) {
-      errorMessage = 'Le nombre de courses à comptabiliser ne peut pas dépasser le nombre total de courses.';
-      formOpen = true;
-      return;
-    }
 
     try {
       const res = await fetch(`${API_BASE}/series`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, classe, races, counted })
+        body: JSON.stringify({ name, classe, counted })
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -93,11 +116,12 @@
       // succès : insérer la série retournée par l'API
       series = [data, ...series];
       seriesName = '';
-      seriesRaces = 3;
       seriesClasse = '';
-      seriesCounted = 3;
+      seriesCounted = 1;
       formOpen = false;
       errorMessage = '';
+      // On tente de recharger les courses mais on ne bloque pas si ça échoue
+      loadCourses();
     } catch (e) {
       errorMessage = 'Erreur réseau lors de la création.';
       formOpen = true;
@@ -118,6 +142,11 @@
       errorMessage = 'Erreur réseau lors de la suppression.';
     }
   }
+
+  async function addCourseAndRefresh() {
+    await loadCourses();
+    await loadSeries();
+  }
 </script>
 
 <svelte:head>
@@ -130,7 +159,7 @@
 
 <header>
   <h2>YRR</h2>
-  <div class="header-center">
+  <div class="header-center" style="display: flex; justify-content: center;">
     <nav class="main-nav-bar">
       <div class="nav-left">
         <a href="#/bateaux" on:click={navigate}>Accueil</a>
@@ -138,6 +167,7 @@
         <a href="#/bateaux" on:click={navigate}>Bateaux</a>
         <a href="#/series" class="active" on:click={navigate}>Séries</a>
         <a href="#/course" on:click={navigate}>Course</a>
+        <a href="#/inscription" on:click={navigate}>Inscription</a>
       </div>
     </nav>
   </div>
@@ -180,7 +210,7 @@
                 <td>{s.name}</td>
                 <td>{s.classe}</td>
                 <td class="text-center">{s.counted}</td>
-                <td class="text-center">{s.races}</td>
+                <td class="text-center">{coursesCountBySeries[s.id] || 0}</td>
                 <td>
                   <div class="table-actions">
                     <span class="muted">Utilisée par la page "Course"</span>
@@ -220,13 +250,6 @@
             <label class="stack" for="seriesCounted">
               <span>Nombre de courses à comptabiliser</span>
               <input id="seriesCounted" type="number" min="1" bind:value={seriesCounted} />
-            </label>
-          </div>
-
-          <div class="row mt-8">
-            <label class="stack" for="seriesRaces">
-              <span>Nombre de courses</span>
-              <input id="seriesRaces" type="number" min="2" bind:value={seriesRaces} />
             </label>
           </div>
 

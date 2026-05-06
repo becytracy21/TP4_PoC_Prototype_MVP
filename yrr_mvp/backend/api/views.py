@@ -51,6 +51,7 @@ def _serialize_course(doc):
         "time": doc.get("time"),
         "name": doc.get("name"),
         "course": doc.get("course"),
+        "series_id": str(doc.get("series_id")) if doc.get("series_id") else None,
     }
 
 
@@ -125,9 +126,10 @@ def courses(request):
     time = payload.get("time")
     name = payload.get("name")
     course = payload.get("course")
+    series_id = payload.get("series_id")
 
-    if not all([od, class_name, date, time, name, course]):
-        return Response({"detail": "Tous les champs sont obligatoires"}, status=status.HTTP_400_BAD_REQUEST)
+    if not all([od, class_name, date, time, name, course, series_id]):
+        return Response({"detail": "Tous les champs sont obligatoires (y compris la série)"}, status=status.HTTP_400_BAD_REQUEST)
 
     doc = {
         "od": str(od),
@@ -136,6 +138,7 @@ def courses(request):
         "time": str(time),
         "name": str(name),
         "course": str(course),
+        "series_id": series_id,
     }
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})
@@ -197,23 +200,17 @@ def series(request):
     payload = request.data if isinstance(request.data, dict) else {}
     name = (payload.get("name") or "").strip()
     classe = (payload.get("classe") or "").strip()
-
-    races = _parse_int(payload.get("races"))
     counted = _parse_int(payload.get("counted"))
-
-    races = races if isinstance(races, int) else 0
     counted = counted if isinstance(counted, int) else 0
 
     if not name:
         return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
     if not classe:
         return Response({"detail": "classe is required"}, status=status.HTTP_400_BAD_REQUEST)
-    if races < 1:
-        return Response({"detail": "races must be >= 1"}, status=status.HTTP_400_BAD_REQUEST)
-    if counted < 1 or counted > races:
-        return Response({"detail": "counted must be between 1 and races"}, status=status.HTTP_400_BAD_REQUEST)
+    if counted < 1:
+        return Response({"detail": "counted must be >= 1"}, status=status.HTTP_400_BAD_REQUEST)
 
-    doc = {"name": name, "classe": classe, "races": races, "counted": counted}
+    doc = {"name": name, "classe": classe, "counted": counted}
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})
     return Response(_serialize_series(created), status=status.HTTP_201_CREATED)
