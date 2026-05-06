@@ -93,33 +93,61 @@
   }
 
   function onHeaderLinkClick(e: MouseEvent) {
-    e.preventDefault();
     // Use currentTarget which is the anchor that has the listener attached.
     const a = e.currentTarget as HTMLAnchorElement | null;
     const href = a?.getAttribute('href') ?? '';
     const text = (a?.textContent || '').trim().toLowerCase();
 
-    // Détecte le clic sur "Classes" et affiche la vue Classes.
-    // Pertinence : permet de basculer vers Classes sans alerte, tout en gardant
-    // une UX cohérente où l'alerte ne s'affiche que pour les pages non implémentées.
+    // Si le lien est un hash interne, empêcher le comportement par défaut
+    // uniquement pour les liens non-hash ; pour les hash, on met à jour
+    // explicitement location.hash afin que l'URL reflète la page et
+    // survive au rechargement.
+    e.preventDefault();
+    if (href.startsWith('#')) {
+      try {
+        location.hash = href;
+      } catch (err) {
+        // ignore
+      }
+    }
+
     if (href === '#classes' || text === 'classes') {
       showClasses = true;
       return;
     }
 
-    // Détecte le clic sur "Bateaux" et revient à la vue Bateaux.
-    // Pertinence : permet de revenir facilement à la page principale,
-    // et maintient la cohérence entre le lien cliqué et la vue affichée.
     if (href === '#bateaux' || text === 'bateaux') {
       showClasses = false;
       return;
     }
 
-    // Alerte pour les pages non encore implémentées (Accueil, Séries, Course).
     alert('MVP : seule la page Bateaux est disponible.');
   }
 
-  onMount(loadBoats);
+  onMount(() => {
+    loadBoats();
+    // Si l'URL contient #classes au chargement, afficher la vue Classes
+    try {
+      if (location.hash === '#classes') {
+        showClasses = true;
+      }
+    } catch (err) {
+      // ignore
+    }
+
+    // Écouter les changements de hash (navigation/arrière) pour mettre à jour la vue
+    const onHashChange = () => {
+      try {
+        showClasses = location.hash === '#classes';
+      } catch (e) {
+        // ignore
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
+
+    return () => window.removeEventListener('hashchange', onHashChange);
+  });
+
 </script>
 
 <header>
@@ -131,7 +159,7 @@
         <!-- Lien vers Classes avec href="#classes" pour la navigation interne -->
         <!-- Pertinence : utiliser un hash (#) permet une vraie navigation SPA (Single Page App)
              sans rechargement, et facilite la détection du lien cliqué dans onHeaderLinkClick -->
-        <a href="#classes" on:click={onHeaderLinkClick}>Classes</a>
+        <a href="#classes" on:click={onHeaderLinkClick} class={showClasses ? 'active' : ''}>Classes</a>
         <!-- Lien vers Bateaux avec classe "active" dynamique basée sur showClasses
              Pertinence : affiche visuellement la page actuelle, améliorant la UX -->
         <a href="#bateaux" on:click={onHeaderLinkClick} class={!showClasses ? 'active' : ''}>Bateaux</a>

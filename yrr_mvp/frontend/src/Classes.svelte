@@ -51,6 +51,12 @@
   // Charger les classes au montage du composant
   onMount(() => {
     loadClasses();
+    // Mettre à jour l'URL pour refléter la page courante afin qu'un rechargement la conserve
+    try {
+      history.replaceState(null, '', '#classes');
+    } catch (e) {
+      // ignore si l'accès à l'historique n'est pas possible
+    }
   });
 
   // Ensemble des IDs sélectionnés
