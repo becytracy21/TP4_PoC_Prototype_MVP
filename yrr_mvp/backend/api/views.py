@@ -7,6 +7,8 @@ from rest_framework import status
 from .mongo import get_mongo_db
 
 
+# --- HELPER FUNCTIONS & SERIALIZERS ---
+
 def _serialize_boat(doc):
     return {
         "id": str(doc.get("_id")),
@@ -17,12 +19,42 @@ def _serialize_boat(doc):
 
 
 def _parse_handicap_value(value):
-    # handicap_value doit être un nombre (float)
     try:
         return float(value)
     except (TypeError, ValueError):
         return None
 
+
+def _parse_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _serialize_series(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "name": doc.get("name"),
+        "classe": doc.get("classe"),
+        "races": doc.get("races"),
+        "counted": doc.get("counted"),
+    }
+
+
+def _serialize_course(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "od": doc.get("od"),
+        "class_name": doc.get("class_name"),
+        "date": doc.get("date"),
+        "time": doc.get("time"),
+        "name": doc.get("name"),
+        "course": doc.get("course"),
+    }
+
+
+# --- BOAT VIEWS ---
 
 @api_view(["GET", "POST"])
 def boats(request):
@@ -33,9 +65,7 @@ def boats(request):
         boats_list = [_serialize_boat(d) for d in collection.find().sort("_id", -1)]
         return Response(boats_list)
 
-    # POST
     payload = request.data if isinstance(request.data, dict) else {}
-
     name = payload.get("name")
     handicap_type = payload.get("handicap_type")
     handicap_value_raw = payload.get("handicap_value")
@@ -52,7 +82,6 @@ def boats(request):
         "handicap_value": handicap_value,
     }
 
-    # name optionnel
     if name not in (None, ""):
         doc["name"] = str(name)
 
@@ -78,16 +107,7 @@ def boat_delete(request, boat_id: str):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def _serialize_course(doc):
-    return {
-        "id": str(doc.get("_id")),
-        "od": doc.get("od"),
-        "class_name": doc.get("class_name"),
-        "date": doc.get("date"),
-        "time": doc.get("time"),
-        "name": doc.get("name"),
-        "course": doc.get("course"),
-    }
+# --- COURSE VIEWS (from HEAD) ---
 
 @api_view(["GET", "POST"])
 def courses(request):
@@ -98,7 +118,6 @@ def courses(request):
         courses_list = [_serialize_course(d) for d in collection.find().sort("_id", -1)]
         return Response(courses_list)
 
-    # POST
     payload = request.data if isinstance(request.data, dict) else {}
     od = payload.get("od")
     class_name = payload.get("class_name")
@@ -107,7 +126,6 @@ def courses(request):
     name = payload.get("name")
     course = payload.get("course")
 
-    # Validation simple
     if not all([od, class_name, date, time, name, course]):
         return Response({"detail": "Tous les champs sont obligatoires"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -124,13 +142,14 @@ def courses(request):
     return Response(_serialize_course(created), status=status.HTTP_201_CREATED)
 
 
+# --- INSCRIPTION VIEWS (from HEAD) ---
+
 @api_view(["GET", "POST"])
 def inscriptions(request):
     db = get_mongo_db()
     collection = db.inscriptions
 
     if request.method == "GET":
-        # On retourne toutes les inscriptions
         result = []
         for d in collection.find().sort("_id", -1):
             result.append({
@@ -141,7 +160,6 @@ def inscriptions(request):
             })
         return Response(result)
 
-    # POST
     payload = request.data if isinstance(request.data, dict) else {}
     boat_id = payload.get("boat") or payload.get("boat_id") or payload.get("bateauId")
     course_id = payload.get("course") or payload.get("course_id") or payload.get("courseId")
@@ -163,3 +181,56 @@ def inscriptions(request):
         "courseId": str(created.get("course")),
         "resultat": created.get("resultat")
     }, status=status.HTTP_201_CREATED)
+
+
+# --- SERIES VIEWS (from origin/US127-JG) ---
+
+@api_view(["GET", "POST"])
+def series(request):
+    db = get_mongo_db()
+    collection = db.series
+
+    if request.method == "GET":
+        series_list = [_serialize_series(d) for d in collection.find().sort("_id", -1)]
+        return Response(series_list)
+
+    payload = request.data if isinstance(request.data, dict) else {}
+    name = (payload.get("name") or "").strip()
+    classe = (payload.get("classe") or "").strip()
+
+    races = _parse_int(payload.get("races"))
+    counted = _parse_int(payload.get("counted"))
+
+    races = races if isinstance(races, int) else 0
+    counted = counted if isinstance(counted, int) else 0
+
+    if not name:
+        return Response({"detail": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not classe:
+        return Response({"detail": "classe is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if races < 1:
+        return Response({"detail": "races must be >= 1"}, status=status.HTTP_400_BAD_REQUEST)
+    if counted < 1 or counted > races:
+        return Response({"detail": "counted must be between 1 and races"}, status=status.HTTP_400_BAD_REQUEST)
+
+    doc = {"name": name, "classe": classe, "races": races, "counted": counted}
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response(_serialize_series(created), status=status.HTTP_201_CREATED)
+
+
+@api_view(["DELETE"])
+def series_delete(request, series_id: str):
+    db = get_mongo_db()
+    collection = db.series
+
+    try:
+        oid = ObjectId(series_id)
+    except Exception:
+        return Response({"detail": "Invalid id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    res = collection.delete_one({"_id": oid})
+    if res.deleted_count == 0:
+        return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)

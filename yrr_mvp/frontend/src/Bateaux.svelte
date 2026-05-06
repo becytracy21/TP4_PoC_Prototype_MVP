@@ -39,7 +39,6 @@
 
   async function addBoat() {
     errorMsg = '';
-
     const hv = Number(handicap_value);
     if (Number.isNaN(hv)) {
       errorMsg = 'H/cap value doit être un nombre';
@@ -66,7 +65,6 @@
       handicap_type = 'PY';
       handicap_value = '';
       formOpen = false;
-
       await loadBoats();
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
@@ -89,13 +87,28 @@
     }
   }
 
+  // --- Logique de navigation fusionnée ---
+  function go(href: string) {
+    if (!href) return;
+    if (href.startsWith('#')) window.location.hash = href;
+    else if (href.startsWith('/')) window.location.hash = '#' + href;
+    else window.location.href = href;
+  }
+
+  function navigate(e: MouseEvent) {
+    e.preventDefault();
+    const a = e.currentTarget as HTMLAnchorElement;
+    go(a.getAttribute('href') || '');
+  }
+
   function onHeaderLinkClick(e: MouseEvent, page: string = '') {
     e.preventDefault();
     if (page === 'course') {
-      // navigation vers la page Course
       dispatch('navigate', 'course');
+      window.location.hash = '#/course';
     } else if (page === 'inscription') {
       dispatch('navigate', 'inscription');
+      window.location.hash = '#/inscription';
     } else {
       alert('MVP : seule la page Bateaux et Course sont disponibles.');
     }
@@ -105,21 +118,21 @@
 </script>
 
 <header>
-  <h2>YRR — Prototype</h2>
+  <h2>YRR</h2>
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Accueil</a>
+        <a href="#/bateaux" on:click={navigate}>Accueil</a>
         <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Classes</a>
-        <a href="#" class="active" on:click={(e) => onHeaderLinkClick(e)}>Bateaux</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e)}>Séries</a>
+        <a href="#/bateaux" class="active" on:click={navigate}>Bateaux</a>
+        <a href="#/series" on:click={navigate}>Séries</a>
         <a href="#" on:click={(e) => onHeaderLinkClick(e, 'course')}>Course</a>
         <a href="#" on:click={(e) => onHeaderLinkClick(e, 'inscription')}>Inscription</a>
       </div>
     </nav>
   </div>
   <div class="nav-user">
-    <a href="#" class="nav-user-link" on:click={onHeaderLinkClick}>
+    <a href="#" class="nav-user-link" on:click={(e) => onHeaderLinkClick(e)}>
       <div class="avatar" title="Profil">JD</div>
       <div class="username">Jean Dupont</div>
     </a>
@@ -220,7 +233,7 @@
     </div>
 
     <div class="actions-row mt-2">
-      <a class="button-ghost" href="#" on:click={onHeaderLinkClick}>Retour</a>
+      <a class="button-ghost" href="#/bateaux" on:click={navigate}>Retour</a>
     </div>
   </section>
 </div>
