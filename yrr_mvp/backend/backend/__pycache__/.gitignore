@@ -1,0 +1,4 @@
+# Ignore compiled Python cache files in this folder
+*.pyc
+*.pyo
+*.pyd
