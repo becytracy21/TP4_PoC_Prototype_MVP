@@ -91,15 +91,21 @@
     }
   }
 
-  // 🔥 Navigation fixée ici
-  function onHeaderLinkClick(e: MouseEvent, page: string = '') {
-    e.preventDefault();
-
-    if (page === 'inscription') {
-      dispatch('navigate', 'inscription');
-    } else if (page === 'bateau') {
-      dispatch('navigate', 'bateau');
+  // --- Navigation SPA harmonisée ---
+  function go(href: string) {
+    if (!href) return;
+    if (href.startsWith('/')) {
+      window.history.pushState({}, '', href);
+      dispatch('navigate', href);
+    } else {
+      window.location.href = href;
     }
+  }
+
+  function navigate(e: MouseEvent) {
+    e.preventDefault();
+    const a = e.currentTarget as HTMLAnchorElement;
+    go(a.getAttribute('href') || '');
   }
 
   const dispatch = createEventDispatcher();
@@ -115,17 +121,17 @@
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="/Accueil">Accueil</a>
-        <a href="/Classes">Classes</a>
-        <a href="/Bateaux">Bateaux</a>
-        <a href="/Series">Séries</a>
-        <a href="/Course" class="active">Course</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'inscription')}>Inscription</a>
+        <a href="/Bateaux" on:click={navigate}>Accueil</a>
+        <a href="/Classes" on:click={navigate}>Classes</a>
+        <a href="/Bateaux" on:click={navigate}>Bateaux</a>
+        <a href="/Series" on:click={navigate}>Séries</a>
+        <a href="/Course" class="active" on:click={navigate}>Course</a>
+        <a href="/Inscription" on:click={navigate}>Inscription</a>
       </div>
     </nav>
   </div>
   <div class="nav-user">
-    <a href="/Profil" class="nav-user-link">
+    <a href="/Profil" class="nav-user-link" on:click={navigate}>
       <div class="avatar" title="Profil">JD</div>
       <div class="username">Jean Dupont</div>
     </a>
@@ -244,8 +250,7 @@
     </div>
 
     <div class="actions-row mt-2">
-      <button class="btn" type="button" on:click={() => dispatch('navigate', 'inscription')}>Gérer les inscriptions</button>
-      <a class="button-ghost" href="/Accueil">Retour</a>
+      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
     </div>
   </section>
 </div>

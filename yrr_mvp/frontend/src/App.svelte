@@ -11,29 +11,37 @@
   let route: Route = 'bateaux';
 
   function parseRoute(): Route {
-    const raw = (window.location.hash || '').replace(/^#\/?/, '');
-    const key = raw.split('?')[0].split('/')[0];
-    
-    if (key === 'course') return 'course';
-    if (key === 'inscription') return 'inscription';
-    if (key === 'series') return 'series';
-    if (key === 'resultats-series') return 'resultats-series';
-    return 'bateaux'; // Default
+    const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+    if (path === '' || path === 'accueil') return 'bateaux';
+    if (path === 'course') return 'course';
+    if (path === 'inscription') return 'inscription';
+    if (path === 'series') return 'series';
+    if (path === 'resultatsseries' || path === 'resultats-series') return 'resultats-series';
+    if (path === 'bateaux') return 'bateaux';
+    return 'bateaux'; // Par défaut
   }
 
   function sync() {
+    // Redirige la racine vers /Bateaux
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+      window.history.replaceState({}, '', '/Bateaux');
+      route = 'bateaux';
+      return;
+    }
     route = parseRoute();
   }
 
-  // Permet de garder la compatibilité avec l'ancien système d'événements si nécessaire
   function handleNavigate(e: CustomEvent) {
-    window.location.hash = e.detail;
+    // e.detail = path (ex: '/Course')
+    const path = e.detail.startsWith('/') ? e.detail : '/' + e.detail;
+    window.history.pushState({}, '', path);
+    sync();
   }
 
   onMount(() => {
     sync();
-    window.addEventListener('hashchange', sync);
-    return () => window.removeEventListener('hashchange', sync);
+    window.addEventListener('popstate', sync);
+    return () => window.removeEventListener('popstate', sync);
   });
 </script>
 

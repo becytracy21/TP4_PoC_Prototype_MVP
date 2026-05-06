@@ -4,10 +4,14 @@
   // navigation hash: assure que l'app reste dans le SPA
   function go(href) {
     if (!href) return;
-    if (href.startsWith('#')) {
-      window.location.hash = href;
-    } else if (href.startsWith('/')) {
-      window.location.hash = '#' + href;
+    if (href === '/') {
+      window.history.pushState({}, '', '/Bateaux');
+      dispatch('navigate', '/Bateaux');
+      return;
+    }
+    if (href.startsWith('/')) {
+      window.history.pushState({}, '', href);
+      dispatch('navigate', href);
     } else {
       window.location.href = href;
     }
@@ -162,17 +166,17 @@
   <div class="header-center" style="display: flex; justify-content: center;">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#/bateaux" on:click={navigate}>Accueil</a>
-        <a href="#/classes" on:click={navigate}>Classes</a>
-        <a href="#/bateaux" on:click={navigate}>Bateaux</a>
-        <a href="#/series" class="active" on:click={navigate}>Séries</a>
-        <a href="#/course" on:click={navigate}>Course</a>
-        <a href="#/inscription" on:click={navigate}>Inscription</a>
+        <a href="/Bateaux" on:click={navigate}>Accueil</a>
+        <a href="/Classes" on:click={navigate}>Classes</a>
+        <a href="/Bateaux" on:click={navigate}>Bateaux</a>
+        <a href="/Series" class="active" on:click={navigate}>Séries</a>
+        <a href="/Course" on:click={navigate}>Course</a>
+        <a href="/Inscription" on:click={navigate}>Inscription</a>
       </div>
     </nav>
   </div>
   <div class="nav-user">
-    <a href="#/profil" class="nav-user-link" on:click={navigate}>
+    <a href="/Profil" class="nav-user-link" on:click={navigate}>
       <div class="avatar" title="Profil">JD</div>
       <div class="username">Jean Dupont</div>
     </a>

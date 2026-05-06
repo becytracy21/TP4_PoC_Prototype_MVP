@@ -206,18 +206,32 @@ function getPoints(inscription: Inscription, courseId: string) {
   return pos ? pos : '';
 }
 
+function go(href: string) {
+  if (!href) return;
+  if (href.startsWith('/')) {
+    window.history.pushState({}, '', href);
+    dispatch('navigate', href);
+  } else {
+    window.location.href = href;
+  }
+}
+
+function navigate(e: MouseEvent) {
+  e.preventDefault();
+  const a = e.currentTarget as HTMLAnchorElement;
+  go(a.getAttribute('href') || '');
+}
+
 function onHeaderLinkClick(e: MouseEvent, page: string = '') {
   e.preventDefault();
-  if (page === 'inscription') {
-    dispatch('navigate', 'inscription');
-  } else if (page === 'course') {
-    dispatch('navigate', 'course');
-  } else if (page === 'bateaux') {
-    dispatch('navigate', 'bateaux');
-  } else {
-    // Ajoute d'autres pages si besoin
-    dispatch('navigate', page);
-  }
+  let path = '/Bateaux';
+  if (page === 'inscription') path = '/Inscription';
+  else if (page === 'course') path = '/Course';
+  else if (page === 'series') path = '/Series';
+  else if (page === 'bateaux') path = '/Bateaux';
+  else if (page === 'classes') path = '/Classes';
+  else if (page === 'accueil') path = '/Bateaux';
+  go(path);
 }
 </script>
 
@@ -226,17 +240,17 @@ function onHeaderLinkClick(e: MouseEvent, page: string = '') {
   <div class="header-center">
     <nav class="main-nav-bar">
       <div class="nav-left">
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'accueil')}>Accueil</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'classes')}>Classes</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'bateaux')}>Bateaux</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'series')}>Séries</a>
-        <a href="#" on:click={(e) => onHeaderLinkClick(e, 'course')}>Course</a>
-        <a href="#" class="active" on:click={(e) => onHeaderLinkClick(e, 'inscription')}>Inscription</a>
+        <a href="/Bateaux" on:click={navigate}>Accueil</a>
+        <a href="/Classes" on:click={navigate}>Classes</a>
+        <a href="/Bateaux" on:click={navigate}>Bateaux</a>
+        <a href="/Series" on:click={navigate}>Séries</a>
+        <a href="/Course" on:click={navigate}>Course</a>
+        <a href="/Inscription" class="active" on:click={navigate}>Inscription</a>
       </div>
     </nav>
   </div>
   <div class="nav-user">
-    <a href="/Profil" class="nav-user-link">
+    <a href="/Profil" class="nav-user-link" on:click={navigate}>
       <div class="avatar" title="Profil">JD</div>
       <div class="username">Jean Dupont</div>
     </a>
