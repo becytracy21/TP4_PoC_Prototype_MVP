@@ -135,7 +135,7 @@
         <a href="/Bateaux" on:click={navigate} class={!showClasses ? 'active' : ''}>Bateaux</a>
         <a href="/Series" on:click={navigate}>Séries</a>
         <a href="/Course" on:click={navigate}>Course</a>
-        <a href="/Inscription" on:click={navigate}>Inscription</a>
+        <a href="/Inscriptions" on:click={navigate}>Inscriptions</a>
       </div>
     </nav>
   </div>

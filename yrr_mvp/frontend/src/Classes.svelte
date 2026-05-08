@@ -51,9 +51,9 @@
   // Charger les classes au montage du composant
   onMount(() => {
     loadClasses();
-    // Mettre à jour l'URL pour refléter la page courante afin qu'un rechargement la conserve
+    // Mettre à jour l'URL pour refléter la page courante sans hashtag
     try {
-      history.replaceState(null, '', '#classes');
+      history.replaceState(null, '', '/Classes');
     } catch (e) {
       // ignore si l'accès à l'historique n'est pas possible
     }

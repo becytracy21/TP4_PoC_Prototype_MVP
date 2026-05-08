@@ -225,7 +225,7 @@ def course_delete(request, course_id: str):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# --- INSCRIPTION VIEWS (from HEAD) ---
+# --- Inscriptions VIEWS (from HEAD) ---
 
 @api_view(["GET", "POST"])
 def inscriptions(request):

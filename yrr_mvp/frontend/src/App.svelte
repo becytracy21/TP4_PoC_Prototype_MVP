@@ -2,11 +2,11 @@
   import { onMount } from 'svelte';
   import Bateaux from './Bateaux.svelte';
   import Course from './Course.svelte';
-  import Inscription from './Inscription.svelte';
+  import Inscriptions from './Inscriptions.svelte';
   import Series from './Series.svelte';
   import ResultatsSeries from './ResultatsSeries.svelte';
 
-  type Route = 'bateaux' | 'course' | 'inscription' | 'series' | 'resultats-series';
+  type Route = 'bateaux' | 'course' | 'inscriptions' | 'series' | 'resultats-series';
 
   let route: Route = 'bateaux';
 
@@ -14,7 +14,7 @@
     const path = window.location.pathname.replace(/^\//, '').toLowerCase();
     if (path === '' || path === 'accueil') return 'bateaux';
     if (path === 'course') return 'course';
-    if (path === 'inscription') return 'inscription';
+    if (path === 'inscriptions') return 'inscriptions'; // Correction ici
     if (path === 'series') return 'series';
     if (path === 'resultatsseries' || path === 'resultats-series') return 'resultats-series';
     if (path === 'bateaux') return 'bateaux';
@@ -51,8 +51,8 @@
   <ResultatsSeries on:navigate={handleNavigate} />
 {:else if route === 'course'}
   <Course on:navigate={handleNavigate} />
-{:else if route === 'inscription'}
-  <Inscription on:navigate={handleNavigate} />
+{:else if route === 'inscriptions'}
+  <Inscriptions on:navigate={handleNavigate} />
 {:else}
   <Bateaux on:navigate={handleNavigate} />
 {/if}

@@ -17,7 +17,7 @@ interface Course {
   name: string;
   type: 'monotype' | 'handicap';
 }
-interface Inscription {
+interface Inscriptions {
   bateauId: string;
   courseId: string;
   resultat: string;
@@ -25,7 +25,7 @@ interface Inscription {
 
 let boats: Boat[] = [];
 let courses: Course[] = [];
-let inscriptions: Inscription[] = [];
+let inscriptions: Inscriptions[] = [];
 
 let showForm = false;
 let form = {
@@ -145,7 +145,7 @@ function closeForm() {
   form = { bateauId: '', courseId: '', resultat: '' };
 }
 
-// Ajout d'une inscription persistante côté API
+// Ajout d'une Inscriptions persistante côté API
 async function addInscription() {
   if (!form.bateauId || !form.courseId || !form.resultat) return;
   isSubmitting = true;
@@ -171,7 +171,7 @@ async function addInscription() {
       closeForm();
     } else {
       const data = await res.json().catch(() => null);
-      errorMsg = (data?.detail || JSON.stringify(data) || 'Erreur lors de l\'inscription.') + ` (code ${res.status})`;
+      errorMsg = (data?.detail || JSON.stringify(data) || 'Erreur lors de l\'Inscriptions.') + ` (code ${res.status})`;
     }
   } catch (e) {
     errorMsg = 'Erreur réseau ou serveur.';
@@ -195,14 +195,14 @@ function getSortedInscriptions(courseId: string) {
   const invalid = insc.filter(i => isNaN(Number(i.resultat)));
   return [...valid, ...invalid];
 }
-function getPosition(inscription: Inscription, courseId: string) {
+function getPosition(Inscriptions: Inscriptions, courseId: string) {
   const sorted = getSortedInscriptions(courseId);
-  const idx = sorted.findIndex(i => i === inscription);
+  const idx = sorted.findIndex(i => i === Inscriptions);
   return idx >= 0 ? (idx + 1).toString() : '';
 }
-function getPoints(inscription: Inscription, courseId: string) {
+function getPoints(Inscriptions: Inscriptions, courseId: string) {
   // 1 point pour la 1ère place, 2 pour la 2e, etc.
-  const pos = getPosition(inscription, courseId);
+  const pos = getPosition(Inscriptions, courseId);
   return pos ? pos : '';
 }
 
@@ -225,7 +225,7 @@ function navigate(e: MouseEvent) {
 function onHeaderLinkClick(e: MouseEvent, page: string = '') {
   e.preventDefault();
   let path = '/Bateaux';
-  if (page === 'inscription') path = '/Inscription';
+  if (page === 'Inscriptions') path = '/Inscriptions';
   else if (page === 'course') path = '/Course';
   else if (page === 'series') path = '/Series';
   else if (page === 'bateaux') path = '/Bateaux';
@@ -245,7 +245,7 @@ function onHeaderLinkClick(e: MouseEvent, page: string = '') {
         <a href="/Bateaux" on:click={navigate}>Bateaux</a>
         <a href="/Series" on:click={navigate}>Séries</a>
         <a href="/Course" on:click={navigate}>Course</a>
-        <a href="/Inscription" class="active" on:click={navigate}>Inscription</a>
+        <a href="/Inscriptions" class="active" on:click={navigate}>Inscriptions</a>
       </div>
     </nav>
   </div>
@@ -301,7 +301,7 @@ function onHeaderLinkClick(e: MouseEvent, page: string = '') {
     {#if showForm}
       <div class="modal-backdrop">
         <div class="modal-form">
-          <h4>Ajouter une inscription</h4>
+          <h4>Ajouter une Inscriptions</h4>
           {#if errorMsg}
             <div class="error" style="color:red; margin-bottom:1rem;">{errorMsg}</div>
           {/if}
