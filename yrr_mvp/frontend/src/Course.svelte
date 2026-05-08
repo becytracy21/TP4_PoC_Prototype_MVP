@@ -91,6 +91,20 @@
     }
   }
 
+  async function deleteCourse(id: string) {
+    if (!confirm('Supprimer cette course ?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/courses/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.detail || `Erreur lors de la suppression de la course (code ${res.status})`);
+      }
+      await loadCourses();
+    } catch (e) {
+      errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
+    }
+  }
+
   // --- Navigation SPA harmonisée ---
   function go(href: string) {
     if (!href) return;
@@ -231,6 +245,7 @@
             <th>Heure</th>
             <th>Nom</th>
             <th>Parcours</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
@@ -243,6 +258,11 @@
               <td>{c.time}</td>
               <td>{c.name}</td>
               <td>{c.course}</td>
+              <td class="action-cell">
+                <button class="btn-delete" type="button" on:click={() => deleteCourse(c.id)}>
+                  X
+                </button>
+              </td>
             </tr>
           {/each}
         </tbody>

@@ -145,6 +145,23 @@ def courses(request):
     return Response(_serialize_course(created), status=status.HTTP_201_CREATED)
 
 
+@api_view(["DELETE"])
+def course_delete(request, course_id: str):
+    db = get_mongo_db()
+    collection = db.courses
+
+    try:
+        oid = ObjectId(course_id)
+    except Exception:
+        return Response({"detail": "Invalid course ID."}, status=status.HTTP_400_BAD_REQUEST)
+
+    res = collection.delete_one({"_id": oid})
+    if res.deleted_count == 0:
+        return Response({"detail": "Course not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # --- INSCRIPTION VIEWS (from HEAD) ---
 
 @api_view(["GET", "POST"])
