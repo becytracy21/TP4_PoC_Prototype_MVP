@@ -1,5 +1,7 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   // navigation hash: assure que l'app reste dans le SPA
   function go(href) {
@@ -218,7 +220,7 @@
                 <td>
                   <div class="table-actions">
                     <span class="muted">Utilisée par la page "Course"</span>
-                    <a class="btn-small" href="#/resultats-series" on:click={navigate}>Résultats</a>
+                    <a class="btn-small" href="/ResultatsSeries" on:click={navigate}>Résultats</a>
                     <button class="button-ghost" type="button" on:click={() => deleteSeries(s.id)}>Supprimer</button>
                   </div>
                 </td>
@@ -264,7 +266,7 @@
         </form>
       </details>
 
-      <a class="button-ghost" href="#/bateaux" on:click={navigate}>Retour</a>
+      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
     </div>
   </section>
 </div>

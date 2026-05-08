@@ -107,13 +107,24 @@
   function onHeaderLinkClick(e: MouseEvent, page: string = '') {
     e.preventDefault();
     if (page === 'course') {
-      dispatch('navigate', 'course');
-      window.location.hash = '#/course';
+      dispatch('navigate', '/Course');
+      window.history.pushState({}, '', '/Course');
     } else if (page === 'inscription') {
-      dispatch('navigate', 'inscription');
-      window.location.hash = '#/inscription';
+      dispatch('navigate', '/Inscription');
+      window.history.pushState({}, '', '/Inscription');
+    } else if (page === 'bateaux') {
+      dispatch('navigate', '/Bateaux');
+      window.history.pushState({}, '', '/Bateaux');
+    } else if (page === 'series') {
+      dispatch('navigate', '/Series');
+      window.history.pushState({}, '', '/Series');
+    } else if (page === 'classes') {
+      dispatch('navigate', '/Classes');
+      window.history.pushState({}, '', '/Classes');
     } else {
-      alert('MVP : seule la page Bateaux et Course sont disponibles.');
+      // fallback
+      dispatch('navigate', '/Bateaux');
+      window.history.pushState({}, '', '/Bateaux');
     }
   }
 

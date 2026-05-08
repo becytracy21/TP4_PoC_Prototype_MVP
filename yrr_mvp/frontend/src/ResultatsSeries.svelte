@@ -1,10 +1,12 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+
   function go(href) {
     if (!href) return;
     if (href.startsWith('/')) {
       window.history.pushState({}, '', href);
-      const event = new CustomEvent('navigate', { detail: href });
-      window.dispatchEvent(event);
+      dispatch('navigate', href);
     } else {
       window.location.href = href;
     }
@@ -264,7 +266,7 @@
       <a class="btn" href="#" on:click|preventDefault={printResults}>Imprimer</a>
       <a class="button-ghost" href="#" on:click|preventDefault={() => { /* précédent */ }}>Précédent</a>
       <a class="button-ghost" href="#" on:click|preventDefault={() => { /* suivant */ }}>Suivant</a>
-      <a class="button-ghost" href="#/series" on:click={navigate}>Retour aux séries</a>
+      <a class="button-ghost" href="/Series" on:click={navigate}>Retour aux séries</a>
     </div>
   </section>
 </div>
