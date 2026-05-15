@@ -42,6 +42,69 @@
 
   const CLASS_OPTIONS = ['Albacore', 'Comet', 'Fireball', 'Laser', 'Mirror'].sort();
 
+  // filtre / contrôle de la classe (apparence « pill / dropdown »)
+  let classFilter: string | null = null;
+  let classFilterOpen = false;
+
+  // liste visible selon filtre
+  $: visibleBoats = classFilter ? boats.filter(b => b.classe === classFilter) : boats;
+
+  function toggleClassFilter() {
+    classFilterOpen = !classFilterOpen;
+  }
+
+  function selectClassFilter(c: string) {
+    classFilter = c;
+    classFilterOpen = false;
+  }
+
+  function clearClassFilter() {
+    classFilter = null;
+    classFilterOpen = false;
+  }
+
+  // état de tri pour le nom (null = pas de tri, true = A→Z, false = Z→A)
+  let sortAsc: boolean | null = null;
+  // état de tri pour le barreur
+  let sortHelmsAsc: boolean | null = null;
+
+  function sortBoatsByName() {
+    if (sortAsc === null) return;
+    boats = [...boats].sort((a, b) => {
+      const na = (a.name ?? '').toLowerCase();
+      const nb = (b.name ?? '').toLowerCase();
+      if (na < nb) return sortAsc ? -1 : 1;
+      if (na > nb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function sortBoatsByHelmsman() {
+    if (sortHelmsAsc === null) return;
+    boats = [...boats].sort((a, b) => {
+      const ha = (a.helmsman ?? '').toLowerCase();
+      const hb = (b.helmsman ?? '').toLowerCase();
+      if (ha < hb) return sortHelmsAsc ? -1 : 1;
+      if (ha > hb) return sortHelmsAsc ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function toggleSortName() {
+    // bascule entre ascendant / descendant
+    sortAsc = sortAsc === null ? true : !sortAsc;
+    // désactiver le tri sur Barreur
+    sortHelmsAsc = null;
+    sortBoatsByName();
+  }
+
+  function toggleSortHelmsman() {
+    sortHelmsAsc = sortHelmsAsc === null ? true : !sortHelmsAsc;
+    // désactiver le tri sur Nom
+    sortAsc = null;
+    sortBoatsByHelmsman();
+  }
+
   function mapBoat(raw: any): Boat {
     return {
       id: raw.id ?? raw._id ?? String(raw._id ?? Date.now()),
@@ -60,6 +123,9 @@
       if (!res.ok) throw new Error(`GET /boats -> ${res.status}`);
       const raw = await res.json().catch(() => []);
       boats = (Array.isArray(raw) ? raw.map(mapBoat) : []).filter(Boolean) as Boat[];
+      // Appliquer le tri si actif
+      if (sortAsc !== null) sortBoatsByName();
+      if (sortHelmsAsc !== null) sortBoatsByHelmsman();
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     } finally {
@@ -391,14 +457,42 @@
       </details>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-wrapper" class:filter-open={classFilterOpen}>
       <table class="table-standard" aria-label="Tableau des bateaux" id="boatTable">
         <thead>
           <tr>
-            <th>Nom du bateau</th>
-            <th>Classe</th>
+            <th style="display:flex;align-items:center;gap:6px;">
+              <span>Nom du bateau</span>
+              <button class="mini-sort" type="button" on:click={toggleSortName} aria-label="Trier par nom" title="Trier par nom" style="font-size:0.8rem;padding:2px 6px;border-radius:6px;">
+                {#if sortAsc === null}⇅{:else if sortAsc}▲{:else}▼{/if}
+              </button>
+            </th>
+            <th style="min-width:160px;">
+              <div class="class-filter-wrap" style="display:flex;align-items:center;gap:10px;">
+                <span class="th-label">Classe</span>
+                <div class="class-filter">
+                  <button type="button" class="class-filter-btn" on:click={toggleClassFilter} aria-haspopup="listbox" aria-expanded={classFilterOpen} title="Filtrer par classe">
+                    <span class="pill-label">{classFilter ?? 'Toutes'}</span>
+                    <span class="caret">▾</span>
+                  </button>
+                  {#if classFilterOpen}
+                    <ul class="class-filter-menu" role="listbox">
+                      <li class="class-filter-item all" on:click={clearClassFilter}>Tous</li>
+                      {#each CLASS_OPTIONS as opt}
+                        <li class="class-filter-item" on:click={() => selectClassFilter(opt)} aria-selected={classFilter === opt}>{opt}</li>
+                      {/each}
+                    </ul>
+                  {/if}
+                </div>
+              </div>
+            </th>
             <th>Numéro de voile</th>
-            <th>Barreur</th>
+            <th style="display:flex;align-items:center;gap:6px;">
+              <span>Barreur</span>
+              <button class="mini-sort" type="button" on:click={toggleSortHelmsman} aria-label="Trier par barreur" title="Trier par barreur" style="font-size:0.8rem;padding:2px 6px;border-radius:6px;">
+                {#if sortHelmsAsc === null}⇅{:else if sortHelmsAsc}▲{:else}▼{/if}
+              </button>
+            </th>
             <th class="action-cell"></th>
           </tr>
         </thead>
@@ -407,12 +501,12 @@
             <tr>
               <td colspan="5" class="muted">Chargement…</td>
             </tr>
-          {:else if boats.length === 0}
+          {:else if visibleBoats.length === 0}
             <tr>
               <td colspan="5" class="muted">Aucun bateau</td>
             </tr>
           {:else}
-            {#each boats as b (b.id)}
+            {#each visibleBoats as b (b.id)}
               <tr id={"boatRow-" + b.id}>
                 {#if editingId === b.id}
                   <td><input type="text" class="input-inline" bind:value={editName} /></td>
@@ -453,3 +547,5 @@
 </div>
 
 <footer class="muted mt-18">MVP fonctionnel — interface connectée à MongoDB.</footer>
+
+<!-- Styles déplacés dans `src/app.css` -->

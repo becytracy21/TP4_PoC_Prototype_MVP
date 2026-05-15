@@ -215,9 +215,12 @@ header nav a.active {
 
 /* Fenêtre Bateaux — largeur spécifique (~7 pouces = 672px) */
 .panel--bateaux {
-  width: 672px;
-  min-width: 672px;
-  max-width: 672px;
+     respectant la largeur maximale du conteneur principal. */
+  width: 100%;
+  min-width: 880px; /* augmente la largeur minimale pour ressembler à l'exemple */
+  max-width: 1160px;
+  /* Autoriser le défilement horizontal si le contenu dépasse */
+  overflow-x: auto;
 }
 
 h3 {
@@ -519,6 +522,95 @@ footer {
   box-shadow: 0 -6px 20px rgba(11, 36, 64, 0.05);
 }
 
+/* Styles pour le contrôle de filtre 'Classe' (déplacés depuis Bateaux.svelte) */
+.th-label { font-weight:700; color: #333; }
+
+.class-filter { position: relative; display: inline-block; z-index: 2300; }
+.class-filter-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 1px solid #e0e0e6; border-radius: 14px;
+  padding: 4px 10px; font-size: 0.88rem; min-width: 80px; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  color: #222; justify-content: space-between;
+}
+.class-filter-btn .pill-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; display: inline-block; }
+.class-filter-btn .caret { opacity: 0.7; font-size:0.8rem; }
+
+/* Menu: compact, sans puces */
+.class-filter-menu {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  min-width: 120px;
+  max-height: none;
+  overflow: visible;
+  position: absolute;
+  /* remonter légèrement pour superposer les lignes (overlap) */
+  top: calc(100% - 8px);
+  left: 0;
+  z-index: 2200;
+  background: #fff;
+  border: 1px solid #e6e6ea;
+  border-radius: 6px;
+  /* ombre plus nette pour se détacher */
+  box-shadow: 0 18px 40px rgba(35,40,42,0.14);
+}
+
+.class-filter-item {
+  display: block;
+  padding: 6px 12px; /* compact */
+  font-size: 0.95rem;
+  line-height: 1.05;
+  color: #222;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+/* Ajustements finaux pour que la liste ressemble exactement à l'exemple demandé */
+.class-filter-menu {
+  min-width: 110px;          /* plus étroit */
+  padding: 2px 0;            /* compacter */
+  margin: 0;
+  /* Déplacer légèrement vers le bas pour ne pas être collé au bouton */
+  top: calc(100% + 6px);
+  left: 0;
+  border-radius: 4px;        /* coins légèrement arrondis */
+  box-shadow: 0 12px 30px rgba(35,40,42,0.12);
+}
+
+.class-filter-item {
+  padding: 6px 12px;        /* compact */
+  font-size: 0.95rem;
+  line-height: 1;
+  color: #222;
+  background: transparent;
+}
+
+/* item sélectionné sombre en haut et non entouré */
+.class-filter-item[aria-selected="true"] {
+  background: #6b6b6b; /* gris foncé proche de l'exemple */
+  color: #fff;
+  font-weight: 700;
+}
+
+/* les autres items restent clairs et alignés à gauche */
+.class-filter-item:not([aria-selected="true"]):hover {
+  background: #f3f3f4;
+  color: #222;
+}
+
+/* retirer tout espacement excessif autour du menu */
+.class-filter { z-index: 2200; }
+
+/* Focus styling for keyboard navigation */
+.class-filter-item:focus { outline: 2px solid rgba(124,58,237,0.18); outline-offset: 2px; }
+
+/* small responsive polish */
+@media (max-width: 700px) {
+  .class-filter-btn { min-width: 90px; padding: 6px 8px; }
+  .class-filter-menu { min-width: 120px; }
+}
+
 @media (max-width: 960px) {
   .panel {
     width: 100%;
@@ -541,3 +633,37 @@ footer {
     padding-bottom: 24px;
   }
 }
+
+/* Quand le filtre est ouvert, autoriser le menu à dépasser du tableau (superposition) */
+.table-wrapper.filter-open { overflow: visible; }
+/* Styles pour les petits boutons de tri (apparence "petite boîte" près des headers) */
+.mini-sort {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.45);
+  background: #fff;
+  color: #111;
+  box-shadow: 0 6px 18px rgba(11,36,64,0.04);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.mini-sort:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(11,36,64,0.06);
+}
+
+.mini-sort:focus {
+  outline: 2px solid rgba(124,58,237,0.18);
+  outline-offset: 2px;
+}
+
+/* Ajuster l'espacement dans les th qui contiennent un mini-sort pour un rendu homogène */
+.table-standard th > span { display: inline-block; }
+.table-standard th .mini-sort { margin-left: 6px; }
