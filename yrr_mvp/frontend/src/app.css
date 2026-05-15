@@ -215,6 +215,7 @@ header nav a.active {
 
 /* Fenêtre Bateaux — largeur spécifique (~7 pouces = 672px) */
 .panel--bateaux {
+  /* Utiliser toute la largeur disponible dans la zone principale tout en
      respectant la largeur maximale du conteneur principal. */
   width: 100%;
   min-width: 880px; /* augmente la largeur minimale pour ressembler à l'exemple */
