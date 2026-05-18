@@ -13,8 +13,10 @@ def _serialize_boat(doc):
     return {
         "id": str(doc.get("_id")),
         "name": doc.get("name"),
-        "handicap_type": doc.get("handicap_type"),
-        "handicap_value": doc.get("handicap_value"),
+        "sail_number": doc.get("sail_number"),
+        "helmsman": doc.get("helmsman"),
+        "class_id": str(doc.get("class_id")) if doc.get("class_id") else None,
+        "class_name": doc.get("class_name"),
     }
 
 
@@ -77,23 +79,52 @@ def boats(request):
 
     payload = request.data if isinstance(request.data, dict) else {}
     name = payload.get("name")
-    handicap_type = payload.get("handicap_type")
-    handicap_value_raw = payload.get("handicap_value")
+    sail_number_raw = payload.get("sail_number")
+    helmsman = payload.get("helmsman")
+    class_id_raw = payload.get("class_id") or payload.get("class") or payload.get("classe")
+    class_name_raw = payload.get("class_name") or payload.get("className")
 
-    if handicap_type not in {"PY", "TMF"}:
-        return Response({"detail": "handicap_type must be 'PY' or 'TMF'"}, status=status.HTTP_400_BAD_REQUEST)
+    sail_number = _parse_int(sail_number_raw)
+    if sail_number_raw not in (None, "") and sail_number is None:
+        return Response({"detail": "sail_number must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
 
-    handicap_value = _parse_handicap_value(handicap_value_raw)
-    if handicap_value is None:
-        return Response({"detail": "handicap_value must be a number"}, status=status.HTTP_400_BAD_REQUEST)
-
-    doc = {
-        "handicap_type": handicap_type,
-        "handicap_value": handicap_value,
-    }
+    doc = {}
 
     if name not in (None, ""):
         doc["name"] = str(name)
+
+    if sail_number is not None:
+        doc["sail_number"] = sail_number
+
+    if helmsman not in (None, ""):
+        doc["helmsman"] = str(helmsman)
+
+    # --- Lien vers une classe existante, OU création à la volée ---
+    if class_id_raw not in (None, ""):
+        try:
+            doc["class_id"] = ObjectId(str(class_id_raw))
+        except Exception:
+            return Response({"detail": "Invalid class_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if class_name_raw not in (None, ""):
+        class_name = str(class_name_raw).strip()
+        if class_name:
+            # Créer une classe simple si elle n'existe pas déjà (même nom)
+            existing = db.classes.find_one({"name": class_name})
+            if existing:
+                doc["class_id"] = existing.get("_id")
+                doc["class_name"] = existing.get("name")
+            else:
+                created = db.classes.insert_one({
+                    "name": class_name,
+                    "handicap_type": "PY",
+                    "handicap_value": 1.0,
+                })
+                doc["class_id"] = created.inserted_id
+                doc["class_name"] = class_name
+
+    if not doc:
+        return Response({"detail": "No data provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     result = collection.insert_one(doc)
     created = collection.find_one({"_id": result.inserted_id})
@@ -115,6 +146,88 @@ def boat_delete(request, boat_id: str):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["PUT", "PATCH"])
+def boat_update(request, boat_id: str):
+    """Met à jour un bateau existant (PUT/PATCH) sur /boats/<id>.
+
+    Champs supportés:
+    - name (optionnel, chaîne; "" ou None => suppression)
+    - sail_number (entier; ""/None => suppression)
+    - helmsman (chaîne; ""/None => suppression)
+    - class_id (ObjectId str; ""/None => suppression)
+    """
+    db = get_mongo_db()
+    collection = db.boats
+
+    try:
+        oid = ObjectId(boat_id)
+    except Exception:
+        return Response({"detail": "Invalid id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    payload = request.data if isinstance(request.data, dict) else {}
+
+    update_doc = {}
+
+    if "name" in payload:
+        name = payload.get("name")
+        if name in (None, ""):
+            update_doc["name"] = None
+        else:
+            update_doc["name"] = str(name)
+
+    if "sail_number" in payload:
+        sail_raw = payload.get("sail_number")
+        if sail_raw in (None, ""):
+            update_doc["sail_number"] = None
+        else:
+            sail = _parse_int(sail_raw)
+            if sail is None:
+                return Response({"detail": "sail_number must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
+            update_doc["sail_number"] = sail
+
+    if "helmsman" in payload:
+        helmsman = payload.get("helmsman")
+        if helmsman in (None, ""):
+            update_doc["helmsman"] = None
+        else:
+            update_doc["helmsman"] = str(helmsman)
+
+    if "class_id" in payload or "class" in payload or "classe" in payload:
+        raw = payload.get("class_id") or payload.get("class") or payload.get("classe")
+        if raw in (None, ""):
+            update_doc["class_id"] = None
+            update_doc["class_name"] = None
+        else:
+            try:
+                cid = ObjectId(str(raw))
+            except Exception:
+                return Response({"detail": "Invalid class_id"}, status=status.HTTP_400_BAD_REQUEST)
+            found = db.classes.find_one({"_id": cid})
+            if not found:
+                return Response({"detail": "Class not found"}, status=status.HTTP_400_BAD_REQUEST)
+            update_doc["class_id"] = cid
+            update_doc["class_name"] = found.get("name")
+
+    if not update_doc:
+        return Response({"detail": "No data provided for update"}, status=status.HTTP_400_BAD_REQUEST)
+
+    set_doc = {k: v for k, v in update_doc.items() if v is not None}
+    unset_keys = [k for k, v in update_doc.items() if v is None]
+
+    ops = {}
+    if set_doc:
+        ops["$set"] = set_doc
+    if unset_keys:
+        ops["$unset"] = {k: "" for k in unset_keys}
+
+    res = collection.update_one({"_id": oid}, ops)
+    if res.matched_count == 0:
+        return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    updated = collection.find_one({"_id": oid})
+    return Response(_serialize_boat(updated))
 
 
 @api_view(["GET", "POST"])

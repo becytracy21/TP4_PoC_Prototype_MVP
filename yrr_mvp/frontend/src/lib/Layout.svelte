@@ -21,6 +21,7 @@
         <a href="/Bateaux" class={active === 'bateaux' ? 'active' : ''} on:click={navigate}>Bateaux</a>
         <a href="/Classes" class={active === 'classes' ? 'active' : ''} on:click={navigate}>Classes</a>
         <a href="/Series" class={active === 'series' ? 'active' : ''} on:click={navigate}>Séries</a>
+        <a href="/ResultatsSeries" class={active === 'resultats-series' ? 'active' : ''} on:click={navigate}>Résultats</a>
         <a href="/Course" class={active === 'course' ? 'active' : ''} on:click={navigate}>Course</a>
         <a href="/Inscriptions" class={active === 'inscriptions' ? 'active' : ''} on:click={navigate}>Inscriptions</a>
       </div>
