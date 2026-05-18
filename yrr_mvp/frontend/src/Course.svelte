@@ -105,23 +105,6 @@
     }
   }
 
-  // --- Navigation SPA harmonisée ---
-  function go(href: string) {
-    if (!href) return;
-    if (href.startsWith('/')) {
-      window.history.pushState({}, '', href);
-      dispatch('navigate', href);
-    } else {
-      window.location.href = href;
-    }
-  }
-
-  function navigate(e: MouseEvent) {
-    e.preventDefault();
-    const a = e.currentTarget as HTMLAnchorElement;
-    go(a.getAttribute('href') || '');
-  }
-
   const dispatch = createEventDispatcher();
 
   onMount(() => {
@@ -129,28 +112,6 @@
     loadSeries();
   });
 </script>
-
-<header>
-  <h2>YRR</h2>
-  <div class="header-center">
-    <nav class="main-nav-bar">
-      <div class="nav-left">
-        <a href="/Bateaux" on:click={navigate}>Accueil</a>
-        <a href="/Classes" on:click={navigate}>Classes</a>
-        <a href="/Bateaux" on:click={navigate}>Bateaux</a>
-        <a href="/Series" on:click={navigate}>Séries</a>
-        <a href="/Course" class="active" on:click={navigate}>Course</a>
-        <a href="/Inscriptions" on:click={navigate}>Inscriptions</a>
-      </div>
-    </nav>
-  </div>
-  <div class="nav-user">
-    <a href="/Profil" class="nav-user-link" on:click={navigate}>
-      <div class="avatar" title="Profil">JD</div>
-      <div class="username">Jean Dupont</div>
-    </a>
-  </div>
-</header>
 
 <div class="container-main">
   <div class="hero">
@@ -274,5 +235,3 @@
     </div>
   </section>
 </div>
-
-<footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>

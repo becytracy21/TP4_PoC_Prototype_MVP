@@ -1,20 +1,23 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import Layout from './lib/Layout.svelte';
   import Bateaux from './Bateaux.svelte';
+  import Classes from './Classes.svelte';
   import Course from './Course.svelte';
   import Inscriptions from './Inscriptions.svelte';
   import Series from './Series.svelte';
   import ResultatsSeries from './ResultatsSeries.svelte';
 
-  type Route = 'bateaux' | 'course' | 'inscriptions' | 'series' | 'resultats-series';
+  type Route = 'bateaux' | 'classes' | 'course' | 'inscriptions' | 'series' | 'resultats-series';
 
   let route: Route = 'bateaux';
 
   function parseRoute(): Route {
     const path = window.location.pathname.replace(/^\//, '').toLowerCase();
-    if (path === '' || path === 'accueil') return 'bateaux';
+    if (path === '') return 'bateaux';
+    if (path === 'classes') return 'classes';
     if (path === 'course') return 'course';
-    if (path === 'inscriptions') return 'inscriptions'; // Correction ici
+    if (path === 'inscriptions') return 'inscriptions';
     if (path === 'series') return 'series';
     if (path === 'resultatsseries' || path === 'resultats-series') return 'resultats-series';
     if (path === 'bateaux') return 'bateaux';
@@ -46,13 +49,30 @@
 </script>
 
 {#if route === 'series'}
-  <Series on:navigate={handleNavigate} />
+  <Layout active="series" on:navigate={handleNavigate}>
+    <Series on:navigate={handleNavigate} />
+  </Layout>
 {:else if route === 'resultats-series'}
-  <ResultatsSeries on:navigate={handleNavigate} />
+  <Layout active="resultats-series" on:navigate={handleNavigate}>
+    <ResultatsSeries on:navigate={handleNavigate} />
+  </Layout>
 {:else if route === 'course'}
-  <Course on:navigate={handleNavigate} />
+  <Layout active="course" on:navigate={handleNavigate}>
+    <Course on:navigate={handleNavigate} />
+  </Layout>
 {:else if route === 'inscriptions'}
-  <Inscriptions on:navigate={handleNavigate} />
+  <Layout active="inscriptions" on:navigate={handleNavigate}>
+    <Inscriptions on:navigate={handleNavigate} />
+  </Layout>
+{:else if route === 'classes'}
+  <Layout active="classes" on:navigate={handleNavigate}>
+    <Classes onBack={() => {
+      window.history.pushState({}, '', '/Bateaux');
+      sync();
+    }} />
+  </Layout>
 {:else}
-  <Bateaux on:navigate={handleNavigate} />
+  <Layout active="bateaux" on:navigate={handleNavigate}>
+    <Bateaux on:navigate={handleNavigate} />
+  </Layout>
 {/if}

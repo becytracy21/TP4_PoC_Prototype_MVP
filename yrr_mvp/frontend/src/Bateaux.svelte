@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
-  import Classes from './Classes.svelte';
 
   // --- Types et Configuration ---
   type Boat = {
@@ -17,7 +16,6 @@
   let boats: Boat[] = [];
   let loading = false;
   let errorMsg = '';
-  let showClasses = false; // Bascule entre vue Bateaux et vue Classes
   let formOpen = false;
 
   // Champs du formulaire
@@ -96,158 +94,106 @@
     const a = e.currentTarget as HTMLAnchorElement;
     const href = a.getAttribute('href') || '';
 
-    // Mise à jour de l'URL sans rechargement
     window.history.pushState({}, '', href);
-    
-    // Logique de basculement de vue
-    if (href.includes('Classes')) {
-      showClasses = true;
-    } else {
-      showClasses = false;
-    }
-
-    // Notification au parent si nécessaire
     dispatch('navigate', href);
   }
 
   onMount(() => {
     loadBoats();
-    // Gérer l'état initial selon l'URL
-    if (window.location.pathname.includes('Classes')) {
-      showClasses = true;
-    }
-
-    const onPopState = () => {
-      showClasses = window.location.pathname.includes('Classes');
-    };
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
   });
 </script>
 
-<header>
-  <h2>YRR</h2>
-  <div class="header-center" style="display: flex; justify-content: center;">
-    <nav class="main-nav-bar">
-      <div class="nav-left">
-        <a href="/Bateaux" on:click={navigate} class={!showClasses ? 'active' : ''}>Accueil</a>
-        <a href="/Classes" on:click={navigate} class={showClasses ? 'active' : ''}>Classes</a>
-        <a href="/Bateaux" on:click={navigate} class={!showClasses ? 'active' : ''}>Bateaux</a>
-        <a href="/Series" on:click={navigate}>Séries</a>
-        <a href="/Course" on:click={navigate}>Course</a>
-        <a href="/Inscriptions" on:click={navigate}>Inscriptions</a>
-      </div>
-    </nav>
+<div class="container-main">
+  <div class="hero">
+    <h2 class="hero-title">Gestion des bateaux</h2>
+    <p class="hero-subtitle">Liste des bateaux inscrits (MVP, données MongoDB)</p>
+    <div class="title-underline" aria-hidden="true"></div>
   </div>
-  <div class="nav-user">
-    <a href="/Profil" class="nav-user-link" on:click={navigate}>
-      <div class="avatar" title="Profil">JD</div>
-      <div class="username">Jean Dupont</div>
-    </a>
-  </div>
-</header>
 
-{#if !showClasses}
-  <div class="container-main">
-    <div class="hero">
-      <h2 class="hero-title">Gestion des bateaux</h2>
-      <p class="hero-subtitle">Liste des bateaux inscrits (MVP, données MongoDB)</p>
-      <div class="title-underline" aria-hidden="true"></div>
+  <section class="panel">
+    <h3>Liste des bateaux</h3>
+
+    {#if errorMsg}
+      <div class="error" role="alert">{errorMsg}</div>
+    {/if}
+
+    <div class="add-boat-wrap mb-18">
+      <details class="add-details" bind:open={formOpen}>
+        <summary class="add-summary">+ Ajouter un bateau</summary>
+        <form class="add-form" on:submit|preventDefault={addBoat}>
+          <div class="row">
+            <label class="stack" for="boatName">
+              <span>Nom du bateau</span>
+              <input id="boatName" type="text" bind:value={name} placeholder="Sea Breeze" />
+            </label>
+          </div>
+
+          <div class="row mt-8">
+            <label class="stack" for="boatType">
+              <span>H/cap type</span>
+              <select id="boatType" bind:value={handicap_type}>
+                <option value="PY">PY</option>
+                <option value="TMF">TMF</option>
+              </select>
+            </label>
+
+            <label class="stack" for="boatValue">
+              <span>H/cap value</span>
+              <input
+                id="boatValue"
+                type="text"
+                inputmode="decimal"
+                bind:value={handicap_value}
+                placeholder="e.g. 1.234"
+              />
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Ajouter</button>
+            <button class="btn btn-outline" type="button" on:click={() => (formOpen = false)}>Annuler</button>
+          </div>
+        </form>
+      </details>
     </div>
 
-    <section class="panel">
-      <h3>Liste des bateaux</h3>
+    <div class="table-wrapper">
+      <table class="table-standard" aria-label="Tableau des bateaux">
+        <thead>
+          <tr>
+            <th>Nom du bateau</th>
+            <th>H/cap type</th>
+            <th>H/cap value</th>
+            <th class="action-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {#if loading}
+            <tr><td colspan="4" class="muted">Chargement…</td></tr>
+          {:else if boats.length === 0}
+            <tr><td colspan="4" class="muted">Aucun bateau</td></tr>
+          {:else}
+            {#each boats as b (b.id)}
+              <tr>
+                <td>{b.name ?? ''}</td>
+                <td>
+                  <span class={"badge " + (b.handicap_type === 'PY' ? 'badge--py' : 'badge--tmf')}>
+                    {b.handicap_type}
+                  </span>
+                </td>
+                <td>{b.handicap_value}</td>
+                <td class="action-cell">
+                  <button class="btn-delete" type="button" on:click={() => deleteBoat(b.id)}>Supprimer</button>
+                </td>
+              </tr>
+            {/each}
+          {/if}
+        </tbody>
+      </table>
+    </div>
 
-      {#if errorMsg}
-        <div class="error" role="alert">{errorMsg}</div>
-      {/if}
-
-      <div class="add-boat-wrap mb-18">
-        <details class="add-details" bind:open={formOpen}>
-          <summary class="add-summary">+ Ajouter un bateau</summary>
-          <form class="add-form" on:submit|preventDefault={addBoat}>
-            <div class="row">
-              <label class="stack" for="boatName">
-                <span>Nom du bateau</span>
-                <input id="boatName" type="text" bind:value={name} placeholder="Sea Breeze" />
-              </label>
-            </div>
-
-            <div class="row mt-8">
-              <label class="stack" for="boatType">
-                <span>H/cap type</span>
-                <select id="boatType" bind:value={handicap_type}>
-                  <option value="PY">PY</option>
-                  <option value="TMF">TMF</option>
-                </select>
-              </label>
-
-              <label class="stack" for="boatValue">
-                <span>H/cap value</span>
-                <input
-                  id="boatValue"
-                  type="text"
-                  inputmode="decimal"
-                  bind:value={handicap_value}
-                  placeholder="e.g. 1.234"
-                />
-              </label>
-            </div>
-
-            <div class="actions">
-              <button class="btn btn-primary" type="submit">Ajouter</button>
-              <button class="btn btn-outline" type="button" on:click={() => (formOpen = false)}>Annuler</button>
-            </div>
-          </form>
-        </details>
-      </div>
-
-      <div class="table-wrapper">
-        <table class="table-standard" aria-label="Tableau des bateaux">
-          <thead>
-            <tr>
-              <th>Nom du bateau</th>
-              <th>H/cap type</th>
-              <th>H/cap value</th>
-              <th class="action-cell"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {#if loading}
-              <tr><td colspan="4" class="muted">Chargement…</td></tr>
-            {:else if boats.length === 0}
-              <tr><td colspan="4" class="muted">Aucun bateau</td></tr>
-            {:else}
-              {#each boats as b (b.id)}
-                <tr>
-                  <td>{b.name ?? ''}</td>
-                  <td>
-                    <span class={"badge " + (b.handicap_type === 'PY' ? 'badge--py' : 'badge--tmf')}>
-                      {b.handicap_type}
-                    </span>
-                  </td>
-                  <td>{b.handicap_value}</td>
-                  <td class="action-cell">
-                    <button class="btn-delete" type="button" on:click={() => deleteBoat(b.id)}>Supprimer</button>
-                  </td>
-                </tr>
-              {/each}
-            {/if}
-          </tbody>
-        </table>
-      </div>
-
-      <div class="actions-row mt-2">
-        <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
-      </div>
-    </section>
-  </div>
-  <footer class="muted mt-18">MVP fonctionnel — interface connectée à MongoDB.</footer>
-{:else}
-  <!-- Vue Classes : injection du composant -->
-  <Classes onBack={() => { 
-    showClasses = false; 
-    window.history.pushState({}, '', '/Bateaux');
-    loadBoats(); 
-  }} />
-{/if}
+    <div class="actions-row mt-2">
+      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
+    </div>
+  </section>
+</div>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import './Classes.css';
 
   export let onBack: () => void = () => {};
 
@@ -461,8 +460,6 @@
     </form>
   </div>
 </div>
-
-<footer class="muted mt-18">Prototype non fonctionnel — interface de démonstration.</footer>
 
 <!-- Snack bar de notification (sans OK, disparaît automatiquement) -->
 <div class="snack-bar {showSnack ? 'active' : ''}">
