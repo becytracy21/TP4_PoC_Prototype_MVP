@@ -60,6 +60,17 @@
   text-align: right;
 }
 
+.text-right,
+.text-center {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.table-standard td.text-right,
+.table-standard th.text-right {
+  text-align: right;
+}
+
 .flex-1 {
   flex: 1;
 }
