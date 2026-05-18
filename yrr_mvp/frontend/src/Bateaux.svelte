@@ -33,6 +33,18 @@
   let class_id: string = '';
   let class_name = '';
 
+  function onClassSelectChange(e: Event) {
+    const value = (e.currentTarget as HTMLSelectElement).value;
+    class_id = value;
+    if (value) class_name = '';
+  }
+
+  function onClassNameInput(e: Event) {
+    const value = (e.currentTarget as HTMLInputElement).value;
+    class_name = value;
+    if (value.trim() !== '') class_id = '';
+  }
+
   // --- Édition inline ---
   let editingId: string | null = null;
   let editName = '';
@@ -235,7 +247,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des bateaux</h2>
-    <p class="hero-subtitle">Liste des bateaux inscrits (MVP, données MongoDB)</p>
+    <p class="hero-subtitle">Liste des bateaux inscrits</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
@@ -270,19 +282,32 @@
           </div>
 
           <div class="row mt-8">
-            <label class="stack" for="boatClassId">
-              <span>Classe</span>
-              <select id="boatClassId" bind:value={class_id}>
-                <option value="">(Aucune)</option>
+            <label class="stack" for="boatClass">
+              <span>Classe existante</span>
+              <select
+                id="boatClass"
+                class="cell-input"
+                value={class_id}
+                on:change={onClassSelectChange}
+                disabled={class_name.trim() !== ''}
+              >
+                <option value="">Choisir une classe</option>
                 {#each classes as c (c.id)}
                   <option value={c.id}>{c.name}</option>
                 {/each}
               </select>
             </label>
 
-            <label class="stack" for="boatClassName">
+            <label class="stack" for="boatClassNew">
               <span>Ou créer une classe</span>
-              <input id="boatClassName" type="text" bind:value={class_name} placeholder="Nouvelle classe" />
+              <input
+                id="boatClassNew"
+                type="text"
+                value={class_name}
+                on:input={onClassNameInput}
+                placeholder="Laser"
+                disabled={class_id !== ''}
+              />
             </label>
           </div>
 
@@ -298,16 +323,16 @@
       <table class="table-standard" aria-label="Tableau des bateaux">
         <thead>
           <tr>
-            <th role="button" on:click={() => sortBoats('name')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortBoats('name')}>
               Nom du bateau {sortColumn === 'name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" on:click={() => sortBoats('sail_number')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortBoats('sail_number')}>
               Sail number {sortColumn === 'sail_number' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" on:click={() => sortBoats('helmsman')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortBoats('helmsman')}>
               Helmsman {sortColumn === 'helmsman' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" on:click={() => sortBoats('class_name')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortBoats('class_name')}>
               Classe {sortColumn === 'class_name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
             <th class="action-cell"></th>

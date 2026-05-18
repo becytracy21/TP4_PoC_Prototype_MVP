@@ -170,7 +170,6 @@
                 <td class="text-center">{coursesCountBySeries[s.id] || 0}</td>
                 <td>
                   <div class="table-actions">
-                    <span class="muted">Utilisée par la page "Course"</span>
                     <a class="btn-small" href="/ResultatsSeries" on:click={navigate}>Résultats</a>
                     <button class="btn-delete" type="button" on:click={() => deleteSeries(String(s.id))}>Supprimer</button>
                   </div>
@@ -184,7 +183,9 @@
 
     <div class="actions-row mt-2">
       <details class="add-details" bind:open={formOpen}>
-        <summary class="add-summary">Créer une série</summary>
+        <summary class={formOpen ? 'add-summary' : 'btn'}>
+          Créer une série
+        </summary>
         <form class="add-form" on:submit|preventDefault={addSeries}>
           <div class="row">
             <label class="stack" for="seriesName">

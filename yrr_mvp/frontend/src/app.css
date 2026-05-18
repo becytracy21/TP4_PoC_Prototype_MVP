@@ -30,6 +30,28 @@
   box-sizing: border-box;
 }
 
+.th-sort {
+  cursor: pointer;
+  user-select: none;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.select-wide {
+  margin-left: 12px;
+  min-width: 220px;
+}
+
+.push-right {
+  margin-left: auto;
+}
+
 .text-center {
   text-align: center;
 }
@@ -60,13 +82,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-height: 40px;
   border: 1px solid rgba(124, 58, 237, 0.22);
   background: rgba(255, 255, 255, 0.6);
   color: var(--accent-2);
   text-decoration: none;
-  font-weight: 800;
 }
 
 .btn-small:hover {
@@ -283,7 +307,11 @@ label {
 }
 
 input[type='text'],
-select {
+input[type='number'],
+input[type='date'],
+input[type='time'],
+select,
+textarea {
   padding: 10px;
   border-radius: var(--radius);
   border: 1px solid var(--input-border);
@@ -306,15 +334,21 @@ select {
 }
 
 .btn,
-a.button-ghost {
-  display: inline-block;
+a.button-ghost,
+button.button-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
   border-radius: var(--radius);
+  font-size: 0.95rem;
+  line-height: 1;
+  min-height: 40px;
   text-decoration: none;
   font-weight: 700;
 }
 
 .btn {
-  padding: 12px 18px;
   border: none;
   cursor: pointer;
   background: var(--accent);
@@ -339,16 +373,19 @@ a.button-ghost {
   color: var(--text);
 }
 
-a.button-ghost {
-  padding: 11px 17px;
+a.button-ghost,
+button.button-ghost {
+  padding: 10px 16px;
   margin: 18.720px 0 18.720px;
   border: 1px solid var(--accent-1);
   background: transparent;
   color: var(--accent-2);
   box-shadow: 0 12px 36px rgba(124, 58, 237, 0.12);
+  cursor: pointer;
 }
 
-a.button-ghost:hover {
+a.button-ghost:hover,
+button.button-ghost:hover {
   background: var(--green);
   border-color: var(--green);
   color: var(--card);
@@ -360,13 +397,13 @@ a.button-ghost:hover {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0.4rem 0.85rem;
-  min-height: 36px;
-  min-width: 104px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 10px 16px;
+  min-height: 40px;
+  min-width: 124px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -760,4 +797,16 @@ tbody tr {
   .container-main {
     padding-bottom: 24px;
   }
+}
+
+summary.add-summary,
+summary.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  min-height: 40px;
+  font-size: 0.95rem;
+  line-height: 1;
+  border-radius: var(--radius);
 }

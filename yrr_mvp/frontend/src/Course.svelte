@@ -3,7 +3,19 @@
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
-  let courses = [];
+  type Series = { id: string; name: string };
+  type Course = {
+    id: string;
+    od: string;
+    class_name: string;
+    date: string;
+    time: string;
+    name: string;
+    course: string;
+    series_id?: string;
+  };
+
+  let courses: Course[] = [];
   let loading = false;
   let formOpen = false;
   let od = '';
@@ -15,7 +27,7 @@
   let errorMsg = '';
 
   // Séries
-  let series = [];
+  let series: Series[] = [];
   let selectedSeriesId = '';
 
   async function loadSeries() {
@@ -33,7 +45,7 @@
   let filterSeriesId = '';
 
   $: filteredCourses = filterSeriesId
-    ? courses.filter(c => c.series_id === filterSeriesId)
+    ? courses.filter((c) => c.series_id === filterSeriesId)
     : courses;
 
   async function loadCourses() {
@@ -48,6 +60,12 @@
     } finally {
       loading = false;
     }
+  }
+
+  function navigateTo(e: MouseEvent, href: string) {
+    e.preventDefault();
+    window.history.pushState({}, '', href);
+    dispatch('navigate', { href });
   }
 
   async function addCourse() {
@@ -116,14 +134,14 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des courses</h2>
-    <p class="hero-subtitle">Liste et détails des courses (prototype, données simulées)</p>
+    <p class="hero-subtitle">Liste et détails des courses</p>
     <div class="title-underline"></div>
   </div>
 
   <section class="panel">
-    <div class="row mb-18" style="align-items: center;">
-      <h3 style="margin: 0;">Courses</h3>
-      <select class="title-select" bind:value={filterSeriesId} style="margin-left: 18px; min-width: 180px;">
+    <div class="row mb-18 align-center">
+      <h3 class="m-0">Courses</h3>
+      <select class="title-select select-wide" bind:value={filterSeriesId}>
         <option value="">Toutes les séries</option>
         {#each series as s}
           <option value={s.id}>{s.name}</option>
@@ -221,7 +239,7 @@
               <td>{c.course}</td>
               <td class="action-cell">
                 <button class="btn-delete" type="button" on:click={() => deleteCourse(c.id)}>
-                  X
+                  Supprimer
                 </button>
               </td>
             </tr>
@@ -231,7 +249,7 @@
     </div>
 
     <div class="actions-row mt-2">
-      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
+      <a class="button-ghost" href="/Bateaux" on:click={(e) => navigateTo(e, '/Bateaux')}>Retour</a>
     </div>
   </section>
 </div>

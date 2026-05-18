@@ -153,9 +153,9 @@
   </div>
 
   <section class="panel">
-    <div class="row" style="align-items: center;">
-      <h3 style="margin: 0;">Inscriptions à la course</h3>
-      <select class="title-select" bind:value={selectedCourseId} style="margin-left: 12px; min-width: 220px;">
+    <div class="row align-center">
+      <h3 class="m-0">Inscriptions à la course</h3>
+      <select class="title-select select-wide" bind:value={selectedCourseId}>
         <option value="" disabled>Choisir une course</option>
         {#each courses as c (c.id)}
           <option value={c.id}>{c.name}</option>
@@ -189,7 +189,11 @@
       <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
     </div>
 
-    <div class="modal-backdrop {showForm ? 'active' : ''}" on:click={(e) => e.target === e.currentTarget && closeForm()}>
+    <div
+      class="modal-backdrop {showForm ? 'active' : ''}"
+      aria-hidden={!showForm}
+      on:click={(e) => e.target === e.currentTarget && closeForm()}
+    >
       <div class="modal">
         <div class="modal-header">
           <h2>Ajouter une inscription</h2>
@@ -207,7 +211,9 @@
               <select id="inscBoat" bind:value={form.bateauId} required>
                 <option value="" disabled>Choisir un bateau</option>
                 {#each boats as b (b.id)}
-                  <option value={b.id}>{b.name} ({b.sail_number ?? ''})</option>
+                  <option value={b.id}>
+                    {b.name}{b.sail_number != null && String(b.sail_number).trim() !== '' ? ` (${b.sail_number})` : ''}
+                  </option>
                 {/each}
               </select>
             </label>

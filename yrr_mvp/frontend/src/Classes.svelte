@@ -298,7 +298,7 @@
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des classes</h2>
-    <p class="hero-subtitle">Liste des classes de bateaux et gestion (prototype, données simulées)</p>
+    <p class="hero-subtitle">Liste des classes de bateaux et gestion</p>
     <div class="title-underline" aria-hidden="true"></div>
   </div>
 
@@ -312,13 +312,13 @@
             <th class="checkbox-cell">
               <input bind:this={headerCheckbox} type="checkbox" on:change={toggleSelectAll} aria-label="Sélectionner tout" />
             </th>
-            <th role="button" on:click={() => sortClasses('name')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortClasses('name')}>
               Nom de la classe {sortColumn === 'name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" on:click={() => sortClasses('handicap_type')} style="cursor: pointer;">
+            <th role="button" class="th-sort" on:click={() => sortClasses('handicap_type')}>
               Type de handicap {sortColumn === 'handicap_type' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" class="text-center" on:click={() => sortClasses('handicap_value')} style="cursor: pointer;">
+            <th role="button" class="th-sort text-center" on:click={() => sortClasses('handicap_value')}>
               Valeur de handicap {sortColumn === 'handicap_value' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
           </tr>
@@ -351,15 +351,19 @@
     <div class="actions-row mt-2">
       <button class="btn" type="button" on:click={openModal}>Ajouter</button>
       <button class="btn" type="button" on:click={printClasses}>Imprimer</button>
-      <a class="button-ghost" href="#" on:click={() => onBack()}>Retour</a>
-      <button class="btn-delete" type="button" on:click={deleteSelected} disabled={selectedIds.size === 0} style="margin-left: auto;">
+      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
+      <button class="btn-delete push-right" type="button" on:click={deleteSelected} disabled={selectedIds.size === 0}>
         Supprimer {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}
       </button>
     </div>
   </section>
 </div>
 
-<div class="modal-backdrop {showModal ? 'active' : ''}" on:click={handleBackdropClick}>
+<div
+  class="modal-backdrop {showModal ? 'active' : ''}"
+  aria-hidden={!showModal}
+  on:click={(e) => e.target === e.currentTarget && handleBackdropClick(e)}
+>
   <div class="modal">
     <div class="modal-header">
       <h2>Ajouter une classe</h2>
@@ -402,6 +406,7 @@
 
 <div
   class="modal-backdrop {showDeleteConfirm ? 'active' : ''}"
+  aria-hidden={!showDeleteConfirm}
   on:click={(e) => {
     if (e.target === e.currentTarget) {
       cancelDelete();

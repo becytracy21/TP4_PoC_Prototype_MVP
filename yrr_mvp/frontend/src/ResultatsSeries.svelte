@@ -32,7 +32,7 @@
   </div>
 
   <section class="panel">
-    <h3>Résultats de série — Série A (sans déductions)</h3>
+    <h3>Résultats de série — Série A</h3>
     <div class="table-wrapper">
       <table class="table-standard" aria-label="Résultats de série">
         <thead>
@@ -198,13 +198,11 @@
       </table>
     </div>
 
-    <div class="actions-row mt-2">
-      <a class="btn btn-outline" href="#" on:click|preventDefault={() => {}}>Déductions (simulé)</a>
-      <span class="muted">Déductions : aucune (simulation)</span>
+    <div class="actions-row mt-2">      
       <span class="flex-1"></span>
-      <a class="btn" href="#" on:click={printResults}>Imprimer</a>
-      <a class="button-ghost" href="#" on:click|preventDefault={() => {}}>Précédent</a>
-      <a class="button-ghost" href="#" on:click|preventDefault={() => {}}>Suivant</a>
+      <button class="btn" type="button" on:click={printResults}>Imprimer</button>
+      <button class="button-ghost" type="button" on:click={() => {}}>Précédent</button>
+      <button class="button-ghost" type="button" on:click={() => {}}>Suivant</button>
       <a class="button-ghost" href="/Series" on:click={navigate}>Retour aux séries</a>
     </div>
   </section>
