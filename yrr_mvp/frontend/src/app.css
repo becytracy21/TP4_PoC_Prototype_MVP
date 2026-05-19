@@ -169,6 +169,11 @@ header h2 {
   white-space: nowrap;
   color: var(--muted);
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
+}
+
+.auth-page h2 {
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--text), transparent 25%);
 }
 
 .header-center {
@@ -191,6 +196,11 @@ header nav a:hover {
 
 header nav a.active {
   font-weight: 800;
+  text-shadow: 0 5px 16px rgba(124, 58, 237, 0.5);
+  color: var(--accent-2);
+  background: rgba(124, 58, 237, 0.12);
+  border: 2px solid rgba(124, 58, 237, 0.28);
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.14);
 }
 
 .main-nav-bar {
@@ -230,11 +240,13 @@ header nav a.active {
   font-size: 0.9rem;
   background: var(--muted);
   color: var(--card);
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
 .username {
   font-size: 0.9rem;
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 50%);
 }
 
 .container-main {
@@ -265,6 +277,7 @@ header nav a.active {
   font-size: 2.2rem;
   line-height: 1.02;
   font-weight: 800;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--accent-2), transparent 50%);
   color: var(--accent-2);
 }
 
@@ -402,6 +415,11 @@ button.button-ghost:hover {
   color: var(--card);
 }
 
+header a.button-ghost {
+  border: 1.75px solid rgba(124, 58, 237, 0.28);
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.14);
+}
+
 .btn-delete,
 .btn-edit {
   display: inline-flex;
@@ -420,25 +438,25 @@ button.button-ghost:hover {
 }
 
 .btn-delete {
-  background-color: #dc3545;
+  background-color: var(--danger);
   color: #ffffff;
-  border: 1px solid #dc3545;
+  border: 1px solid var(--danger);
 }
 
 .btn-delete:hover {
-  background-color: #c82333;
-  border-color: #c82333;
+  background-color: var(--danger-2);
+  border-color: var(--danger-2);
 }
 
 .btn-edit {
-  background-color: #facc15;
+  background-color: var(--accent);
   color: #111827;
-  border: 1px solid #facc15;
+  border: 1px solid var(--accent);
 }
 
 .btn-edit:hover {
-  background-color: #eab308;
-  border-color: #eab308;
+  background-color: var(--green-gradient);
+  border-color: var(--green-gradient);
 }
 
 .btn-delete:disabled,
@@ -458,6 +476,8 @@ button.button-ghost:hover {
 .table-standard td.action-cell {
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
+  text-align: center;
   align-items: center;
   justify-content: center;
   gap: 6px;
@@ -478,6 +498,7 @@ button.button-ghost:hover {
 .mt-18 {
   margin-top: 18px;
   font-weight: bold;
+  text-shadow: 0 5px 16px color-mix(in srgb, var(--muted), transparent 75%);
 }
 
 .mb-18 {
@@ -498,10 +519,9 @@ button.button-ghost:hover {
 
 .table-wrapper {
   width: 100%;
-  margin-bottom: 18px;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 277.5px;
+  max-height: 280px;
   border: 1px solid var(--table-border);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.55);
@@ -767,6 +787,7 @@ footer {
     transform: translateX(-50%) translateY(100px);
     opacity: 0;
   }
+
   to {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
@@ -785,6 +806,211 @@ tbody tr.selected {
 
 tbody tr {
   cursor: pointer;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.auth-page .card,
+.auth-page .card-small {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.auth-page .card.auth-card {
+  padding: 0;
+}
+
+.auth-page .card {
+  min-height: 513.438px;
+  min-width: 932px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  overflow: hidden;
+}
+
+.auth-page .brand {
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--card);
+}
+
+.auth-page .brand-logo-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.auth-page .brand-logo-wrap::before {
+  content: '';
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 999px;
+  border: 10px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.375);
+  pointer-events: none;
+}
+
+.auth-page .brand-logo {
+  width: 160px;
+  height: 160px;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1));
+}
+
+.auth-page .form-wrap {
+  height: 100%;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-page .lead {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.auth-page .small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.auth-page .small label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.auth-page a.toggle {
+  font-weight: 700;
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.auth-page a.toggle:hover {
+  color: var(--green-2);
+  text-decoration: none;
+}
+
+.auth-page .row .col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-page .actions .small {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.auth-page .actions .small label {
+  white-space: nowrap;
+}
+
+.auth-page input[type='text'],
+.auth-page input[type='email'],
+.auth-page input[type='password'],
+.auth-page input[type='number'],
+.auth-page select,
+.auth-page textarea {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+}
+
+.auth-page .btn {
+  padding: 12px 18px;
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--card);
+  box-shadow: 0 12px 36px rgba(124, 58, 237, 0.12);
+}
+
+.auth-page .btn:hover {
+  background: var(--green-gradient);
+}
+
+.auth-page .error {
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  color: var(--danger-2);
+  font-weight: bold;
+}
+
+html:has(.auth-page),
+body:has(.auth-page) {
+  overflow: hidden;
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 56px;
+}
+
+.password-reveal {
+  position: absolute;
+  right: 2.5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--input-bg);
+  border: none;
+  padding: 6.5px;
+  border-radius: 12px;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-reveal:hover {
+  color: var(--text);
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  pointer-events: none;
+}
+
+.auth-page .row .col .password-field {
+  width: 100%;
 }
 
 @media (max-width: 960px) {
@@ -807,6 +1033,19 @@ tbody tr {
 
   .container-main {
     padding-bottom: 24px;
+  }
+
+  .auth-page .card {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .auth-page .brand {
+    height: auto;
+  }
+
+  .auth-page .form-wrap {
+    height: auto;
   }
 }
 
