@@ -1,7 +1,20 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let onBack: () => void = () => {};
+  export let onBack: (() => void) | undefined = undefined;
+
+  function handleBack(e?: MouseEvent) {
+    if (e) e.preventDefault();
+    try {
+      if (typeof onBack === 'function') {
+        onBack();
+        return;
+      }
+    } catch {}
+    const target = '/Bateaux';
+    window.history.pushState({}, '', target);
+    // no dispatch here; parent not needed
+  }
 
   const dispatch = createEventDispatcher<{ navigate: string }>();
 
@@ -13,6 +26,12 @@
     const href = a.getAttribute('href') || '';
     window.history.pushState({}, '', href);
     dispatch('navigate', href);
+  }
+
+  function goToSeries(e?: MouseEvent) {
+    if (e) e.preventDefault();
+    // dispatch an app-level navigate event to switch to Series view
+    dispatch('navigate', '/Series');
   }
 
   function printResults(e: MouseEvent) {
@@ -233,9 +252,7 @@
     <div class="actions-row mt-2">      
       <span class="flex-1"></span>
       <button class="btn" type="button" on:click={printResults}>Imprimer</button>
-      <button class="button-ghost" type="button" on:click={() => {}}>Précédent</button>
-      <button class="button-ghost" type="button" on:click={() => {}}>Suivant</button>
-      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
+      <button class="button-ghost" type="button" on:click={goToSeries}>Retour aux séries</button>
     </div>
   </section>
 </div>

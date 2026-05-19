@@ -1,9 +1,22 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
 
-  export let onBack: () => void = () => {};
+  export let onBack: (() => void) | undefined = undefined;
 
   const dispatch = createEventDispatcher<{ navigate: string }>();
+
+  function handleBack(e?: MouseEvent) {
+    if (e) e.preventDefault();
+    try {
+      if (typeof onBack === 'function') {
+        onBack();
+        return;
+      }
+    } catch {}
+    const target = '/Bateaux';
+    window.history.pushState({}, '', target);
+    dispatch('navigate', target);
+  }
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
@@ -213,7 +226,7 @@
         </form>
       </details>
 
-      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
+      <button class="button-ghost" type="button" on:click={handleBack}>Retour</button>
     </div>
   </section>
 </div>

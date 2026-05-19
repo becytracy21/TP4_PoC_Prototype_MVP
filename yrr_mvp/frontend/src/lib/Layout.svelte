@@ -62,7 +62,7 @@
     </div>
 
     <div class="nav-user" class:open={showDropdown} style="justify-self: end; position: relative;">
-        <button type="button" class="nav-user-btn" on:click={toggleDropdown} aria-haspopup="menu" aria-expanded={showDropdown} style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: none; border: none; cursor: pointer; color: inherit; font: inherit;">
+        <button type="button" class="nav-user-btn" on:click={toggleDropdown} aria-haspopup="menu" aria-expanded={showDropdown} style="display: flex; align-items: center; gap: 7px;padding: 0.5rem; background: none; border: none; cursor: pointer; color: inherit; font: inherit;">
             <div class="avatar" title="Profil">{initialsFromName(user?.name)}</div>
             <div class="username">{user?.name ?? user?.email ?? "Invité"}</div>
         </button>
