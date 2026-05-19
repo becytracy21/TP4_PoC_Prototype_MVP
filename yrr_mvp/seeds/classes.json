@@ -1,0 +1,18 @@
+[
+    {
+        "_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        },
+        "name": "Laser",
+        "handicap_type": "PY",
+        "handicap_value": 110
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        },
+        "name": "Solo",
+        "handicap_type": "TMF",
+        "handicap_value": 115
+    }
+]

@@ -1,0 +1,407 @@
+[
+    {
+        "_id": {
+            "$oid": "6a0cdf2b5a5cb60628555903"
+        },
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fd"
+        },
+        "resultat": "4"
+    },
+    {
+        "_id": {
+            "$oid": "6a0cdf2b5a5cb60628555904"
+        },
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fd"
+        },
+        "resultat": "3"
+    },
+    {
+        "_id": {
+            "$oid": "6a0cdf2b5a5cb60628555905"
+        },
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fd"
+        },
+        "resultat": "14"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "14"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "8"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "2"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "3"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "5"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "14"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "1"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "11"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "2"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "14"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "5"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "4"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e6"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "10"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e6"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "8"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e6"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "9"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e6"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "6"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e7"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "8"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e7"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "5"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e7"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "12"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e7"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "7"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e8"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "7"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e8"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "9"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e8"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "6"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e8"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "12"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e9"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "6"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e9"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "6"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e9"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "13"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558e9"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "10"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ea"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "12"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ea"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "11"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ea"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "7"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ea"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "8"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558eb"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "11"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558eb"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "10"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558eb"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "7"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558eb"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "14"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fd"
+        },
+        "resultat": "13"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "course": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "resultat": "9"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "course": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "resultat": "12"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "course": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "resultat": "11"
+    },
+    {
+        "boat": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "course": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "resultat": "14"
+    }
+]

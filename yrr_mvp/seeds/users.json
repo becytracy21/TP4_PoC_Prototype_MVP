@@ -1,0 +1,10 @@
+[
+    {
+        "_id": {
+            "$oid": "6a0cd3cba6318ef57ec7e6c3"
+        },
+        "name": "Maurice Duplessis",
+        "email": "m@m.m",
+        "password": "pbkdf2_sha256$1200000$TYa1QnfXmFgAZ7UeSDgf3u$Ph8NVRr6wozH0J06Q20qQqsTjx0oN6I9hfRKxyA6wOQ="
+    }
+]

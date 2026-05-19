@@ -1,0 +1,72 @@
+[
+    {
+        "_id": {
+            "$oid": "6a0cdef25a5cb606285558fd"
+        },
+        "od": "C1",
+        "class_name": "Mixed",
+        "date": "2026-05-21",
+        "time": "09:00",
+        "name": "Course 1",
+        "course": "1",
+        "series_id": {
+            "$oid": "6a0cdeaf5a5cb606285558f5"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cdef25a5cb606285558fe"
+        },
+        "od": "C2",
+        "class_name": "Mixed",
+        "date": "2026-05-21",
+        "time": "10:30",
+        "name": "Course 2",
+        "course": "2",
+        "series_id": {
+            "$oid": "6a0cdeaf5a5cb606285558f5"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0d00015a5cb60628555910"
+        },
+        "od": "C3",
+        "class_name": "Mixed",
+        "date": "2026-05-21",
+        "time": "12:00",
+        "name": "Course 3",
+        "course": "3",
+        "series_id": {
+            "$oid": "6a0cdeaf5a5cb606285558f5"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0d00025a5cb60628555911"
+        },
+        "od": "C4",
+        "class_name": "Mixed",
+        "date": "2026-05-21",
+        "time": "14:00",
+        "name": "Course 4",
+        "course": "4",
+        "series_id": {
+            "$oid": "6a0cdeaf5a5cb606285558f5"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0d00035a5cb60628555912"
+        },
+        "od": "C5",
+        "class_name": "Mixed",
+        "date": "2026-05-21",
+        "time": "15:30",
+        "name": "Course 5",
+        "course": "5",
+        "series_id": {
+            "$oid": "6a0cdeaf5a5cb606285558f5"
+        }
+    }
+]
