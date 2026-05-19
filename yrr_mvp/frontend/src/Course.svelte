@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
 
+  export let onBack: () => void = () => {};
+
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
 
   type Series = { id: string; name: string };
@@ -255,7 +257,7 @@
     </div>
 
     <div class="actions-row mt-2">
-      <a class="button-ghost" href="/Bateaux" on:click={(e) => navigateTo(e, '/Bateaux')}>Retour</a>
+      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
     </div>
   </section>
 </div>

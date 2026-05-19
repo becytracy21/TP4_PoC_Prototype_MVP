@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 8.5px;
 }
 
 .btn-small {
@@ -479,7 +479,7 @@ header a.button-ghost {
   text-align: center;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8.5px;
 }
 
 .muted {
@@ -520,13 +520,17 @@ header a.button-ghost {
   width: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 349.125px;
+  max-height: 800px;
   border: 1px solid var(--table-border);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.55);
   box-shadow: var(--shadow);
   scrollbar-color: rgba(124, 58, 237, 0.45) transparent;
   margin-bottom: 12px;
+}
+
+.page-bateaux .table-wrapper {
+  margin-bottom: 18.720px;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -578,7 +582,7 @@ header a.button-ghost {
 
 .table-standard th,
 .table-standard td {
-  padding: 10px 12px;
+  padding: 8.5px 17px;
   border-bottom: 1px solid var(--table-border);
   word-break: break-word;
 }

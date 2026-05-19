@@ -257,7 +257,7 @@
   });
 </script>
 
-<div class="container-main">
+<div class="container-main page-bateaux">
   <div class="hero">
     <h2 class="hero-title">Gestion des bateaux</h2>
     <p class="hero-subtitle">Liste des bateaux inscrits</p>
@@ -406,10 +406,6 @@
           {/if}
         </tbody>
       </table>
-    </div>
-
-    <div class="actions-row mt-2">
-      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
     </div>
   </section>
 </div>

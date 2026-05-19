@@ -1,6 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
+  export let onBack: () => void = () => {};
+
   const dispatch = createEventDispatcher<{ navigate: string }>();
 
   let results: ResultsClass[] = [];
@@ -233,7 +235,7 @@
       <button class="btn" type="button" on:click={printResults}>Imprimer</button>
       <button class="button-ghost" type="button" on:click={() => {}}>Précédent</button>
       <button class="button-ghost" type="button" on:click={() => {}}>Suivant</button>
-      <a class="button-ghost" href="/Series" on:click={navigate}>Retour aux séries</a>
+      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
     </div>
   </section>
 </div>

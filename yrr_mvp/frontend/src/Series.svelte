@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
 
+  export let onBack: () => void = () => {};
+
   const dispatch = createEventDispatcher<{ navigate: string }>();
 
   const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8000/api';
@@ -162,7 +164,7 @@
                 <td class="text-center">{s.counted}</td>
                 <td class="text-center">{coursesCountBySeries[s.id] || 0}</td>
                 <td style="text-align: center; border-left: none; border-right: none;">
-                  <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;" class="table-actions">
+                  <div style="display: flex; justify-content: center; align-items: center;" class="table-actions">
                     <a class="btn-small" href="/ResultatsSeries" on:click={navigate}>Résultats</a>
                     <button class="btn-delete" type="button" on:click={() => deleteSeries(String(s.id))}>Supprimer</button>
                   </div>
@@ -211,7 +213,7 @@
         </form>
       </details>
 
-      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
+      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
     </div>
   </section>
 </div>

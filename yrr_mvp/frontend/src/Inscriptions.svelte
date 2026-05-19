@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount, createEventDispatcher } from 'svelte';
 
+  export let onBack: () => void = () => {};
+
   type Boat = {
     id: string;
     name?: string;
@@ -197,7 +199,7 @@
 
     <div class="actions-row mt-2">
       <button class="btn" type="button" on:click={openForm} disabled={!selectedCourseId}>Ajouter</button>
-      <a class="button-ghost" href="/Bateaux" on:click={navigate}>Retour</a>
+      <button class="button-ghost" type="button" on:click={onBack}>Retour</button>
     </div>
 
     <div
