@@ -1,0 +1,123 @@
+[
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e3"
+        },
+        "name": "Whisky",
+        "sail_number": 100231,
+        "helmsman": "Fred",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e4"
+        },
+        "name": "Fuzzy Duck",
+        "sail_number": 132248,
+        "helmsman": "Graham",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e5"
+        },
+        "name": "Shy Talk",
+        "sail_number": 4321,
+        "helmsman": "Jim",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e6"
+        },
+        "name": "Matilda",
+        "sail_number": 3755,
+        "helmsman": "John",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e7"
+        },
+        "name": "Blue Finch",
+        "sail_number": 99012,
+        "helmsman": "Marie",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e8"
+        },
+        "name": "Seafoam",
+        "sail_number": 5010,
+        "helmsman": "Paul",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558e9"
+        },
+        "name": "Storm Petrel",
+        "sail_number": 77701,
+        "helmsman": "Hugo",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558ea"
+        },
+        "name": "Red Kite",
+        "sail_number": 6022,
+        "helmsman": "Sophie",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558eb"
+        },
+        "name": "Night Heron",
+        "sail_number": 42011,
+        "helmsman": "Lucas",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558ec"
+        },
+        "name": "Silver Gull",
+        "sail_number": 7099,
+        "helmsman": "Nina",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558e0"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "6a0cde585a5cb606285558ed"
+        },
+        "name": "Courlis",
+        "sail_number": 88120,
+        "helmsman": "Éric",
+        "class_id": {
+            "$oid": "6a0cde3b5a5cb606285558df"
+        }
+    }
+]
