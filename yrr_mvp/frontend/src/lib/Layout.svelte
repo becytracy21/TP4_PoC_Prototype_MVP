@@ -1,5 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import { onMount, onDestroy } from 'svelte';
     import { auth, logout as authLogout } from "../auth";
 
     export let active: "bateaux" | "classes" | "series" | "course" | "inscriptions" | "resultats-series" = "bateaux";
@@ -8,7 +9,15 @@
     let showDropdown = false;
 
     const toggleDropdown = (e: MouseEvent) => { e.stopPropagation(); showDropdown = !showDropdown; };
-    if (typeof window !== 'undefined') window.onclick = () => showDropdown = false;
+    // Écoute globale pour fermer le dropdown si on clique en dehors — n'écrase pas d'autres handlers
+    let _globalClickHandler: ((e: Event) => void) | null = null;
+    onMount(() => {
+        _globalClickHandler = () => { showDropdown = false; };
+        window.addEventListener('click', _globalClickHandler);
+    });
+    onDestroy(() => {
+        if (_globalClickHandler) window.removeEventListener('click', _globalClickHandler);
+    });
 
     function navigate(e: MouseEvent) {
         e.preventDefault();
