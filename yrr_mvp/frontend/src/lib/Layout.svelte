@@ -45,7 +45,7 @@
     $: user = $auth?.user;
 </script>
 
-<header style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; padding: 0 1rem;">
+<header style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; padding: 0 1.5rem;">
     <div style="justify-self: start;"><h2 style="margin: 0; white-space: nowrap;">Yacht Racing Results</h2></div>
     
     <div class="header-center" style="justify-self: center;">
