@@ -663,6 +663,10 @@ header a.button-ghost {
   box-shadow: 0 10px 28px rgba(44, 18, 80, 0.05);
 }
 
+.page-serie .add-details[open] {
+  margin-top: 12px;
+}
+
 .add-summary {
   padding: 12px 14px;
   cursor: pointer;

@@ -129,7 +129,7 @@
   }
 </script>
 
-<div class="container-main">
+<div class="container-main page-serie">
   <div class="hero">
     <h2 class="hero-title">Gestion des séries</h2>
     <p class="hero-subtitle">Liste des séries de courses</p>

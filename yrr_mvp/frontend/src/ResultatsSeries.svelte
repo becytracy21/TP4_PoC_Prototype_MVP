@@ -3,6 +3,8 @@
 
   const dispatch = createEventDispatcher<{ navigate: string }>();
 
+  let results: ResultsClass[] = [];
+
   function navigate(e: MouseEvent) {
     e.preventDefault();
     const a = e.currentTarget as HTMLAnchorElement;
@@ -13,7 +15,42 @@
 
   function printResults(e: MouseEvent) {
     e.preventDefault();
-    window.print();
+
+    const table = document.querySelector(".table-standard")?.outerHTML;
+    if (!table) {
+      showNotification("Impossible de trouver le tableau");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      showNotification("Erreur lors de l'ouverture de la fenêtre d'impression");
+      return;
+    }
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Impression des résultats</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; }
+            th { background-color: #f2f2f2; }
+            h2 { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <h2>Résultats de la course</h2>
+          ${table}
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
   }
 </script>
 
