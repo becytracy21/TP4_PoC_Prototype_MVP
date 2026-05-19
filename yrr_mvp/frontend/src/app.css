@@ -438,24 +438,24 @@ header a.button-ghost {
 }
 
 .btn-delete {
-  background-color: var(--danger);
+  background: var(--danger);
   color: #ffffff;
   border: 1px solid var(--danger);
 }
 
 .btn-delete:hover {
-  background-color: var(--danger-2);
+  background: var(--danger-2);
   border-color: var(--danger-2);
 }
 
 .btn-edit {
-  background-color: var(--accent);
-  color: #111827;
+  background: var(--accent);
+  color: #ffffff;
   border: 1px solid var(--accent);
 }
 
 .btn-edit:hover {
-  background-color: var(--green-gradient);
+  background: var(--green-gradient);
   border-color: var(--green-gradient);
 }
 
