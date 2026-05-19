@@ -140,7 +140,7 @@
 
   <section class="panel">
     <div class="row mb-18 align-center">
-      <h3 class="m-0">Courses</h3>
+      <h3>Courses</h3>
       <select class="title-select select-wide" bind:value={filterSeriesId}>
         <option value="">Toutes les séries</option>
         {#each series as s}
@@ -224,7 +224,7 @@
             <th>Heure</th>
             <th>Nom</th>
             <th>Parcours</th>
-            <th>Actions</th>
+            <th style="text-align: center; border-left: none; border-right: none;">Actions</th>
           </tr>
         </thead>
 

@@ -4,6 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+# Imports pour l'authentification
+from django.contrib.auth.hashers import make_password, check_password
+
 from .mongo import get_mongo_db
 
 
@@ -26,6 +29,14 @@ def _serialize_class(doc):
         "name": doc.get("name"),
         "handicap_type": doc.get("handicap_type"),
         "handicap_value": doc.get("handicap_value"),
+    }
+
+
+def _serialize_user(doc):
+    return {
+        "id": str(doc.get("_id")),
+        "name": doc.get("name"),
+        "email": doc.get("email"),
     }
 
 
@@ -99,7 +110,6 @@ def boats(request):
     if helmsman not in (None, ""):
         doc["helmsman"] = str(helmsman)
 
-    # --- Lien vers une classe existante, OU création à la volée ---
     if class_id_raw not in (None, ""):
         try:
             doc["class_id"] = ObjectId(str(class_id_raw))
@@ -109,7 +119,6 @@ def boats(request):
     if class_name_raw not in (None, ""):
         class_name = str(class_name_raw).strip()
         if class_name:
-            # Créer une classe simple si elle n'existe pas déjà (même nom)
             existing = db.classes.find_one({"name": class_name})
             if existing:
                 doc["class_id"] = existing.get("_id")
@@ -148,16 +157,8 @@ def boat_delete(request, boat_id: str):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(["PUT", "PATCH"])
+@api_view(["PUT", "PATCH", "DELETE"])
 def boat_update(request, boat_id: str):
-    """Met à jour un bateau existant (PUT/PATCH) sur /boats/<id>.
-
-    Champs supportés:
-    - name (optionnel, chaîne; "" ou None => suppression)
-    - sail_number (entier; ""/None => suppression)
-    - helmsman (chaîne; ""/None => suppression)
-    - class_id (ObjectId str; ""/None => suppression)
-    """
     db = get_mongo_db()
     collection = db.boats
 
@@ -166,8 +167,13 @@ def boat_update(request, boat_id: str):
     except Exception:
         return Response({"detail": "Invalid id"}, status=status.HTTP_400_BAD_REQUEST)
 
-    payload = request.data if isinstance(request.data, dict) else {}
+    if request.method == "DELETE":
+        res = collection.delete_one({"_id": oid})
+        if res.deleted_count == 0:
+            return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
+    payload = request.data if isinstance(request.data, dict) else {}
     update_doc = {}
 
     if "name" in payload:
@@ -230,6 +236,8 @@ def boat_update(request, boat_id: str):
     return Response(_serialize_boat(updated))
 
 
+# --- CLASS VIEWS ---
+
 @api_view(["GET", "POST"])
 def classes(request):
     db = get_mongo_db()
@@ -239,9 +247,7 @@ def classes(request):
         classes_list = [_serialize_class(d) for d in collection.find().sort("_id", -1)]
         return Response(classes_list)
 
-    # POST
     payload = request.data if isinstance(request.data, dict) else {}
-
     name = payload.get("name")
     handicap_type = payload.get("handicap_type")
     handicap_value_raw = payload.get("handicap_value")
@@ -258,7 +264,6 @@ def classes(request):
         "handicap_value": handicap_value,
     }
 
-    # name optionnel
     if name not in (None, ""):
         doc["name"] = str(name)
 
@@ -284,7 +289,7 @@ def class_delete(request, class_id: str):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# --- COURSE VIEWS (from HEAD) ---
+# --- COURSE VIEWS ---
 
 @api_view(["GET", "POST"])
 def courses(request):
@@ -338,7 +343,7 @@ def course_delete(request, course_id: str):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# --- Inscriptions VIEWS (from HEAD) ---
+# --- INSCRIPTIONS VIEWS ---
 
 @api_view(["GET", "POST"])
 def inscriptions(request):
@@ -379,7 +384,7 @@ def inscriptions(request):
     }, status=status.HTTP_201_CREATED)
 
 
-# --- SERIES VIEWS (from origin/US127-JG) ---
+# --- SERIES VIEWS ---
 
 @api_view(["GET", "POST"])
 def series(request):
@@ -424,3 +429,80 @@ def series_delete(request, series_id: str):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# --- AUTHENTICATION VIEWS ---
+
+@api_view(["POST"])
+def register(request):
+    db = get_mongo_db()
+    collection = db.users
+
+    payload = request.data if isinstance(request.data, dict) else {}
+
+    name = (payload.get("name") or "").strip()
+    email = (payload.get("email") or "").strip().lower()
+    password = payload.get("password")
+
+    if not name:
+        return Response({"detail": "Le nom complet est requis."}, status=status.HTTP_400_BAD_REQUEST)
+    if not email:
+        return Response({"detail": "L’adresse e-mail est requise."}, status=status.HTTP_400_BAD_REQUEST)
+    if not isinstance(password, str) or len(password) < 6:
+        return Response(
+            {"detail": "Le mot de passe doit contenir au moins 6 caractères."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    if collection.find_one({"email": email}):
+        return Response({"detail": "Cette adresse e-mail est déjà utilisée."}, status=status.HTTP_409_CONFLICT)
+
+    doc = {
+        "name": name,
+        "email": email,
+        "password": make_password(password),
+    }
+
+    result = collection.insert_one(doc)
+    created = collection.find_one({"_id": result.inserted_id})
+    return Response(_serialize_user(created), status=status.HTTP_201_CREATED)
+
+
+@api_view(["POST"])
+def login(request):
+    db = get_mongo_db()
+    collection = db.users
+
+    payload = request.data if isinstance(request.data, dict) else {}
+    email = (payload.get("email") or "").strip().lower()
+    password = payload.get("password")
+
+    if not email:
+        return Response({"detail": "L’adresse e-mail est requise."}, status=status.HTTP_400_BAD_REQUEST)
+    if not isinstance(password, str) or password == "":
+        return Response({"detail": "Le mot de passe est requis."}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = collection.find_one({"email": email})
+    if not user:
+        return Response({"detail": "Email ou mot de passe incorrect."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    stored = user.get("password")
+    ok = False
+
+    if isinstance(stored, str) and stored.count('$') >= 2:
+        try:
+            ok = check_password(password, stored)
+        except Exception:
+            ok = False
+    elif stored == password:
+        ok = True
+        try:
+            collection.update_one({"_id": user.get("_id")}, {"$set": {"password": make_password(password)}})
+        except Exception:
+            pass
+
+    if not ok:
+        return Response({"detail": "Email ou mot de passe incorrect."}, status=status.HTTP_401_UNAUTHORIZED)
+
+    token = str(user.get("_id"))
+    return Response({"token": token, "user": _serialize_user(user)}, status=status.HTTP_200_OK)

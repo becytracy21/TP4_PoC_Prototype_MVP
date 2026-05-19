@@ -318,7 +318,7 @@
             <th role="button" class="th-sort" on:click={() => sortClasses('handicap_type')}>
               Type de handicap {sortColumn === 'handicap_type' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th role="button" class="th-sort text-center" on:click={() => sortClasses('handicap_value')}>
+            <th role="button" class="th-sort text-center" style="text-align: center; border-left: none; border-right: none;" on:click={() => sortClasses('handicap_value')}>
               Valeur de handicap {sortColumn === 'handicap_value' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
           </tr>

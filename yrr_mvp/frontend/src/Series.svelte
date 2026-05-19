@@ -153,7 +153,7 @@
             <th>Classe</th>
             <th class="text-center">Nombre de course<br />à comptabiliser</th>
             <th class="text-center">Nombre de courses</th>
-            <th>Actions</th>
+            <th style="text-align: center; border-left: none; border-right: none;">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -168,8 +168,8 @@
                 <td>{s.classe}</td>
                 <td class="text-center">{s.counted}</td>
                 <td class="text-center">{coursesCountBySeries[s.id] || 0}</td>
-                <td>
-                  <div class="table-actions">
+                <td style="text-align: center; border-left: none; border-right: none;">
+                  <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;" class="table-actions">
                     <a class="btn-small" href="/ResultatsSeries" on:click={navigate}>Résultats</a>
                     <button class="btn-delete" type="button" on:click={() => deleteSeries(String(s.id))}>Supprimer</button>
                   </div>

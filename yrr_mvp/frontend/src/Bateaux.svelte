@@ -335,7 +335,7 @@
             <th role="button" class="th-sort" on:click={() => sortBoats('class_name')}>
               Classe {sortColumn === 'class_name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
             </th>
-            <th class="action-cell"></th>
+            <th class="action-cell" style="text-align: center; border-left: none; border-right: none;">Actions</th>
           </tr>
         </thead>
         <tbody>

@@ -154,7 +154,7 @@
 
   <section class="panel">
     <div class="row align-center">
-      <h3 class="m-0">Inscriptions à la course</h3>
+      <h3>Inscriptions à la course</h3>
       <select class="title-select select-wide" bind:value={selectedCourseId}>
         <option value="" disabled>Choisir une course</option>
         {#each courses as c (c.id)}
