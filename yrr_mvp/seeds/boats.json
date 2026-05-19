@@ -8,7 +8,8 @@
         "helmsman": "Fred",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     },
     {
         "_id": {
@@ -19,7 +20,8 @@
         "helmsman": "Graham",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     },
     {
         "_id": {
@@ -30,7 +32,8 @@
         "helmsman": "Jim",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558e0"
-        }
+        },
+        "class_name": "Solo"
     },
     {
         "_id": {
@@ -41,7 +44,8 @@
         "helmsman": "John",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558e0"
-        }
+        },
+        "class_name": "Solo"
     },
     {
         "_id": {
@@ -52,7 +56,8 @@
         "helmsman": "Marie",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     },
     {
         "_id": {
@@ -63,7 +68,8 @@
         "helmsman": "Paul",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558e0"
-        }
+        },
+        "class_name": "Solo"
     },
     {
         "_id": {
@@ -74,7 +80,8 @@
         "helmsman": "Hugo",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     },
     {
         "_id": {
@@ -85,7 +92,8 @@
         "helmsman": "Sophie",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558e0"
-        }
+        },
+        "class_name": "Solo"
     },
     {
         "_id": {
@@ -96,7 +104,8 @@
         "helmsman": "Lucas",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     },
     {
         "_id": {
@@ -107,7 +116,8 @@
         "helmsman": "Nina",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558e0"
-        }
+        },
+        "class_name": "Solo"
     },
     {
         "_id": {
@@ -118,6 +128,7 @@
         "helmsman": "Éric",
         "class_id": {
             "$oid": "6a0cde3b5a5cb606285558df"
-        }
+        },
+        "class_name": "Laser"
     }
 ]

@@ -139,7 +139,7 @@
   </div>
 
   <section class="panel">
-    <div class="row mb-18 align-center">
+    <div class="row align-center">
       <h3>Courses</h3>
       <select class="title-select select-wide" bind:value={filterSeriesId}>
         <option value="">Toutes les séries</option>

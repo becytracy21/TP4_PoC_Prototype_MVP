@@ -91,12 +91,25 @@
       const res = await fetch(`${API_BASE}/boats`);
       if (!res.ok) throw new Error(`GET /boats -> ${res.status}`);
       boats = (await res.json()) as Boat[];
+      // Assure que class_name est renseigné côté client si l'API ne le fournit pas
+      normalizeBoats();
       applySort();
     } catch (e) {
       errorMsg = e instanceof Error ? e.message : 'Erreur réseau';
     } finally {
       loading = false;
     }
+  }
+
+  function normalizeBoats() {
+    if (!Array.isArray(boats)) return;
+    // classes est chargé séparément; on mappe l'id de classe au nom si disponible
+    const classMap = new Map(classes.map((c) => [c.id, c.name]));
+    boats = boats.map((b) => ({
+      ...b,
+      class_name: b.class_name ?? (b.class_id ? classMap.get(String(b.class_id)) ?? '' : ''),
+      id: String((b as any).id ?? (b as any)._id ?? ''),
+    }));
   }
 
   async function loadClasses() {

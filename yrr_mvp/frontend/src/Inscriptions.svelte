@@ -168,7 +168,7 @@
       </select>
     </div>
 
-    <div class="table-wrapper mt-8">
+    <div class="table-wrapper">
       <table class="table-standard" aria-label="Inscriptions à la course">
         <thead>
           <tr>
