@@ -21,9 +21,11 @@
   };
 
   let classes: BoatClass[] = [];
+  let loading = false;
   const API_URL = 'http://localhost:8000/api';
 
   async function loadClasses() {
+    loading = true;
     try {
       const response = await fetch(`${API_URL}/classes`);
       if (response.ok) {
@@ -34,6 +36,8 @@
     } catch (error) {
       console.error('Erreur lors du chargement des classes:', error);
       showNotification('Erreur de connexion au serveur');
+    } finally {
+      loading = false;
     }
   }
 
@@ -324,26 +328,32 @@
           </tr>
         </thead>
         <tbody>
-          {#each classes as boatClass (boatClass.id)}
-            <tr
-              class={selectedIds.has(boatClass.id) ? 'selected' : ''}
-              on:click={(e) => toggleSelectWithCtrl(boatClass.id, e)}
-              role="button"
-              tabindex="0"
-              on:keydown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  toggleSelectWithCtrl(boatClass.id, e as any);
-                }
-              }}
-            >
-              <td class="checkbox-cell"></td>
-              <td>{boatClass.name}</td>
-              <td>
-                <span class={'badge ' + (boatClass.handicap_type === 'PY' ? 'badge--py' : 'badge--tmf')}>{boatClass.handicap_type}</span>
-              </td>
-              <td class="text-center">{boatClass.handicap_value}</td>
-            </tr>
-          {/each}
+          {#if loading}
+            <tr><td colspan="4" class="muted">Chargement…</td></tr>
+          {:else if classes.length === 0}
+            <tr><td colspan="4" class="muted">Aucune classe</td></tr>
+          {:else}
+            {#each classes as boatClass (boatClass.id)}
+              <tr
+                class={selectedIds.has(boatClass.id) ? 'selected' : ''}
+                on:click={(e) => toggleSelectWithCtrl(boatClass.id, e)}
+                role="button"
+                tabindex="0"
+                on:keydown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    toggleSelectWithCtrl(boatClass.id, e as any);
+                  }
+                }}
+              >
+                <td class="checkbox-cell"></td>
+                <td>{boatClass.name}</td>
+                <td>
+                  <span class={'badge ' + (boatClass.handicap_type === 'PY' ? 'badge--py' : 'badge--tmf')}>{boatClass.handicap_type}</span>
+                </td>
+                <td class="text-center">{boatClass.handicap_value}</td>
+              </tr>
+            {/each}
+          {/if}
         </tbody>
       </table>
     </div>

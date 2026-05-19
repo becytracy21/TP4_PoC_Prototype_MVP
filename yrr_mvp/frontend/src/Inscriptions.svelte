@@ -24,7 +24,7 @@
   let boats: Boat[] = [];
   let courses: Course[] = [];
   let inscriptions: Inscription[] = [];
-
+  let loading = false;
   let showForm = false;
   let form: Inscription = { bateauId: '', courseId: '', resultat: '' };
   let selectedCourseId = '';
@@ -72,10 +72,11 @@
   }
 
   async function loadInscriptions() {
+    loading = true;
     try {
-      const res = await fetch(`${API_BASE}/inscriptions`);
-      if (res.ok) {
-        const data = await res.json();
+      const response = await fetch(`${API_BASE}/inscriptions`);
+      if (response.ok) {
+        const data = await response.json();
         inscriptions = Array.isArray(data)
           ? data.map((i: any) => ({
               bateauId: String(i.bateauId ?? i.boat_id ?? i.boat ?? ''),
@@ -83,9 +84,13 @@
               resultat: String(i.resultat ?? ''),
             }))
           : [];
+      } else {
+        errorMsg = 'Erreur lors du chargement des inscriptions';
       }
     } catch {
-      inscriptions = [];
+      errorMsg = 'Erreur réseau ou serveur.';
+    } finally {
+      loading = false;
     }
   }
 
@@ -173,13 +178,19 @@
           </tr>
         </thead>
         <tbody>
-          {#each inscriptions.filter((i) => i.courseId === selectedCourseId) as insc (insc.bateauId + insc.courseId)}
-            <tr>
-              <td>{boats.find((b) => b.id === insc.bateauId)?.name ?? ''}</td>
-              <td>{boats.find((b) => b.id === insc.bateauId)?.class_name ?? ''}</td>
-              <td>{insc.resultat}</td>
-            </tr>
-          {/each}
+          {#if loading}
+            <tr><td colspan="3" class="muted">Chargement…</td></tr>
+          {:else if inscriptions.filter((i) => i.courseId === selectedCourseId).length === 0}
+            <tr><td colspan="3" class="muted">Aucune inscription</td></tr>
+          {:else}
+            {#each inscriptions.filter((i) => i.courseId === selectedCourseId) as insc (insc.bateauId + insc.courseId)}
+              <tr>
+                <td>{boats.find((b) => b.id === insc.bateauId)?.name ?? ''}</td>
+                <td>{boats.find((b) => b.id === insc.bateauId)?.class_name ?? ''}</td>
+                <td>{insc.resultat}</td>
+              </tr>
+            {/each}
+          {/if}
         </tbody>
       </table>
     </div>

@@ -520,7 +520,7 @@ header a.button-ghost {
   width: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 280px;
+  max-height: 349.125px;
   border: 1px solid var(--table-border);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.55);
@@ -702,6 +702,8 @@ footer {
   color: var(--muted);
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 -6px 20px rgba(11, 36, 64, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .modal-backdrop {

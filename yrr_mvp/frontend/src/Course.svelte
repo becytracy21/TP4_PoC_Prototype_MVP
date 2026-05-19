@@ -229,21 +229,27 @@
         </thead>
 
         <tbody>
-          {#each filteredCourses as c}
-            <tr>
-              <td>{c.od}</td>
-              <td>{c.class_name}</td>
-              <td>{c.date}</td>
-              <td>{c.time}</td>
-              <td>{c.name}</td>
-              <td>{c.course}</td>
-              <td class="action-cell">
-                <button class="btn-delete" type="button" on:click={() => deleteCourse(c.id)}>
-                  Supprimer
-                </button>
-              </td>
-            </tr>
-          {/each}
+          {#if loading}
+            <tr><td colspan="7" class="muted">Chargement…</td></tr>
+          {:else if filteredCourses.length === 0}
+            <tr><td colspan="7" class="muted">Aucune course</td></tr>
+          {:else}
+            {#each filteredCourses as c}
+              <tr>
+                <td>{c.od}</td>
+                <td>{c.class_name}</td>
+                <td>{c.date}</td>
+                <td>{c.time}</td>
+                <td>{c.name}</td>
+                <td>{c.course}</td>
+                <td class="action-cell">
+                  <button class="btn-delete" type="button" on:click={() => deleteCourse(c.id)}>
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            {/each}
+          {/if}
         </tbody>
       </table>
     </div>

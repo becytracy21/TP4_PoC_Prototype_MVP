@@ -340,9 +340,9 @@
         </thead>
         <tbody>
           {#if loading}
-            <tr><td colspan="6" class="muted">Chargement…</td></tr>
+            <tr><td colspan="5" class="muted">Chargement…</td></tr>
           {:else if boats.length === 0}
-            <tr><td colspan="6" class="muted">Aucun bateau</td></tr>
+            <tr><td colspan="5" class="muted">Aucun bateau</td></tr>
           {:else}
             {#each boats as b (b.id)}
               <tr>
