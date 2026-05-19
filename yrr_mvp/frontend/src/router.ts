@@ -13,7 +13,7 @@ function parseRouteFromLocation(): Route {
 export const route = writable<Route>(parseRouteFromLocation());
 
 export function navigate(to: Route) {
-    const url = to === 'bateaux' ? '/bateaux' : to === 'inscription' ? '/inscription' : '/connexion';
+    const url = to === 'bateaux' ? '/Bateaux' : to === 'inscription' ? '/Inscription' : '/Connexion';
     if (window.location.pathname !== url) {
         window.history.pushState({}, '', url);
     }

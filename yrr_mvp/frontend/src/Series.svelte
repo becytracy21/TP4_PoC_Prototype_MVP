@@ -129,13 +129,6 @@
   }
 </script>
 
-<svelte:head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Séries — YRR</title>
-  <link rel="icon" href="/favicon.ico" />
-</svelte:head>
-
 <div class="container-main">
   <div class="hero">
     <h2 class="hero-title">Gestion des séries</h2>

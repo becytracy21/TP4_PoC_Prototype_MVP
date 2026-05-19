@@ -1,5 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import { auth, logout as authLogout } from "../auth";
 
     export let active: "bateaux" | "classes" | "series" | "course" | "inscriptions" | "resultats-series" = "bateaux";
 
@@ -25,16 +26,14 @@
     }
 
     function logout() {
-        localStorage.clear();
-        sessionStorage.clear();
-        document.cookie.split(";").forEach((c) => {
-            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-        });
+        // utilise la fonction de logout du store pour nettoyer correctement l'état
+        authLogout();
+        // redirige vers la racine (le composant parent gèrera la redirection vers /connexion)
         window.location.href = "/";
     }
 
-    // Sécurisation de l'accès à l'utilisateur
-    $: user = (globalThis as any).$auth?.user;
+    // Récupère l'utilisateur depuis le store `auth` de façon réactive
+    $: user = $auth?.user;
 </script>
 
 <header style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; padding: 0 1rem;">
