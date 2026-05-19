@@ -706,6 +706,10 @@ footer {
   -webkit-backdrop-filter: blur(10px);
 }
 
+footer span {
+  color: color-mix(in srgb, var(--muted) 75%, white);
+}
+
 .modal-backdrop {
   display: none;
   position: fixed;

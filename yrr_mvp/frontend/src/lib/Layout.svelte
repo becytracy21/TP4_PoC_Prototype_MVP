@@ -74,7 +74,7 @@
 
 <slot />
 
-<footer class="muted mt-18">© 2026 Yacht Racing Results (YRR) - Radmehr Rahmani (2356157)</footer>
+<footer class="muted mt-18">© 2026 Yacht Racing Results (YRR) – <span>Alaa B. | Jessica G. | Zhannette O. | Radmehr R. | Becy T. S. K.</span></footer>
 
 <style>
     .nav-user .dropdown-content { display: none; }
